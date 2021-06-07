@@ -8,6 +8,8 @@ package controller;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.stage.Stage;
 
 /**
  * FXML Controller class
@@ -15,6 +17,10 @@ import javafx.fxml.Initializable;
  * @author chris
  */
 public class ReportsAllController implements Initializable {
+    
+    Stage stage;
+    
+    Parent scene;
 
     /**
      * Initializes the controller class.

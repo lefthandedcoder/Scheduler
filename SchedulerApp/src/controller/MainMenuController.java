@@ -22,16 +22,16 @@ import javafx.stage.Stage;
  *
  * @author chris
  */
-public class AppointmentsMainController implements Initializable {
+public class MainMenuController implements Initializable {
     
     Stage stage;
     
     Parent scene;
     
     @FXML
-    void onActionAllReports(ActionEvent event) throws IOException {
+    void onActionAppointmentsMain(ActionEvent event) throws IOException {
         stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
-        scene = FXMLLoader.load(getClass().getResource("/view/ReportsAll.fxml"));
+        scene = FXMLLoader.load(getClass().getResource("/view/AppointmentsMain.fxml"));
         stage.setScene(new Scene(scene));
         stage.show();
     }
@@ -45,9 +45,14 @@ public class AppointmentsMainController implements Initializable {
     }
 
     @FXML
-    void onActionMainMenu(ActionEvent event) throws IOException {
+    void onActionExit(ActionEvent event) {
+        System.exit(0);
+    }
+
+    @FXML
+    void onActionReportsAll(ActionEvent event) throws IOException {
         stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
-        scene = FXMLLoader.load(getClass().getResource("/view/MainMenu.fxml"));
+        scene = FXMLLoader.load(getClass().getResource("/view/ReportsAll.fxml"));
         stage.setScene(new Scene(scene));
         stage.show();
     }
