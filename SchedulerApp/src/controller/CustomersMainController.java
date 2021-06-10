@@ -33,34 +33,34 @@ public class CustomersMainController implements Initializable {
     Parent scene;
     
     @FXML
-    private Label partSearchLabel;
+    private Label customerSearchLabel;
 
     @FXML
-    private TextField CustomerSearchBox;
+    private TextField customerSearchBox;
 
     @FXML
-    private TableView<?> partTableView;
+    private TableView<?> customersTableView;
 
     @FXML
     private TableColumn<?, ?> IDCol;
 
     @FXML
-    private TableColumn<?, ?> customerNameCol;
+    private TableColumn<?, ?> nameCol;
 
     @FXML
-    private TableColumn<?, ?> customerPhoneCol;
+    private TableColumn<?, ?> phoneCol;
 
     @FXML
-    private TableColumn<?, ?> customerAddressCol;
+    private TableColumn<?, ?> addressCol;
 
     @FXML
-    private TableColumn<?, ?> customerZoneIDCol;
+    private TableColumn<?, ?> zoneIDCol;
 
     @FXML
-    private TableColumn<?, ?> customerCountryCol;
+    private TableColumn<?, ?> countryCol;
 
     @FXML
-    private TableColumn<?, ?> customerPostalCodeCol;
+    private TableColumn<?, ?> postalCodeCol;
 
     @FXML
     void onActionAppointmentsMain(ActionEvent event) throws IOException {
@@ -102,7 +102,7 @@ public class CustomersMainController implements Initializable {
     @FXML
     void onActionReportsAll(ActionEvent event)  throws IOException {
         stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
-        scene = FXMLLoader.load(getClass().getResource("/view/ReportsAll.fxml"));
+        scene = FXMLLoader.load(getClass().getResource("/view/ReportsMain.fxml"));
         stage.setScene(new Scene(scene));
         stage.show();
     }

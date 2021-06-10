@@ -15,6 +15,12 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 import javafx.stage.Stage;
 
 /**
@@ -29,9 +35,75 @@ public class AppointmentsMainController implements Initializable {
     Parent scene;
     
     @FXML
+    private RadioButton weekRBtn;
+
+    @FXML
+    private ToggleGroup appointmentWeekMonthTglGrp;
+
+    @FXML
+    private RadioButton monthRBtn;
+
+    @FXML
+    private Label appointmentSearchLabel;
+
+    @FXML
+    private TextField appointmentSearchBox;
+
+    @FXML
+    private TableView<?> appointmentsTableView;
+
+    @FXML
+    private TableColumn<?, ?> IDCol;
+
+    @FXML
+    private TableColumn<?, ?> titleCol;
+
+    @FXML
+    private TableColumn<?, ?> descriptionCol;
+
+    @FXML
+    private TableColumn<?, ?> locationCol;
+
+    @FXML
+    private TableColumn<?, ?> contact;
+
+    @FXML
+    private TableColumn<?, ?> startCol;
+
+    @FXML
+    private TableColumn<?, ?> endCol;
+
+    @FXML
+    private TableColumn<?, ?> customerIDCol;
+
+    @FXML
+    private TableColumn<?, ?> nameCol;
+
+    @FXML
+    void onActionDeleteAppointment(ActionEvent event) {
+
+    }
+
+    @FXML
+    void onActionModifyAppointment(ActionEvent event) throws IOException {
+        stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
+        scene = FXMLLoader.load(getClass().getResource("/view/AppointmentsAddModify.fxml"));
+        stage.setScene(new Scene(scene));
+        stage.show();
+    }
+
+    @FXML
+    void onActionNewAppointment(ActionEvent event) throws IOException {
+        stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
+        scene = FXMLLoader.load(getClass().getResource("/view/AppointmentsAddModify.fxml"));
+        stage.setScene(new Scene(scene));
+        stage.show();
+    }
+    
+    @FXML
     void onActionAllReports(ActionEvent event) throws IOException {
         stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
-        scene = FXMLLoader.load(getClass().getResource("/view/ReportsAll.fxml"));
+        scene = FXMLLoader.load(getClass().getResource("/view/ReportsMain.fxml"));
         stage.setScene(new Scene(scene));
         stage.show();
     }

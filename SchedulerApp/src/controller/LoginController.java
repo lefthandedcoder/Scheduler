@@ -18,6 +18,13 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import model.User;
+import java.sql.*;
+import java.util.Locale;
+import java.util.TimeZone;
+import javafx.scene.control.Alert;
+import static utilities.DBConnection.conn;
+import utilities.DBQuery;
 
 /**
  * FXML Controller class
@@ -26,12 +33,61 @@ import javafx.stage.Stage;
  */
 public class LoginController implements Initializable {
     
+    public static User currentUser;
+    
+    public static User getCurrentUser() {
+        return currentUser;
+    }
+    
+     public static Boolean login(String username, String password) {
+        try {
+            DBQuery.setStatement(conn);
+            Statement statement = DBQuery.getStatement();
+            String query = "SELECT * FROM users WHERE User_Name='" + username + "' AND Password='" + password + "'";
+            ResultSet rs = statement.executeQuery(query);
+            if(rs.next()) {
+                currentUser = new User();
+                currentUser.setUsername(rs.getString("User_Name"));
+                statement.close();
+                System.out.println("User found.");
+                return true;
+            } else {
+                return false;
+            }
+        } catch (SQLException e) {
+            System.out.println("SQLException: " + e.getMessage());
+            return false;
+        }
+    }
+    
     Stage stage;
     
     Parent scene;
     
+    private String errorHeader;
+    private String errorTitle;
+    private String errorText;
+    private String successHeader;
+    private String successTitle;
+    private String successText;
+    
+    @FXML
+    private Label titleLbl;
+    
+    @FXML
+    private Label passwordLbl;
+
+    @FXML
+    private Label usernameLbl;
+    
+    @FXML
+    private Label mainLocationLbl;
+
     @FXML
     private Label locationLbl;
+
+    @FXML
+    private Label currentTimeLbl;
 
     @FXML
     private Label timeLbl;
@@ -40,16 +96,41 @@ public class LoginController implements Initializable {
     private TextField usernameTxtFld;
 
     @FXML
+    private TextField passwordTxtFld;
+
+    @FXML
+    private Button loginBtn;
+
+    @FXML
+    private Button exitBtn;
+
+    @FXML
     void onActionExit(ActionEvent event) {
         System.exit(0);
     }
 
     @FXML
     void onActionMainMenu(ActionEvent event) throws IOException {
-        stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
-        scene = FXMLLoader.load(getClass().getResource("/view/MainMenu.fxml"));
-        stage.setScene(new Scene(scene));
-        stage.show();
+        String username = usernameTxtFld.getText();
+        String password = passwordTxtFld.getText();
+        boolean validUser = login(username, password);
+        if(validUser) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle(successTitle);
+            alert.setHeaderText(successHeader);
+            alert.setContentText(successText);
+            alert.showAndWait();
+            stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
+            scene = FXMLLoader.load(getClass().getResource("/view/MainMenu.fxml"));
+            stage.setScene(new Scene(scene));
+            stage.show();
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle(errorTitle);
+            alert.setHeaderText(errorHeader);
+            alert.setContentText(errorText);
+            alert.showAndWait();
+        }
     }
 
     /**
@@ -57,7 +138,26 @@ public class LoginController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        Locale.setDefault(new Locale("fr"));
+        Locale current = Locale.getDefault();
+        rb = ResourceBundle.getBundle("SchedulerApp/src/login/lang", current);
+        titleLbl.setText(rb.getString("title"));
+        mainLocationLbl.setText(rb.getString("mainLocation"));
+        locationLbl.setText(rb.getString("Locale.getDefault()"));        
+        currentTimeLbl.setText(rb.getString("currentTime"));
+        timeLbl.setText("TimeZone.getDefault()" + " TimeZone.getID()");
+        usernameLbl.setText(rb.getString("username"));
+        passwordLbl.setText(rb.getString("password"));
+        usernameTxtFld.setPromptText(rb.getString("usernamePrompt"));
+        passwordTxtFld.setPromptText(rb.getString("passwordPrompt"));
+        loginBtn.setText("login");
+        exitBtn.setText("exit");
+        errorHeader = rb.getString("errorheader");
+        errorTitle = rb.getString("errortitle");
+        errorText = rb.getString("errortext");
+        successHeader = rb.getString("successheader");
+        successTitle = rb.getString("successtitle");
+        successText = rb.getString("successtext");
     }    
     
 }

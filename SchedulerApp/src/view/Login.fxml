@@ -16,7 +16,7 @@
    <children>
       <VBox layoutX="14.0" layoutY="7.0" prefHeight="311.0" prefWidth="381.0" spacing="10.0" style="-fx-background-color: #F9AD84;">
          <children>
-            <Label text="Appointment Scheduler 1.0" textAlignment="CENTER" textFill="WHITE">
+            <Label fx:id="titleLbl" text="Appointment Scheduler 1.0" textAlignment="CENTER" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="24.0" />
                </font>
@@ -34,19 +34,19 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Label text="Password" textFill="WHITE" GridPane.rowIndex="4">
+                  <Label fx:id="passwordLbl" text="Password" textFill="WHITE" GridPane.rowIndex="4">
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font></Label>
-                  <Label text="Username" textFill="WHITE" GridPane.rowIndex="3">
+                  <Label fx:id="usernameLbl" text="Username" textFill="WHITE" GridPane.rowIndex="3">
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font></Label>
-                  <Label text="Location" textFill="WHITE">
+                  <Label fx:id="mainLocationLbl" text="Location" textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font></Label>
-                  <Label text="Current Time" textFill="WHITE" GridPane.rowIndex="1">
+                  <Label fx:id="currentTimeLbl" text="Current Time" textFill="WHITE" GridPane.rowIndex="1">
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font></Label>
@@ -58,11 +58,6 @@
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font></Label>
-                  <TextField fx:id="usernameTxtFld" promptText="Enter password..." GridPane.columnIndex="1" GridPane.rowIndex="4">
-                     <GridPane.margin>
-                        <Insets right="50.0" />
-                     </GridPane.margin>
-                  </TextField>
                   <TextField fx:id="usernameTxtFld" promptText="Enter username..." GridPane.columnIndex="1" GridPane.rowIndex="3">
                      <GridPane.margin>
                         <Insets right="50.0" />
@@ -71,12 +66,18 @@
                         <Font name="Georgia" size="12.0" />
                      </font>
                   </TextField>
+                  <TextField fx:id="passwordTxtFld" promptText="Enter password..." GridPane.columnIndex="1" GridPane.rowIndex="4">
+                     <GridPane.margin>
+                        <Insets right="50.0" />
+                     </GridPane.margin>
+                  </TextField>
+                  
                </children>
             </GridPane>
             <HBox alignment="CENTER_RIGHT" prefHeight="63.0" prefWidth="321.0" spacing="10.0">
                <children>
-                  <Button mnemonicParsing="false" onAction="#onActionMainMenu" text="Login" />
-                  <Button mnemonicParsing="false" onAction="#onActionExit" text="Exit" />
+                  <Button fx:id="loginBtn" mnemonicParsing="false" onAction="#onActionMainMenu" text="Login" />
+                  <Button fx:id="exitBtn" mnemonicParsing="false" onAction="#onActionExit" text="Exit" />
                </children>
                <padding>
                   <Insets right="70.0" />

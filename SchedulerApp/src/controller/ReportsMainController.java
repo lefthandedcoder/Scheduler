@@ -15,6 +15,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.stage.Stage;
 
 /**
@@ -22,12 +26,24 @@ import javafx.stage.Stage;
  *
  * @author chris
  */
-public class MainMenuController implements Initializable {
+public class ReportsMainController implements Initializable {
     
     Stage stage;
     
     Parent scene;
     
+    @FXML
+    private TableView<?> summaryTableView;
+
+    @FXML
+    private TableColumn<?, ?> monthCol;
+
+    @FXML
+    private TableColumn<?, ?> typeCol;
+
+    @FXML
+    private TableColumn<?, ?> countCol;
+
     @FXML
     void onActionAppointmentsMain(ActionEvent event) throws IOException {
         stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
@@ -45,14 +61,9 @@ public class MainMenuController implements Initializable {
     }
 
     @FXML
-    void onActionExit(ActionEvent event) {
-        System.exit(0);
-    }
-
-    @FXML
-    void onActionReportsAll(ActionEvent event) throws IOException {
+    void onActionMainMenu(ActionEvent event) throws IOException {
         stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
-        scene = FXMLLoader.load(getClass().getResource("/view/ReportsMain.fxml"));
+        scene = FXMLLoader.load(getClass().getResource("/view/MainMenu.fxml"));
         stage.setScene(new Scene(scene));
         stage.show();
     }

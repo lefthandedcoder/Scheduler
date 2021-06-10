@@ -44,7 +44,7 @@
                      <children>
                         <HBox alignment="BOTTOM_RIGHT" prefHeight="100.0" prefWidth="200.0">
                            <children>
-                              <Label fx:id="partSearchLabel" text="Customer not found!" textFill="RED" visible="false">
+                              <Label fx:id="customerSearchLabel" text="Customer not found!" textFill="RED" visible="false">
                                  <font>
                                     <Font name="System Italic" size="12.0" />
                                  </font>
@@ -52,7 +52,7 @@
                                     <Insets right="10.0" />
                                  </HBox.margin>
                               </Label>
-                              <TextField fx:id="CustomerSearchBox" prefHeight="25.0" prefWidth="136.0" promptText="Search by Customer ID or Name">
+                              <TextField fx:id="customerSearchBox" prefHeight="25.0" prefWidth="136.0" promptText="Search by Customer ID or Name">
                                  <HBox.margin>
                                     <Insets />
                                  </HBox.margin>
@@ -65,15 +65,15 @@
                               <Insets right="20.0" />
                            </VBox.margin>
                         </HBox>
-                        <TableView fx:id="partTableView" editable="true" prefHeight="381.0" prefWidth="633.0">
+                        <TableView fx:id="customersTableView" editable="true" prefHeight="381.0" prefWidth="633.0">
                            <columns>
                               <TableColumn fx:id="IDCol" prefWidth="38.0" text="ID" />
-                              <TableColumn fx:id="customerNameCol" prefWidth="111.33329772949219" text="Name" />
-                              <TableColumn fx:id="customerPhoneCol" prefWidth="105.99993896484375" text="Phone" />
-                              <TableColumn fx:id="customerAddressCol" prefWidth="158.66677856445312" text="Address" />
-                              <TableColumn fx:id="customerZoneIDCol" prefWidth="76.66668701171875" text="State/Province" />
-                              <TableColumn fx:id="customerCountryCol" prefWidth="58.66668701171875" text="Country" />
-                              <TableColumn fx:id="customerPostalCodeCol" prefWidth="81.0" text="Postal Code" />
+                              <TableColumn fx:id="nameCol" prefWidth="111.33329772949219" text="Name" />
+                              <TableColumn fx:id="phoneCol" prefWidth="105.99993896484375" text="Phone" />
+                              <TableColumn fx:id="addressCol" prefWidth="158.66677856445312" text="Address" />
+                              <TableColumn fx:id="zoneIDCol" prefWidth="76.66668701171875" text="State/Province" />
+                              <TableColumn fx:id="countryCol" prefWidth="58.66668701171875" text="Country" />
+                              <TableColumn fx:id="postalCodeCol" prefWidth="81.0" text="Postal Code" />
                            </columns>
                         </TableView>
                         <HBox alignment="TOP_RIGHT" prefHeight="4.0" prefWidth="633.0" spacing="10.0">

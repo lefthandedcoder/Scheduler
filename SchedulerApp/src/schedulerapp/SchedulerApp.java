@@ -5,12 +5,16 @@
  */
 package schedulerapp;
 
+import java.util.Locale;
+import java.util.ResourceBundle;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import utilities.DBConnection;
+import utilities.DBQuery;
 
 /**
  *
@@ -22,8 +26,12 @@ public class SchedulerApp extends Application {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        Locale.setDefault(new Locale("fr"));
+        Locale current = Locale.getDefault();
+        ResourceBundle rb = ResourceBundle.getBundle("lang", current);
+        DBConnection.connect();
         launch(args);
+        DBConnection.disconnect();
     }
 
     /**

@@ -1,71 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Tab?>
-<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="460.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ReportsAllController">
+<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="370.0" prefWidth="650.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <HBox layoutX="10.0" layoutY="24.0">
-         <children>
-            <VBox alignment="TOP_CENTER" prefHeight="349.0" prefWidth="101.0" spacing="10.0" style="-fx-background-color: #F9AD84;">
-               <children>
-                  <Button minWidth="91.33" mnemonicParsing="false" text="Home" />
-                  <Button minWidth="91.33" mnemonicParsing="false" text="Customers" />
-                  <Button minWidth="91.33" mnemonicParsing="false" text="Appointments" />
-                  <Button minWidth="91.33" mnemonicParsing="false" text="Reports" />
-               </children>
-               <padding>
-                  <Insets left="5.0" right="5.0" top="20.0" />
-               </padding>
-            </VBox>
-            <VBox minWidth="-Infinity" prefHeight="460.0" prefWidth="673.3">
-               <children>
-                  <Label alignment="TOP_LEFT" prefHeight="50.0" prefWidth="451.0" text="Reports">
-                     <font>
-                        <Font size="24.0" />
-                     </font>
-                     <padding>
-                        <Insets left="20.0" top="10.0" />
-                     </padding>
-                  </Label>
-                  <TabPane prefHeight="399.0" prefWidth="691.0" tabClosingPolicy="UNAVAILABLE">
-                    <tabs>
-                      <Tab text="All Appointments">
-                        <content>
-                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="370.0" prefWidth="650.0" />
-                        </content>
-                      </Tab>
-                      <Tab text="Appointments by Contact">
-                        <content>
-                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-                        </content>
-                      </Tab>
-                        <Tab text="Appointments by Customer">
-                           <content>
-                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-                           </content>
-                        </Tab>
-                    </tabs>
-                     <VBox.margin>
-                        <Insets left="-30.0" right="-35.0" />
-                     </VBox.margin>
-                  </TabPane>
-               </children>
-               <padding>
-                  <Insets left="30.0" right="10.0" />
-               </padding>
-            </VBox>
-         </children>
-         <padding>
-            <Insets left="-10.0" top="-25.0" />
-         </padding>
-      </HBox>
+      <TableView fx:id="summaryTableView" layoutX="209.0" layoutY="65.0" prefHeight="239.0" prefWidth="270.0">
+         <columns>
+            <TableColumn fx:id="monthCol" prefWidth="90.0" text="Month" />
+            <TableColumn fx:id="typeCol" prefWidth="90.0" text="Type" />
+            <TableColumn fx:id="countCol" prefWidth="90.0" text="Count" />
+         </columns>
+      </TableView>
+      <Label layoutX="237.0" layoutY="24.0" text="Summary of Appointments">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>
