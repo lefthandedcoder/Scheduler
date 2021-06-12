@@ -27,8 +27,6 @@ public class SchedulerApp extends Application {
      */
     public static void main(String[] args) {
         Locale.setDefault(new Locale("fr"));
-        Locale current = Locale.getDefault();
-        ResourceBundle rb = ResourceBundle.getBundle("lang", current);
         DBConnection.connect();
         launch(args);
         DBConnection.disconnect();

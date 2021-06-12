@@ -8,6 +8,8 @@ package controller;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -19,7 +21,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import model.Customer;
 
 /**
  * FXML Controller class
@@ -39,28 +43,28 @@ public class CustomersMainController implements Initializable {
     private TextField customerSearchBox;
 
     @FXML
-    private TableView<?> customersTableView;
+    private TableView<Customer> customersTableView;
 
     @FXML
-    private TableColumn<?, ?> IDCol;
+    private TableColumn<Customer, Integer> IDCol;
 
     @FXML
-    private TableColumn<?, ?> nameCol;
+    private TableColumn<Customer, String> nameCol;
 
     @FXML
-    private TableColumn<?, ?> phoneCol;
+    private TableColumn<Customer, String> phoneCol;
 
     @FXML
-    private TableColumn<?, ?> addressCol;
+    private TableColumn<Customer, String> addressCol;
 
     @FXML
-    private TableColumn<?, ?> zoneIDCol;
+    private TableColumn<Customer, String> zoneIDCol;
 
     @FXML
-    private TableColumn<?, ?> countryCol;
+    private TableColumn<Customer, String> countryCol;
 
     @FXML
-    private TableColumn<?, ?> postalCodeCol;
+    private TableColumn<Customer, String> postalCodeCol;
 
     @FXML
     void onActionAppointmentsMain(ActionEvent event) throws IOException {
@@ -112,7 +116,51 @@ public class CustomersMainController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-    }    
-    
+        IDCol.setCellValueFactory(new PropertyValueFactory<>("customerID"));
+        nameCol.setCellValueFactory(new PropertyValueFactory<>("customerName"));
+        phoneCol.setCellValueFactory(new PropertyValueFactory<>("phone"));
+        addressCol.setCellValueFactory(new PropertyValueFactory<>("address"));
+        zoneIDCol.setCellValueFactory(new PropertyValueFactory<>("divisionName"));
+        countryCol.setCellValueFactory(new PropertyValueFactory<>("countryName"));
+        postalCodeCol.setCellValueFactory(new PropertyValueFactory<>("postalCode"));
+
+        // Wrapping observable lists (allParts and allProducts) in a filtered list
+        FilteredList<Customer> filteredCustomers = new FilteredList<>(Customer.getAllCustomers(), p -> true);
+        
+        // Setting the filter predicate whenever the filter changes
+        customerSearchBox.textProperty().addListener((observable, oldValue, newValue) -> {
+            filteredCustomers.setPredicate(customer -> {
+                // If filter text is empty, display all parts
+                if (newValue == null || newValue.isEmpty()) {
+                    customerSearchLabel.setVisible(false);
+                    return true;
+                }
+                
+                //Compare all customer names
+                String search = newValue.toLowerCase();
+                
+                if (customer.getCustomerName().toLowerCase().contains(search) || Integer.valueOf(customer.getCustomerID()).toString().equals(search)) {
+                    customerSearchLabel.setText("Customers found!");
+                    customerSearchLabel.setVisible(true);
+                    return true; // Filter matches part name or id.
+                } else {
+                    return false; // Does not match.
+                }
+            });
+            // Displays "not found" message    
+            if(filteredCustomers.isEmpty()){
+                customerSearchLabel.setText("Customer not found!");
+                customerSearchLabel.setVisible(true);
+            }
+        });
+        
+        // Wrapping filtered list in a sorted list.
+        SortedList<Customer> sortedCustomers = new SortedList<>(filteredCustomers);
+        
+        // Binding the sorted list comparator to the TableView comparator.
+        sortedCustomers.comparatorProperty().bind(customersTableView.comparatorProperty());
+        
+        // Adding sorted (and filtered) parts to table.
+        customersTableView.setItems(sortedCustomers);     
+    }
 }

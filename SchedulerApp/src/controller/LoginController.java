@@ -41,6 +41,7 @@ public class LoginController implements Initializable {
     
      public static Boolean login(String username, String password) {
         try {
+            // Pulling user info from database
             DBQuery.setStatement(conn);
             Statement statement = DBQuery.getStatement();
             String query = "SELECT * FROM users WHERE User_Name='" + username + "' AND Password='" + password + "'";
@@ -79,12 +80,6 @@ public class LoginController implements Initializable {
 
     @FXML
     private Label usernameLbl;
-    
-    @FXML
-    private Label mainLocationLbl;
-
-    @FXML
-    private Label locationLbl;
 
     @FXML
     private Label currentTimeLbl;
@@ -111,6 +106,7 @@ public class LoginController implements Initializable {
 
     @FXML
     void onActionMainMenu(ActionEvent event) throws IOException {
+        // Checking username & password authentication against database
         String username = usernameTxtFld.getText();
         String password = passwordTxtFld.getText();
         boolean validUser = login(username, password);
@@ -132,26 +128,20 @@ public class LoginController implements Initializable {
             alert.showAndWait();
         }
     }
-
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        Locale.setDefault(new Locale("fr"));
-        Locale current = Locale.getDefault();
-        rb = ResourceBundle.getBundle("SchedulerApp/src/login/lang", current);
+        //Adding language features for login screen
+        rb = ResourceBundle.getBundle("login/lang", Locale.getDefault());
         titleLbl.setText(rb.getString("title"));
-        mainLocationLbl.setText(rb.getString("mainLocation"));
-        locationLbl.setText(rb.getString("Locale.getDefault()"));        
-        currentTimeLbl.setText(rb.getString("currentTime"));
-        timeLbl.setText("TimeZone.getDefault()" + " TimeZone.getID()");
         usernameLbl.setText(rb.getString("username"));
         passwordLbl.setText(rb.getString("password"));
         usernameTxtFld.setPromptText(rb.getString("usernamePrompt"));
         passwordTxtFld.setPromptText(rb.getString("passwordPrompt"));
-        loginBtn.setText("login");
-        exitBtn.setText("exit");
+        loginBtn.setText(rb.getString("login"));
+        exitBtn.setText(rb.getString("exit"));
         errorHeader = rb.getString("errorheader");
         errorTitle = rb.getString("errortitle");
         errorText = rb.getString("errortext");

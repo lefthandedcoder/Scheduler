@@ -67,11 +67,11 @@
                         </HBox>
                         <TableView fx:id="customersTableView" editable="true" prefHeight="381.0" prefWidth="633.0">
                            <columns>
-                              <TableColumn fx:id="IDCol" prefWidth="38.0" text="ID" />
-                              <TableColumn fx:id="nameCol" prefWidth="111.33329772949219" text="Name" />
+                              <TableColumn fx:id="IDCol" prefWidth="27.333343505859375" text="ID" />
+                              <TableColumn fx:id="nameCol" prefWidth="121.99998474121094" text="Name" />
                               <TableColumn fx:id="phoneCol" prefWidth="105.99993896484375" text="Phone" />
-                              <TableColumn fx:id="addressCol" prefWidth="158.66677856445312" text="Address" />
-                              <TableColumn fx:id="zoneIDCol" prefWidth="76.66668701171875" text="State/Province" />
+                              <TableColumn fx:id="addressCol" prefWidth="94.0" text="Address" />
+                              <TableColumn fx:id="zoneIDCol" prefWidth="143.33334350585938" text="State/Province/Region" />
                               <TableColumn fx:id="countryCol" prefWidth="58.66668701171875" text="Country" />
                               <TableColumn fx:id="postalCodeCol" prefWidth="81.0" text="Postal Code" />
                            </columns>
