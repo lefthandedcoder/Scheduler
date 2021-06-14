@@ -33,7 +33,7 @@ import utilities.DBQuery;
  */
 public class LoginController implements Initializable {
     
-    public static User currentUser;
+    public static User currentUser = new User();
     
     public static User getCurrentUser() {
         return currentUser;

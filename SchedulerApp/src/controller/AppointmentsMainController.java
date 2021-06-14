@@ -85,9 +85,9 @@ public class AppointmentsMainController implements Initializable {
     }
 
     @FXML
-    void onActionModifyAppointment(ActionEvent event) throws IOException {
+    void onActionUpdateAppointment(ActionEvent event) throws IOException {
         stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
-        scene = FXMLLoader.load(getClass().getResource("/view/AppointmentsAddModify.fxml"));
+        scene = FXMLLoader.load(getClass().getResource("/view/AppointmentsAddUpdate.fxml"));
         stage.setScene(new Scene(scene));
         stage.show();
     }
@@ -95,7 +95,7 @@ public class AppointmentsMainController implements Initializable {
     @FXML
     void onActionNewAppointment(ActionEvent event) throws IOException {
         stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
-        scene = FXMLLoader.load(getClass().getResource("/view/AppointmentsAddModify.fxml"));
+        scene = FXMLLoader.load(getClass().getResource("/view/AppointmentsAddUpdate.fxml"));
         stage.setScene(new Scene(scene));
         stage.show();
     }
@@ -115,6 +115,14 @@ public class AppointmentsMainController implements Initializable {
         stage.setScene(new Scene(scene));
         stage.show();
     }
+    
+    @FXML
+    void onActionAppointmentsMain(ActionEvent event) throws IOException {
+        stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
+        scene = FXMLLoader.load(getClass().getResource("/view/AppointmentsMain.fxml"));
+        stage.setScene(new Scene(scene));
+        stage.show();
+    }
 
     @FXML
     void onActionMainMenu(ActionEvent event) throws IOException {
@@ -122,6 +130,11 @@ public class AppointmentsMainController implements Initializable {
         scene = FXMLLoader.load(getClass().getResource("/view/MainMenu.fxml"));
         stage.setScene(new Scene(scene));
         stage.show();
+    }
+    
+    @FXML
+    void onActionExit(ActionEvent event) {
+        System.exit(0);
     }
 
     /**

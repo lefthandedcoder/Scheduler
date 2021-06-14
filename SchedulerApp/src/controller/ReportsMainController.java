@@ -67,6 +67,19 @@ public class ReportsMainController implements Initializable {
         stage.setScene(new Scene(scene));
         stage.show();
     }
+    
+    @FXML
+    void onActionAllReports(ActionEvent event) throws IOException {
+        stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
+        scene = FXMLLoader.load(getClass().getResource("/view/ReportsMain.fxml"));
+        stage.setScene(new Scene(scene));
+        stage.show();
+    }
+    
+    @FXML
+    void onActionExit(ActionEvent event) {
+        System.exit(0);
+    }
 
     /**
      * Initializes the controller class.

@@ -7,6 +7,7 @@ package controller;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
@@ -16,7 +17,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -24,6 +27,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import model.Customer;
+import utilities.DBCustomer;
 
 /**
  * FXML Controller class
@@ -35,6 +39,17 @@ public class CustomersMainController implements Initializable {
     Stage stage;
     
     Parent scene;
+    
+    private static Customer updatedCustomer;
+    
+    public static Customer getUpdatedCustomer() {
+        return updatedCustomer;
+    }
+    
+    public void setUpdatedCustomer(Customer updatedCustomer) {
+        CustomersMainController.updatedCustomer = updatedCustomer;
+    }
+    
     
     @FXML
     private Label customerSearchLabel;
@@ -58,7 +73,7 @@ public class CustomersMainController implements Initializable {
     private TableColumn<Customer, String> addressCol;
 
     @FXML
-    private TableColumn<Customer, String> zoneIDCol;
+    private TableColumn<Customer, String> regionCol;
 
     @FXML
     private TableColumn<Customer, String> countryCol;
@@ -76,7 +91,31 @@ public class CustomersMainController implements Initializable {
 
     @FXML
     void onActionDeleteCustomer(ActionEvent event) {
+        Customer customerDelete = customersTableView.getSelectionModel().getSelectedItem();
+        if (customerDelete == null) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Delete Customer");
+            alert.setContentText("Customer not selected.");
+            Optional<ButtonType> result = alert.showAndWait();
+        } else {
+            //Delete customer confirmation
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Delete Customer");
+            alert.setContentText("Delete the selected customer?");
+            Optional<ButtonType> result = alert.showAndWait();
 
+            if (result.isPresent() && result.get() == ButtonType.OK) {
+                try {
+                    DBCustomer.deleteCustomer(customerDelete);
+                    Alert deleted = new Alert(Alert.AlertType.INFORMATION);
+                    deleted.setTitle("Customer Deleted");
+                    alert.setContentText("Customer has been deleted.");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        tableSetup();
     }
 
     @FXML
@@ -86,21 +125,33 @@ public class CustomersMainController implements Initializable {
         stage.setScene(new Scene(scene));
         stage.show();
     }
+    
+    @FXML
+    void onActionCustomersMain(ActionEvent event) throws IOException {
+        stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
+        scene = FXMLLoader.load(getClass().getResource("/view/CustomersMain.fxml"));
+        stage.setScene(new Scene(scene));
+        stage.show();
+    }
 
     @FXML
-    void onActionModifyCustomer(ActionEvent event) throws IOException {
+    void onActionUpdateCustomer(ActionEvent event) throws IOException {
+        updatedCustomer = customersTableView.getSelectionModel().getSelectedItem();
+        setUpdatedCustomer(updatedCustomer);
         stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
-        scene = FXMLLoader.load(getClass().getResource("/view/CustomersAddModify.fxml"));
+        scene = FXMLLoader.load(getClass().getResource("/view/CustomersAddUpdate.fxml"));
         stage.setScene(new Scene(scene));
         stage.show();
     }
 
     @FXML
     void onActionNewCustomer(ActionEvent event) throws IOException {
+        updatedCustomer = null;
         stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
-        scene = FXMLLoader.load(getClass().getResource("/view/CustomersAddModify.fxml"));
+        scene = FXMLLoader.load(getClass().getResource("/view/CustomersAddUpdate.fxml"));
         stage.setScene(new Scene(scene));
         stage.show();
+        
     }
 
     @FXML
@@ -110,22 +161,27 @@ public class CustomersMainController implements Initializable {
         stage.setScene(new Scene(scene));
         stage.show();
     }
-
-    /**
-     * Initializes the controller class.
-     */
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
+    
+    @FXML
+    void onActionExit(ActionEvent event) {
+        System.exit(0);
+    }
+    
+    public void tableSetup() {
+        customersTableView.getSelectionModel().clearSelection();
+        customersTableView.setItems(DBCustomer.getAllCustomers());
+        customersTableView.getSortOrder().add(IDCol);
         IDCol.setCellValueFactory(new PropertyValueFactory<>("customerID"));
         nameCol.setCellValueFactory(new PropertyValueFactory<>("customerName"));
         phoneCol.setCellValueFactory(new PropertyValueFactory<>("phone"));
         addressCol.setCellValueFactory(new PropertyValueFactory<>("address"));
-        zoneIDCol.setCellValueFactory(new PropertyValueFactory<>("divisionName"));
+        regionCol.setCellValueFactory(new PropertyValueFactory<>("regionName"));
         countryCol.setCellValueFactory(new PropertyValueFactory<>("countryName"));
         postalCodeCol.setCellValueFactory(new PropertyValueFactory<>("postalCode"));
 
         // Wrapping observable lists (allParts and allProducts) in a filtered list
-        FilteredList<Customer> filteredCustomers = new FilteredList<>(Customer.getAllCustomers(), p -> true);
+        customersTableView.getItems().clear();
+        FilteredList<Customer> filteredCustomers = new FilteredList<>(DBCustomer.getAllCustomers(), p -> true);
         
         // Setting the filter predicate whenever the filter changes
         customerSearchBox.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -161,6 +217,13 @@ public class CustomersMainController implements Initializable {
         sortedCustomers.comparatorProperty().bind(customersTableView.comparatorProperty());
         
         // Adding sorted (and filtered) parts to table.
-        customersTableView.setItems(sortedCustomers);     
-    }
+        customersTableView.setItems(sortedCustomers);
+    } 
+    /**
+     * Initializes the controller class.
+     */
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        tableSetup();
+    }   
 }

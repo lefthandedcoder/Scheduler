@@ -16,14 +16,10 @@
          <children>
             <VBox alignment="TOP_CENTER" prefHeight="502.0" prefWidth="78.0" spacing="10.0" style="-fx-background-color: #F9AD84;">
                <children>
-                  <Label text="Reports" textFill="WHITE">
-                     <font>
-                        <Font name="System Bold" size="12.0" />
-                     </font>
-                  </Label>
                   <Button minWidth="91.33" mnemonicParsing="false" onAction="#onActionMainMenu" text="Home" />
                   <Button minWidth="91.33" mnemonicParsing="false" onAction="#onActionCustomersMain" text="Customers" />
                   <Button minWidth="91.33" mnemonicParsing="false" onAction="#onActionAppointmentsMain" text="Appointments" />
+                  <Button layoutX="15.0" layoutY="128.0" minWidth="91.33" mnemonicParsing="false" onAction="#onActionAllReports" text="Reports" />
                </children>
                <padding>
                   <Insets left="5.0" right="5.0" top="20.0" />
@@ -76,6 +72,18 @@
                         <Insets left="-30.0" right="-35.0" />
                      </VBox.margin>
                   </TabPane>
+                  <HBox alignment="TOP_RIGHT" prefHeight="4.0" prefWidth="633.0" spacing="10.0">
+                     <children>
+                        <Button alignment="CENTER" mnemonicParsing="false" onAction="#onActionExit" text="Exit">
+                           <HBox.margin>
+                              <Insets bottom="20.0" top="20.0" />
+                           </HBox.margin>
+                        </Button>
+                     </children>
+                     <padding>
+                        <Insets right="20.0" />
+                     </padding>
+                  </HBox>
                </children>
                <padding>
                   <Insets left="30.0" right="10.0" />

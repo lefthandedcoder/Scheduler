@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CustomersAddModifyController">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="controller.CustomersAddUpdateController">
    <children>
       <VBox prefHeight="400.0" prefWidth="500.0" style="-fx-background-color: #F9AD84;">
          <children>
@@ -35,7 +35,7 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                  <Label fx:id="customerLbl" text="customerLbl" textFill="WHITE">
+                  <Label fx:id="customerLbl" text="customerLbl" textFill="WHITE" GridPane.columnSpan="2">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
@@ -57,14 +57,6 @@
                      </font>
                   </Label>
                   <Label text="Address" textFill="WHITE" GridPane.rowIndex="4">
-                     <padding>
-                        <Insets left="20.0" />
-                     </padding>
-                     <font>
-                        <Font name="System Bold" size="12.0" />
-                     </font>
-                  </Label>
-                  <Label text="State/Province" textFill="WHITE" GridPane.rowIndex="5">
                      <padding>
                         <Insets left="20.0" />
                      </padding>
@@ -102,8 +94,8 @@
                      </children>
                   </HBox>
                   <TextField fx:id="phoneTxt" GridPane.columnIndex="1" GridPane.rowIndex="7" />
-                  <ComboBox fx:id="zoneIDComboBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                  <Label text="Country" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="5">
+                  <ComboBox fx:id="regionComboBox" prefWidth="150.0" GridPane.columnIndex="3" GridPane.rowIndex="5" />
+                  <Label fx:id="zoneLbl" text="Region" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="5">
                      <padding>
                         <Insets left="10.0" />
                      </padding>
@@ -111,7 +103,15 @@
                         <Font name="System Bold" size="12.0" />
                      </font>
                   </Label>
-                  <ComboBox fx:id="countryComboBox" prefWidth="150.0" GridPane.columnIndex="3" GridPane.rowIndex="5" />
+                  <ComboBox fx:id="countryComboBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                  <Label text="Country" textFill="WHITE" GridPane.rowIndex="5">
+                     <padding>
+                        <Insets left="20.0" />
+                     </padding>
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Label>
                </children>
             </GridPane>
             <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="10.0">

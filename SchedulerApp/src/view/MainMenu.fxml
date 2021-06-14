@@ -8,17 +8,13 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainMenuController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="controller.MainMenuController">
    <children>
       <HBox layoutX="10.0" layoutY="24.0" prefHeight="476.0" prefWidth="765.0">
          <children>
             <VBox alignment="TOP_CENTER" prefHeight="349.0" prefWidth="101.0" spacing="10.0" style="-fx-background-color: #F9AD84;">
                <children>
-                  <Label text="Home" textFill="WHITE">
-                     <font>
-                        <Font name="System Bold" size="12.0" />
-                     </font>
-                  </Label>
+                  <Button layoutX="15.0" layoutY="57.0" minWidth="91.33" mnemonicParsing="false" onAction="#onActionMainMenu" text="Home" />
                   <Button minWidth="91.33" mnemonicParsing="false" onAction="#onActionCustomersMain" text="Customers" />
                   <Button minWidth="91.33" mnemonicParsing="false" onAction="#onActionAppointmentsMain" text="Appointments" />
                   <Button minWidth="91.33" mnemonicParsing="false" onAction="#onActionReportsAll" text="Reports" />

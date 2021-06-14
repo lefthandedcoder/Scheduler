@@ -27,7 +27,7 @@ import javafx.stage.Stage;
  *
  * @author chris
  */
-public class AppointmentsAddModifyController implements Initializable {
+public class AppointmentsAddUpdateController implements Initializable {
     
     Stage stage;
     
