@@ -12,6 +12,8 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -23,6 +25,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import model.Country;
@@ -92,6 +95,9 @@ public class CustomersAddUpdateController implements Initializable {
 
     @FXML
     private ComboBox<String> countryComboBox;
+    
+    @FXML
+    private TextArea errorDisplay;
 
     @FXML
     void onActionCustomersMain(ActionEvent event) throws IOException {
@@ -110,46 +116,123 @@ public class CustomersAddUpdateController implements Initializable {
 
     @FXML
     void onActionSaveCustomer(ActionEvent event) throws IOException {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Add/Update Customer");
-        alert.setContentText("Save changes and return to Customers menu?");
-        Optional<ButtonType> result = alert.showAndWait();
-        
-        if (updatingCustomer == null) {
-            int id = 0;
-            String customerName = nameTxt.getText();
-            String address = addressTxt.getText();
-            String regionName = regionComboBox.getSelectionModel().getSelectedItem();
-            String countryName = countryComboBox.getSelectionModel().getSelectedItem();
-            String postalCode = postalCodeTxt.getText();
-            String phone = phoneTxt.getText();
-            Customer savingCustomer = new Customer(id, customerName, address, regionName, countryName, postalCode, phone);
-            DBCustomer.addCustomer(savingCustomer);
+        if ((nameValid() && addressValid() && regionValid() && countryValid() && postalCodeValid() && phoneValid())) {
+            errorDisplay.setVisible(false);
+            System.out.println("Customer info is valid.");
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Add/Update Customer");
+            alert.setContentText("Save changes and return to Customers menu?");
+            Optional<ButtonType> result = alert.showAndWait();
+            if (alert.getResult() == ButtonType.OK) {
+                if (updatingCustomer == null) {
+                    int id = 0;
+                    String customerName = nameTxt.getText();
+                    String address = addressTxt.getText();
+                    String regionName = regionComboBox.getSelectionModel().getSelectedItem();
+                    String countryName = countryComboBox.getSelectionModel().getSelectedItem();
+                    String postalCode = postalCodeTxt.getText();
+                    String phone = phoneTxt.getText();
+                    Customer savingCustomer = new Customer(id, customerName, address, regionName, countryName, postalCode, phone);
+                    DBCustomer.addCustomer(savingCustomer);
+                } else {
+                    String customerName = nameTxt.getText();
+                    String address = addressTxt.getText();
+                    String regionName = updatingCustomer.getRegionName();
+                    if (regionComboBox.getSelectionModel().getSelectedItem() != null) {
+                        regionName = regionComboBox.getSelectionModel().getSelectedItem();
+                    }
+                    String countryName = updatingCustomer.getRegionName();
+                    if (countryComboBox.getSelectionModel().getSelectedItem() != null) {
+                        regionName = countryComboBox.getSelectionModel().getSelectedItem();
+                    }
+                    String postalCode = postalCodeTxt.getText();
+                    String phone = phoneTxt.getText();
+                    updatingCustomer.setCustomerName(customerName);
+                    updatingCustomer.setAddress(address);
+                    updatingCustomer.setRegionName(regionName);
+                    updatingCustomer.setCountryName(countryName);
+                    updatingCustomer.setPostalCode(postalCode);
+                    updatingCustomer.setPhone(phone);
+                    DBCustomer.updateCustomer(updatingCustomer);
+                }
+                stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
+                scene = FXMLLoader.load(getClass().getResource("/view/CustomersMain.fxml"));
+                stage.setScene(new Scene(scene));
+                stage.show();
+            }
         } else {
-            String customerName = nameTxt.getText();
-            String address = addressTxt.getText();
-            String regionName = updatingCustomer.getRegionName();
-            if (regionComboBox.getSelectionModel().getSelectedItem() != null) {
-                regionName = regionComboBox.getSelectionModel().getSelectedItem();
-            }
-            String countryName = updatingCustomer.getRegionName();
-            if (countryComboBox.getSelectionModel().getSelectedItem() != null) {
-                regionName = countryComboBox.getSelectionModel().getSelectedItem();
-            }
-            String postalCode = postalCodeTxt.getText();
-            String phone = phoneTxt.getText();
-            updatingCustomer.setCustomerName(customerName);
-            updatingCustomer.setAddress(address);
-            updatingCustomer.setRegionName(regionName);
-            updatingCustomer.setCountryName(countryName);
-            updatingCustomer.setPostalCode(postalCode);
-            updatingCustomer.setPhone(phone);
-            DBCustomer.updateCustomer(updatingCustomer);
+            validationErrors.clear();
+            setupErrorDisplay();
+            errorCollector();
+            showErrors();
+            validationErrors.clear();
         }
-        stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
-        scene = FXMLLoader.load(getClass().getResource("/view/CustomersMain.fxml"));
-        stage.setScene(new Scene(scene));
-        stage.show();
+    }
+    
+    ObservableList<String> validationErrors = FXCollections.observableArrayList();
+    public void setupErrorDisplay() {
+        validationErrors.add("Customer information is missing!\n");
+    }
+    public void errorCollector() {
+        nameValid();
+        addressValid();
+        regionValid();
+        countryValid();
+        postalCodeValid();
+        countryValid();
+        phoneValid();
+    }
+    public Boolean nameValid() {
+        if (nameTxt.getText().isEmpty()) {
+            validationErrors.add("Customer name required!\n");
+            return false;
+        }
+        return true;
+    }
+    public Boolean addressValid() {
+        if (addressTxt.getText().isEmpty()) {
+            validationErrors.add("Address required!\n");
+            return false;
+        } 
+        return true;
+    }
+    public Boolean regionValid() {
+        if (regionComboBox.getSelectionModel().isEmpty()) {
+            validationErrors.add("Region must be selected!\n");
+            return false;
+        }
+        return true;
+    }
+    
+    public Boolean countryValid() {
+        if (countryComboBox.getSelectionModel().isEmpty()) {
+            validationErrors.add("Country must be selected!\n");
+            return false;
+        }
+        return true;
+    }
+    public Boolean postalCodeValid() {
+        if (postalCodeTxt.getText().isEmpty()) {
+            validationErrors.add("Postal code required!\n");
+            return false;
+        }
+        return true;
+    }
+    public Boolean phoneValid() {
+        if (phoneTxt.getText().isEmpty()) {
+            validationErrors.add("Phone required!\n");
+            return false;
+        }
+        return true;
+    }
+    
+    public void showErrors(){
+        String allErrors = "";
+        for (String error : validationErrors) {
+            allErrors = allErrors.concat(error);
+        }
+        errorDisplay.setVisible(true);
+        errorDisplay.setText(allErrors);
     }
 
     /**
@@ -157,6 +240,7 @@ public class CustomersAddUpdateController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        errorDisplay.setVisible(false);
         //Clear updating customer data when adding new customer
         if (updatingCustomer == null) {
             customerLbl.setText("Add Customer");

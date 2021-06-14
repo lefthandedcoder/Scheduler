@@ -4,6 +4,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -13,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="controller.CustomersAddUpdateController">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CustomersAddUpdateController">
    <children>
       <VBox prefHeight="400.0" prefWidth="500.0" style="-fx-background-color: #F9AD84;">
          <children>
@@ -120,6 +121,9 @@
                      <HBox.margin>
                         <Insets />
                      </HBox.margin>
+                     <children>
+                        <TextArea fx:id="errorDisplay" prefHeight="200.0" prefWidth="200.0" style="-fx-text-fill: red;" />
+                     </children>
                   </VBox>
                   <Button mnemonicParsing="false" onAction="#onActionSaveCustomer" text="Save" />
                   <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#onActionCustomersMain" text="Cancel" />
