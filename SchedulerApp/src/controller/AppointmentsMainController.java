@@ -7,7 +7,10 @@ package controller;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.ResourceBundle;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -21,7 +24,12 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import model.Appointment;
+import utilities.DBAppointment;
+import java.time.format.DateTimeFormatter;
+import javafx.scene.control.DatePicker;
 
 /**
  * FXML Controller class
@@ -34,8 +42,23 @@ public class AppointmentsMainController implements Initializable {
     
     Parent scene;
     
+    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+    
+    private static Appointment updatedAppointment;
+    
+    public static Appointment getUpdatedAppointment() {
+        return updatedAppointment;
+    }
+    
+    public void setUpdatedAppointment(Appointment updatedAppointment) {
+        AppointmentsMainController.updatedAppointment = updatedAppointment;
+    }
+    
     @FXML
     private RadioButton weekRBtn;
+    
+    @FXML
+    private DatePicker datePicker;
 
     @FXML
     private ToggleGroup appointmentWeekMonthTglGrp;
@@ -50,34 +73,37 @@ public class AppointmentsMainController implements Initializable {
     private TextField appointmentSearchBox;
 
     @FXML
-    private TableView<?> appointmentsTableView;
+    private TableView<Appointment> appointmentsTableView;
 
     @FXML
-    private TableColumn<?, ?> IDCol;
+    private TableColumn<Appointment, Integer> IDCol;
 
     @FXML
-    private TableColumn<?, ?> titleCol;
+    private TableColumn<Appointment, String> titleCol;
 
     @FXML
-    private TableColumn<?, ?> descriptionCol;
+    private TableColumn<Appointment, String> descriptionCol;
+    
+    @FXML
+    private TableColumn<Appointment, String> typeCol;
 
     @FXML
-    private TableColumn<?, ?> locationCol;
+    private TableColumn<Appointment, String> locationCol;
 
     @FXML
-    private TableColumn<?, ?> contact;
+    private TableColumn<Appointment, String> contact;
 
     @FXML
-    private TableColumn<?, ?> startCol;
+    private TableColumn<Appointment, String> startCol;
 
     @FXML
-    private TableColumn<?, ?> endCol;
+    private TableColumn<Appointment, String> endCol;
 
     @FXML
-    private TableColumn<?, ?> customerIDCol;
+    private TableColumn<Appointment, Integer> customerIDCol;
 
     @FXML
-    private TableColumn<?, ?> nameCol;
+    private TableColumn<Appointment, String> nameCol;
 
     @FXML
     void onActionDeleteAppointment(ActionEvent event) {
@@ -86,6 +112,8 @@ public class AppointmentsMainController implements Initializable {
 
     @FXML
     void onActionUpdateAppointment(ActionEvent event) throws IOException {
+        updatedAppointment = appointmentsTableView.getSelectionModel().getSelectedItem();
+        setUpdatedAppointment(updatedAppointment);
         stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
         scene = FXMLLoader.load(getClass().getResource("/view/AppointmentsAddUpdate.fxml"));
         stage.setScene(new Scene(scene));
@@ -136,13 +164,70 @@ public class AppointmentsMainController implements Initializable {
     void onActionExit(ActionEvent event) {
         System.exit(0);
     }
+    
+    public void tableSetup() {
+        appointmentsTableView.getSelectionModel().clearSelection();
+
+       //Wrapping observable list (allAppointments) in a filtered list
+        appointmentsTableView.getItems().clear();
+        FilteredList<Appointment> filteredAppointments = new FilteredList<>(DBAppointment.getAllAppointments(), p -> true);
+        
+        // Setting the filter predicate whenever the filter changes
+        appointmentSearchBox.textProperty().addListener((observable, oldValue, newValue) -> {
+            filteredAppointments.setPredicate(appointment -> {
+                // If filter text is empty, display all parts
+                if (newValue == null || newValue.isEmpty()) {
+                    appointmentSearchLabel.setVisible(false);
+                    return true;
+                }
+                
+                //Compare all appointment titles
+                String search = newValue.toLowerCase();
+                
+                if (appointment.getTitle().toLowerCase().contains(search) || Integer.valueOf(appointment.getAppointmentID()).toString().equals(search)) {
+                    appointmentSearchLabel.setText("Appointments found!");
+                    appointmentSearchLabel.setVisible(true);
+                    return true; // Filter matches appointment title or id.
+                } else {
+                    return false; // Does not match.
+                }
+            });
+            // Displays "not found" message    
+            if(filteredAppointments.isEmpty()){
+                appointmentSearchLabel.setText("Appointment not found!");
+                appointmentSearchLabel.setVisible(true);
+            }
+        });
+        
+        // Wrapping filtered list in a sorted list.
+        SortedList<Appointment> sortedAppointments = new SortedList<>(filteredAppointments);
+        
+        // Binding the sorted list comparator to the TableView comparator.
+        sortedAppointments.comparatorProperty().bind(appointmentsTableView.comparatorProperty());
+        
+        // Adding sorted (and filtered) parts to table.
+        appointmentsTableView.setItems(sortedAppointments);
+    }
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-    }    
+        appointmentsTableView.setItems(DBAppointment.getAllAppointments());
+        tableSetup();
+        appointmentsTableView.getSortOrder().add(IDCol);        
+        IDCol.setCellValueFactory(new PropertyValueFactory<>("appointmentID"));
+        titleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
+        descriptionCol.setCellValueFactory(new PropertyValueFactory<>("description"));
+        typeCol.setCellValueFactory(new PropertyValueFactory<>("description"));
+        locationCol.setCellValueFactory(new PropertyValueFactory<>("location"));
+        contact.setCellValueFactory(new PropertyValueFactory<>("contactName"));
+        startCol.setCellValueFactory(new PropertyValueFactory<>("start"));
+        endCol.setCellValueFactory(new PropertyValueFactory<>("end"));
+        customerIDCol.setCellValueFactory(new PropertyValueFactory<>("apptCustomerID"));
+        nameCol.setCellValueFactory(new PropertyValueFactory<>("apptCustomerName"));
+        datePicker.setPromptText(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+    }
     
 }

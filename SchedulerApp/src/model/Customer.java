@@ -5,12 +5,6 @@
  */
 package model;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import static utilities.DBConnection.conn;
-import utilities.DBQuery;
-import java.sql.*;
-
 /**
  *
  * @author chris

@@ -23,6 +23,7 @@ import java.sql.*;
 import java.util.Locale;
 import java.util.TimeZone;
 import javafx.scene.control.Alert;
+import utilities.DBConnection;
 import static utilities.DBConnection.conn;
 import utilities.DBQuery;
 
@@ -80,12 +81,12 @@ public class LoginController implements Initializable {
 
     @FXML
     private Label usernameLbl;
+    
+    @FXML
+    private Label timeLbl;
 
     @FXML
     private Label currentTimeLbl;
-
-    @FXML
-    private Label timeLbl;
 
     @FXML
     private TextField usernameTxtFld;
@@ -133,8 +134,13 @@ public class LoginController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        //Current time:     
+        String ts = DBConnection.timestamp();
+        String tz = TimeZone.getDefault().getID();
+        currentTimeLbl.setText(ts + " " + tz);
         //Adding language features for login screen
         rb = ResourceBundle.getBundle("login/lang", Locale.getDefault());
+        timeLbl.setText(rb.getString("time"));
         titleLbl.setText(rb.getString("title"));
         usernameLbl.setText(rb.getString("username"));
         passwordLbl.setText(rb.getString("password"));

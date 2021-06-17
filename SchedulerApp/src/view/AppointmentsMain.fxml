@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TableColumn?>
@@ -13,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="1020.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="controller.AppointmentsMainController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AppointmentsMainController">
    <children>
       <HBox layoutX="10.0" layoutY="24.0">
          <children>
@@ -28,7 +29,7 @@
                   <Insets left="5.0" right="5.0" top="20.0" />
                </padding>
             </VBox>
-            <VBox minWidth="-Infinity" prefHeight="489.0" prefWidth="897.0">
+            <VBox minWidth="-Infinity" prefHeight="489.0" prefWidth="1070.0">
                <children>
                   <Label alignment="TOP_LEFT" prefHeight="72.0" prefWidth="451.0" text="Appointments">
                      <font>
@@ -38,14 +39,19 @@
                         <Insets left="20.0" top="20.0" />
                      </padding>
                   </Label>
+                  <HBox alignment="CENTER" layoutX="40.0" layoutY="81.0" prefHeight="45.0" prefWidth="633.0" spacing="30.0">
+                     <children>
+                        <Label text="Select a Start Date (Default is Current Month)" />
+                        <DatePicker fx:id="datePicker" />
+                     </children>
+                  </HBox>
                   <HBox alignment="CENTER" prefHeight="45.0" prefWidth="633.0" spacing="30.0">
                      <children>
-                        <RadioButton fx:id="weekRBtn" mnemonicParsing="false" selected="true" text="Appointments by Week">
+                        <RadioButton fx:id="monthRBtn" mnemonicParsing="false" selected="true" text="Appointments by Month">
                            <toggleGroup>
                               <ToggleGroup fx:id="appointmentWeekMonthTglGrp" />
-                           </toggleGroup>
-                        </RadioButton>
-                        <RadioButton fx:id="monthRBtn" mnemonicParsing="false" text="Appointments by Month" toggleGroup="$appointmentWeekMonthTglGrp" />
+                           </toggleGroup></RadioButton>
+                        <RadioButton fx:id="weekRBtn" mnemonicParsing="false" text="Appointments by Week" toggleGroup="$appointmentWeekMonthTglGrp" />
                      </children>
                   </HBox>
                   <VBox prefHeight="385.0" prefWidth="849.0" spacing="10.0">
@@ -60,7 +66,7 @@
                                     <Insets right="10.0" />
                                  </HBox.margin>
                               </Label>
-                              <TextField fx:id="appointmentSearchBox" prefHeight="25.0" prefWidth="136.0" promptText="Search by Appointment ID or Title">
+                              <TextField fx:id="appointmentSearchBox" prefHeight="25.0" prefWidth="199.0" promptText="Search by Appointment ID or Title">
                                  <HBox.margin>
                                     <Insets />
                                  </HBox.margin>
@@ -75,20 +81,21 @@
                         </HBox>
                         <TableView fx:id="appointmentsTableView" editable="true" prefHeight="227.0" prefWidth="857.0">
                            <columns>
-                              <TableColumn fx:id="IDCol" prefWidth="38.0" text="ID" />
-                              <TableColumn fx:id="titleCol" prefWidth="113.33331298828125" text="Title" />
-                              <TableColumn fx:id="descriptionCol" prefWidth="145.33334350585938" text="Description" />
-                              <TableColumn fx:id="locationCol" prefWidth="87.33334350585938" text="Location" />
-                              <TableColumn fx:id="contact" prefWidth="90.00006103515625" text="Contact" />
-                              <TableColumn fx:id="startCol" prefWidth="85.3333740234375" text="Start" />
-                              <TableColumn fx:id="endCol" prefWidth="109.33331298828125" text="End" />
-                              <TableColumn fx:id="customerIDCol" prefWidth="82.0" text="Customer ID" />
-                              <TableColumn fx:id="nameCol" prefWidth="106.0" text="Customer Name" />
+                              <TableColumn fx:id="IDCol" prefWidth="31.333343505859375" text="ID" />
+                              <TableColumn fx:id="titleCol" prefWidth="119.99998474121094" text="Title" />
+                              <TableColumn fx:id="descriptionCol" prefWidth="140.00003051757812" text="Description" />
+                              <TableColumn fx:id="typeCol" prefWidth="115.99996948242188" text="Type" />
+                              <TableColumn fx:id="locationCol" prefWidth="99.33331298828125" text="Location" />
+                              <TableColumn fx:id="contact" prefWidth="109.3333740234375" text="Contact" />
+                              <TableColumn fx:id="startCol" prefWidth="103.33331298828125" text="Start" />
+                              <TableColumn fx:id="endCol" prefWidth="119.3333740234375" text="End" />
+                              <TableColumn fx:id="customerIDCol" prefWidth="64.6666259765625" text="Cust. ID" />
+                              <TableColumn fx:id="nameCol" prefWidth="125.99993896484375" text="Customer Name" />
                            </columns>
                         </TableView>
                         <HBox alignment="TOP_RIGHT" prefHeight="55.0" prefWidth="857.0" spacing="10.0">
                            <children>
-                              <Button mnemonicParsing="false" onAction="#onActionNewAppointment" text="New" />
+                              <Button mnemonicParsing="false" onAction="#onActionNewAppointment" text="Add" />
                               <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#onActionUpdateAppointment" text="Update" />
                               <Button layoutX="60.0" layoutY="10.0" mnemonicParsing="false" onAction="#onActionDeleteAppointment" text="Delete" />
                            </children>

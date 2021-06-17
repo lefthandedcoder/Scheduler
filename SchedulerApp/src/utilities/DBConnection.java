@@ -4,9 +4,8 @@
  * and open the template in the editor.
  */
 package utilities;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
+import java.text.SimpleDateFormat;
 
 /**
  *
@@ -41,6 +40,14 @@ public class DBConnection {
             System.out.println("SQL State: " + e.getSQLState());
             System.out.println("Error: " + e.getErrorCode());
         }
+    }
+    
+    // Date formatting
+    private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    
+    public static String timestamp() {
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        return sdf.format(timestamp);
     }
     
     // Return Database Connection

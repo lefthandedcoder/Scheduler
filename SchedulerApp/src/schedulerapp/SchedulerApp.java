@@ -14,7 +14,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import utilities.DBConnection;
-import utilities.DBQuery;
 
 /**
  *
@@ -26,8 +25,9 @@ public class SchedulerApp extends Application {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        Locale.setDefault(new Locale("fr"));
+        //Locale.setDefault(new Locale("fr"));
         DBConnection.connect();
+        System.out.println("Launching...");
         launch(args);
         DBConnection.disconnect();
     }

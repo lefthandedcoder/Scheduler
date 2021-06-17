@@ -53,7 +53,7 @@ public class CustomersAddUpdateController implements Initializable {
         return selectedRegion;
     }
     
-    private Customer newCustomer;
+    
     // Customer being modified if this is a modification, else null 
     private final Customer updatingCustomer;
 

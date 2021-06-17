@@ -5,6 +5,8 @@
  */
 package model;
 
+import java.time.LocalDateTime;
+
 /**
  *
  * @author chris
@@ -14,18 +16,24 @@ public class Appointment {
     private String title;
     private String description;
     private String location;
-    private String contactID;
+    private int contactID;
     private String contactName;
     private String type;
     private String start;
     private String end;
     private int apptCustomerID;
     private String apptCustomerName;
-    private int postalCode;
+    private String postalCode;
     private String phone;
-    private String user;
+    private int userID;
+    private String userName;
+    
 
-    public Appointment(int appointmentID, String title, String description, String location, String contactID, String contactName, String type, String start, String end, int apptCustomerID, String apptCustomerName, int postalCode, String phone, String user) {
+    public Appointment(int appointmentID, String title, 
+            String description, String location, int contactID, 
+            String contactName, String type, String start, 
+            String end, int apptCustomerID, String apptCustomerName, 
+            String postalCode, String phone, int userID, String userName) {
         this.appointmentID = appointmentID;
         this.title = title;
         this.description = description;
@@ -39,8 +47,11 @@ public class Appointment {
         this.apptCustomerName = apptCustomerName;
         this.postalCode = postalCode;
         this.phone = phone;
-        this.user = user;
+        this.userID = userID;
+        this.userName = userName;
     }
+    
+    public Appointment(){}
 
     public int getAppointmentID() {
         return appointmentID;
@@ -74,11 +85,11 @@ public class Appointment {
         this.location = location;
     }
 
-    public String getContactID() {
+    public int getContactID() {
         return contactID;
     }
 
-    public void setContactID(String contactID) {
+    public void setContactID(int contactID) {
         this.contactID = contactID;
     }
 
@@ -130,11 +141,11 @@ public class Appointment {
         this.apptCustomerName = apptCustomerName;
     }
 
-    public int getPostalCode() {
+    public String getPostalCode() {
         return postalCode;
     }
 
-    public void setPostalCode(int postalCode) {
+    public void setPostalCode(String postalCode) {
         this.postalCode = postalCode;
     }
 
@@ -146,23 +157,21 @@ public class Appointment {
         this.phone = phone;
     }
 
-    public String getUser() {
-        return user;
+    public int getUserID() {
+        return userID;
     }
 
-    public void setUser(String user) {
-        this.user = user;
+    public void setUserID(int userID) {
+        this.userID = userID;
     }
     
-    //Set appointment start date and time
-    //Set appointment end date and time
-    //monthly appointments
-    //weekly appointments
-    //save appointment
-    //modify appointment
-    //delete appointment
-    //15 minute appointment alert
-    //Prevent appointment overlap
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
     
     
     

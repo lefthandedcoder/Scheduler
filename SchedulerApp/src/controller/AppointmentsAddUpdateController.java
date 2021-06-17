@@ -5,9 +5,15 @@
  */
 package controller;
 
+import static controller.AppointmentsMainController.getUpdatedAppointment;
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ResourceBundle;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -19,8 +25,12 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import model.Appointment;
+import model.Contact;
+import model.Customer;
+import utilities.DBAppointment;
+import utilities.DBCustomer;
 
 /**
  * FXML Controller class
@@ -32,9 +42,22 @@ public class AppointmentsAddUpdateController implements Initializable {
     Stage stage;
     
     Parent scene;
+    
+    private final Appointment updatingAppointment;
+
+    public Appointment getUpdatingAppointment() {
+        return updatingAppointment;
+    }
+
+    /**
+     * Constructor
+     */
+    public AppointmentsAddUpdateController() {
+        this.updatingAppointment = getUpdatedAppointment();
+    }
 
     @FXML
-    private GridPane startDatePicker;
+    private DatePicker startDatePicker;
 
     @FXML
     private Label appointmentLbl;
@@ -49,31 +72,41 @@ public class AppointmentsAddUpdateController implements Initializable {
     private TextField descriptionTxt;
 
     @FXML
-    private ComboBox<?> contactComboBox;
+    private ComboBox<String> contactComboBox;
 
     @FXML
-    private ComboBox<?> startTimeComboBox;
+    private ComboBox<String> startTimeComboBox;
 
     @FXML
     private DatePicker endDatePicker;
 
     @FXML
-    private ComboBox<?> endTimeComboBox;
+    private ComboBox<String> endTimeComboBox;
 
     @FXML
-    private ComboBox<?> typeComboBox;
+    private ComboBox<String> typeComboBox;
 
     @FXML
     private TextField locationTxt;
 
     @FXML
-    private ComboBox<?> userComboBox;
+    private ComboBox<String> userComboBox;
 
     @FXML
-    private ComboBox<?> customerNameComboBox;
+    private ComboBox<String> customerNameComboBox;
+    
+    @FXML
+    private ComboBox<Integer> customerIDComboBox;
+    
+    @FXML
+    void onActionSetID(ActionEvent event) {
+
+    }
 
     @FXML
-    private ComboBox<?> customerIDComboBox;
+    void onActionSetName(ActionEvent event) {
+
+    }
 
     @FXML
     void onActionAppointmentsMain(ActionEvent event) throws IOException {
@@ -90,13 +123,48 @@ public class AppointmentsAddUpdateController implements Initializable {
         stage.setScene(new Scene(scene));
         stage.show();
     }
+    
+    public void windowSetup() {
+        typeComboBox.getItems().addAll(
+                "Status Update",
+                "Planning Session",
+                "Training",
+                "Brainstorming",
+                "Meet and Greet",
+                "Luncheon",
+                "Proposal",
+                "De-Briefing",
+                "Project Kickoff");
+        contactComboBox.setItems(DBAppointment.getAllContactNames());
+        customerNameComboBox.setItems(DBAppointment.getAllCustomerNames());
+        userComboBox.setItems(DBAppointment.getAllUserNames());
+        userComboBox.setItems(DBAppointment.getAllCustomerIDs());
+    }
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        windowSetup();
+        if (updatingAppointment == null) {
+            appointmentLbl.setText("Add Appointment");
+        }
+        else{
+            appointmentLbl.setText("Update Appointment");
+            autoIDTxt.setText(Integer.toString(updatingAppointment.getAppointmentID()));
+            typeComboBox.setValue(updatingAppointment.getType());
+            titleTxt.setText(updatingAppointment.getTitle());
+            descriptionTxt.setText(updatingAppointment.getDescription());
+            locationTxt.setText(updatingAppointment.getLocation());
+            contactComboBox.setPromptText(updatingAppointment.getContactName());
+            startTimeComboBox.getSelectionModel().select(LocalDateTime.parse(updatingAppointment.getEnd(), DBAppointment.dtf).toLocalTime().format(DBAppointment.timeDTF));
+            endDatePicker.setValue(LocalDate.parse(updatingAppointment.getEnd(), DBAppointment.dtf));
+            endTimeComboBox.getSelectionModel().select(LocalDateTime.parse(updatingAppointment.getEnd(), DBAppointment.dtf).toLocalTime().format(DBAppointment.timeDTF));
+            userComboBox.setValue(updatingAppointment.getUserName());
+            customerNameComboBox.setValue(updatingAppointment.getApptCustomerName());
+            customerIDComboBox.setValue(updatingAppointment.getApptCustomerID());
+        }
     }    
     
 }

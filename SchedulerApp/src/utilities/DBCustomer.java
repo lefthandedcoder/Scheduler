@@ -45,8 +45,8 @@ public class DBCustomer {
     public static void updateCustomer(Customer customer) {        
         try {
             PreparedStatement statement = DBConnection.getConnection().prepareStatement("UPDATE customers "
-                    + "SET Customer_Name=?, Address=?, Postal_Code=?, Phone=?, Last_Update=CURRENT_TIMESTAMP, "
-                    + "Last_Updated_By=?, DIVISION_ID=? WHERE Customer_ID=?");
+                    + "SET Customer_Name=?, Address=?, Postal_Code=?, Phone=?, Last_Update=CURRENT_TIMESTAMP, Last_Updated_By=?, DIVISION_ID=? "
+                    + "WHERE Customer_ID=?");
             statement.setString(1, customer.getCustomerName());
             statement.setString(2, customer.getAddress());
             statement.setString(3, customer.getPostalCode());
@@ -99,6 +99,7 @@ public class DBCustomer {
         return null;
     }
     
+    
     // Get all customers from database    
     public static ObservableList<Customer> getAllCustomers() {
         try {
@@ -126,6 +127,6 @@ public class DBCustomer {
             System.out.println("SQLException: " + e.getMessage());
             return null;
         }
-    }    
+    }   
     
 }
