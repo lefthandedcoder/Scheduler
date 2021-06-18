@@ -171,7 +171,7 @@ public class DBAppointment {
             // Pulling all customer info from database
             DBQuery.setStatement(conn);
             Statement statement = DBQuery.getStatement();
-            String query = "SELECT customers.Customer_Name from customers";
+            String query = "SELECT * from customers";
             ResultSet rs = statement.executeQuery(query);
             while(rs.next()) {
                 String name;
@@ -186,19 +186,19 @@ public class DBAppointment {
         }
     }
     
-    private static ObservableList<String> allCustomerIDs = FXCollections.observableArrayList();
+    private static ObservableList<Integer> allCustomerIDs = FXCollections.observableArrayList();
     // Get all customer IDs from database    
-    public static ObservableList<String> getAllCustomerIDs() {
+    public static ObservableList<Integer> getAllCustomerIDs() {
         try {
             // Pulling all customer info from database
             DBQuery.setStatement(conn);
             Statement statement = DBQuery.getStatement();
-            String query = "SELECT customers.Customer_Name from customers";
+            String query = "SELECT * from customers";
             ResultSet rs = statement.executeQuery(query);
             while(rs.next()) {
-                String name;
-                name = rs.getString("Customer_ID");
-                allCustomerIDs.add(name);
+                int id;
+                id = rs.getInt("Customer_ID");
+                allCustomerIDs.add(id);
             }
             statement.close();
             return allCustomerIDs;

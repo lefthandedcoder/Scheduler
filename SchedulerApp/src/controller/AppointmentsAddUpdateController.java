@@ -100,12 +100,14 @@ public class AppointmentsAddUpdateController implements Initializable {
     
     @FXML
     void onActionSetID(ActionEvent event) {
-
+        String name = customerNameComboBox.getSelectionModel().getSelectedItem();
+        customerIDComboBox.setValue(DBCustomer.getCustomerID(name));
     }
 
     @FXML
     void onActionSetName(ActionEvent event) {
-
+        int id = customerIDComboBox.getSelectionModel().getSelectedItem();
+        customerNameComboBox.setValue(DBCustomer.getCustomerName(id));
     }
 
     @FXML
@@ -138,7 +140,7 @@ public class AppointmentsAddUpdateController implements Initializable {
         contactComboBox.setItems(DBAppointment.getAllContactNames());
         customerNameComboBox.setItems(DBAppointment.getAllCustomerNames());
         userComboBox.setItems(DBAppointment.getAllUserNames());
-        userComboBox.setItems(DBAppointment.getAllCustomerIDs());
+        customerIDComboBox.setItems(DBAppointment.getAllCustomerIDs());
     }
 
     /**
@@ -158,7 +160,8 @@ public class AppointmentsAddUpdateController implements Initializable {
             descriptionTxt.setText(updatingAppointment.getDescription());
             locationTxt.setText(updatingAppointment.getLocation());
             contactComboBox.setPromptText(updatingAppointment.getContactName());
-            startTimeComboBox.getSelectionModel().select(LocalDateTime.parse(updatingAppointment.getEnd(), DBAppointment.dtf).toLocalTime().format(DBAppointment.timeDTF));
+            startDatePicker.setValue(LocalDate.parse(updatingAppointment.getStart(), DBAppointment.dtf));
+            startTimeComboBox.getSelectionModel().select(LocalDateTime.parse(updatingAppointment.getStart(), DBAppointment.dtf).toLocalTime().format(DBAppointment.timeDTF));
             endDatePicker.setValue(LocalDate.parse(updatingAppointment.getEnd(), DBAppointment.dtf));
             endTimeComboBox.getSelectionModel().select(LocalDateTime.parse(updatingAppointment.getEnd(), DBAppointment.dtf).toLocalTime().format(DBAppointment.timeDTF));
             userComboBox.setValue(updatingAppointment.getUserName());

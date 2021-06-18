@@ -78,7 +78,7 @@ public class DBCustomer {
     private static ObservableList<Customer> allCustomers = FXCollections.observableArrayList();
     
     // Get customer from system
-    public static Customer getCustomer(int id) {
+    public static String getCustomerName(int id) {
         try {
             // Pulling customer info from database
             DBQuery.setStatement(conn);
@@ -86,11 +86,31 @@ public class DBCustomer {
             String query = "SELECT * FROM customers WHERE Customer_ID='" + id + "'";
             ResultSet rs = statement.executeQuery(query);
             if(rs.next()) {
-                Customer customer = new Customer();
-                customer.setCustomerName(rs.getString("Customer_Name"));
+                String name = rs.getString("Customer_Name");
                 statement.close();
                 System.out.println("Customer found.");
-                return customer;
+                return name;
+            }
+        } catch (SQLException e) {
+            System.out.println("SQLException: " + e.getMessage());
+        }
+        
+        return null;
+    }
+    
+    // Get customer from system
+    public static Integer getCustomerID(String name) {
+        try {
+            // Pulling customer info from database
+            DBQuery.setStatement(conn);
+            Statement statement = DBQuery.getStatement();
+            String query = "SELECT * FROM customers WHERE Customer_Name='" + name + "'";
+            ResultSet rs = statement.executeQuery(query);
+            if(rs.next()) {
+                int id = rs.getInt("Customer_ID");
+                statement.close();
+                System.out.println("Customer found.");
+                return id;
             }
         } catch (SQLException e) {
             System.out.println("SQLException: " + e.getMessage());
