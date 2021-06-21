@@ -34,11 +34,11 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="26.0" minHeight="4.333343505859375" prefHeight="21.666666666666686" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="23.666656494140625" minHeight="10.0" prefHeight="22.33331298828125" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="35.0" minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="23.0" minHeight="10.0" prefHeight="13.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="38.333343505859375" minHeight="4.333343505859375" prefHeight="38.333343505859375" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="22.33331298828125" minHeight="10.0" prefHeight="10.333343505859375" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -117,7 +117,7 @@
                      <GridPane.margin>
                         <Insets left="20.0" right="-20.0" />
                      </GridPane.margin></DatePicker>
-                  <ComboBox fx:id="startTimeComboBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="10">
+                  <ComboBox fx:id="startTimeComboBox" onAction="#onActionshowStart" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="10">
                      <GridPane.margin>
                         <Insets left="20.0" right="-20.0" />
                      </GridPane.margin></ComboBox>
@@ -133,7 +133,7 @@
                      <GridPane.margin>
                         <Insets left="20.0" right="-20.0" />
                      </GridPane.margin></DatePicker>
-                  <ComboBox fx:id="endTimeComboBox" layoutX="615.0" layoutY="73.0" prefHeight="25.0" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="12">
+                  <ComboBox fx:id="endTimeComboBox" layoutX="615.0" layoutY="73.0" onAction="#onActionshowEnd" prefHeight="25.0" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="12">
                      <GridPane.margin>
                         <Insets left="20.0" right="-20.0" />
                      </GridPane.margin></ComboBox>
@@ -182,6 +182,14 @@
                      </font>
                   </Label>
                   <ComboBox fx:id="customerIDComboBox" layoutX="155.0" layoutY="473.0" onAction="#onActionSetName" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="14" />
+                  <Label fx:id="startEST" text="startEST" textFill="WHITE" visible="false" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="9">
+                     <font>
+                        <Font size="10.0" />
+                     </font></Label>
+                  <Label fx:id="endEST" text="endEST" textFill="WHITE" visible="false" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="11">
+                     <font>
+                        <Font size="10.0" />
+                     </font></Label>
                </children>
             </GridPane>
             <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
