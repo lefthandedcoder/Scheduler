@@ -50,6 +50,7 @@ public class LoginController implements Initializable {
             if(rs.next()) {
                 currentUser = new User();
                 currentUser.setUsername(rs.getString("User_Name"));
+                currentUser.setUserID(rs.getInt("User_ID"));
                 statement.close();
                 System.out.println("User found.");
                 return true;

@@ -10,17 +10,17 @@ package model;
  * @author chris
  */
 public class User {
-    private String userID;
+    private int userID;
     private String username;
     private String password;
 
     public User() {}
 
-    public String getUserID() {
+    public int getUserID() {
         return userID;
     }
 
-    public void setUserID(String userID) {
+    public void setUserID(int userID) {
         this.userID = userID;
     }
 

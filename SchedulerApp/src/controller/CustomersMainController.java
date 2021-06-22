@@ -27,6 +27,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import model.Customer;
+import utilities.DBAppointment;
 import utilities.DBCustomer;
 
 /**
@@ -98,7 +99,13 @@ public class CustomersMainController implements Initializable {
             alert.setContentText("Customer not selected.");
             Optional<ButtonType> result = alert.showAndWait();
         } else {
-            //Delete customer confirmation
+            if (DBAppointment.getCustomer(customerDelete.getCustomerID()) != null) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Delete Customer");
+                alert.setContentText("Delete customer's appointments before deleting customer.");
+                Optional<ButtonType> result = alert.showAndWait();
+            } else {
+             //Delete customer confirmation
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Delete Customer");
             alert.setContentText("Delete the selected customer?");
@@ -113,6 +120,7 @@ public class CustomersMainController implements Initializable {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+            }   
             }
         }
         tableSetup();
@@ -137,11 +145,18 @@ public class CustomersMainController implements Initializable {
     @FXML
     void onActionUpdateCustomer(ActionEvent event) throws IOException {
         updatedCustomer = customersTableView.getSelectionModel().getSelectedItem();
-        setUpdatedCustomer(updatedCustomer);
-        stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
-        scene = FXMLLoader.load(getClass().getResource("/view/CustomersAddUpdate.fxml"));
-        stage.setScene(new Scene(scene));
-        stage.show();
+        if (updatedCustomer == null) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Update Customer");
+            alert.setContentText("Customer not selected.");
+            Optional<ButtonType> result = alert.showAndWait();
+        } else {
+            setUpdatedCustomer(updatedCustomer);
+            stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
+            scene = FXMLLoader.load(getClass().getResource("/view/CustomersAddUpdate.fxml"));
+            stage.setScene(new Scene(scene));
+            stage.show();
+        }
     }
 
     @FXML

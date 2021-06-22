@@ -33,6 +33,11 @@
                         <Insets left="20.0" top="20.0" />
                      </padding>
                   </Label>
+                  <Button fx:id="upcomingBtn" disable="true" mnemonicParsing="false" onAction="#onActionUpcomingAppointments" text="Upcoming Appointments">
+                     <VBox.margin>
+                        <Insets bottom="10.0" top="10.0" />
+                     </VBox.margin>
+                  </Button>
                   <Label alignment="TOP_LEFT" prefHeight="60.0" prefWidth="478.0" text="To view, add, modify, or delete customer data, click on the Customers button on the right or the Customers tab at the top. Customer data can only be deleted after corresponding appointments have been removed." textAlignment="JUSTIFY" wrapText="true" />
                   <Label alignment="TOP_LEFT" layoutX="10.0" layoutY="45.0" prefHeight="42.0" prefWidth="488.0" text="To view, add, modify, or delete appointments, click on the Appointments button on the right or the Appointments tab at the top." textAlignment="JUSTIFY" wrapText="true" />
                   <Label alignment="TOP_LEFT" layoutX="10.0" layoutY="87.0" prefHeight="105.0" prefWidth="478.0" text="To view reports, click on the Reports button on the right or the Reports tab at the top." textAlignment="JUSTIFY" wrapText="true" />

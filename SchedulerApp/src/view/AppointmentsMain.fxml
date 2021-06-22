@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AppointmentsMainController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="controller.AppointmentsMainController">
    <children>
       <HBox layoutX="10.0" layoutY="24.0">
          <children>
@@ -47,10 +47,12 @@
                   </HBox>
                   <HBox alignment="CENTER" prefHeight="45.0" prefWidth="633.0" spacing="30.0">
                      <children>
-                        <RadioButton fx:id="monthRBtn" mnemonicParsing="false" selected="true" text="Appointments by Month">
+                        <RadioButton fx:id="allRBtn" layoutX="361.0" layoutY="18.0" mnemonicParsing="false" selected="true" text="All Appointments">
                            <toggleGroup>
                               <ToggleGroup fx:id="appointmentWeekMonthTglGrp" />
-                           </toggleGroup></RadioButton>
+                           </toggleGroup>
+                        </RadioButton>
+                        <RadioButton fx:id="monthRBtn" mnemonicParsing="false" text="Appointments by Month" toggleGroup="$appointmentWeekMonthTglGrp" />
                         <RadioButton fx:id="weekRBtn" mnemonicParsing="false" text="Appointments by Week" toggleGroup="$appointmentWeekMonthTglGrp" />
                      </children>
                   </HBox>

@@ -119,6 +119,48 @@ public class DBCustomer {
         return null;
     }
     
+    // Get customer from system
+    public static String getCustomerPhone(String name) {
+        try {
+            // Pulling customer info from database
+            DBQuery.setStatement(conn);
+            Statement statement = DBQuery.getStatement();
+            String query = "SELECT Phone FROM customers WHERE Customer_Name='" + name + "'";
+            ResultSet rs = statement.executeQuery(query);
+            if(rs.next()) {
+                String phone = rs.getString("Phone");
+                statement.close();
+                System.out.println("Customer found.");
+                return phone;
+            }
+        } catch (SQLException e) {
+            System.out.println("SQLException: " + e.getMessage());
+        }
+        
+        return null;
+    }
+    
+    // Get customer from system
+    public static String getCustomerPostalCode(String name) {
+        try {
+            // Pulling customer info from database
+            DBQuery.setStatement(conn);
+            Statement statement = DBQuery.getStatement();
+            String query = "SELECT Postal_Code FROM customers WHERE Customer_Name='" + name + "'";
+            ResultSet rs = statement.executeQuery(query);
+            if(rs.next()) {
+                String postalCode = rs.getString("Postal_Code");
+                statement.close();
+                System.out.println("Customer found.");
+                return postalCode;
+            }
+        } catch (SQLException e) {
+            System.out.println("SQLException: " + e.getMessage());
+        }
+        
+        return null;
+    }
+    
     
     // Get all customers from database    
     public static ObservableList<Customer> getAllCustomers() {

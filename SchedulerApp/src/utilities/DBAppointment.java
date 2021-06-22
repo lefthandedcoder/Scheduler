@@ -12,7 +12,8 @@ import java.time.format.DateTimeFormatter;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.Appointment;
-import model.Contact;
+import model.Customer;
+import model.Report;
 import static utilities.DBConnection.conn;
 
 
@@ -22,8 +23,8 @@ import static utilities.DBConnection.conn;
  */
 public class DBAppointment {
     
-    public static DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-    public static DateTimeFormatter timeDTF = DateTimeFormatter.ofPattern("HH:mm");
+    public static DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    public static DateTimeFormatter timeDTF = DateTimeFormatter.ofPattern("HH:mm:ss");
     
     //Set appointment start date and time
     //Set appointment end date and time
@@ -45,13 +46,13 @@ public class DBAppointment {
             statement.setString(2, appointment.getDescription());
             statement.setString(3, appointment.getLocation());
             statement.setString(4, appointment.getType());
-            statement.setTimestamp(5, Timestamp.valueOf(LocalDateTime.parse(appointment.getStart(), dtf)));
-            statement.setTimestamp(5, Timestamp.valueOf(LocalDateTime.parse(appointment.getEnd(), dtf)));
+            statement.setTimestamp(5, Timestamp.valueOf(LocalDateTime.parse(appointment.getStart(), dtf).atZone(ZoneId.systemDefault()).withZoneSameInstant(ZoneId.of("UTC")).format(dtf)));
+            statement.setTimestamp(6, Timestamp.valueOf(LocalDateTime.parse(appointment.getEnd(), dtf).atZone(ZoneId.systemDefault()).withZoneSameInstant(ZoneId.of("UTC")).format(dtf)));
             statement.setString(7, currentUser.getUsername());
             statement.setString(8, currentUser.getUsername());
             statement.setInt(9, appointment.getApptCustomerID());
-            statement.setInt(9, appointment.getContactID());
             statement.setInt(10, appointment.getUserID());
+            statement.setInt(11, appointment.getContactID());
             statement.executeUpdate();
             System.out.println("Appointment added to database.");
         }
@@ -71,12 +72,12 @@ public class DBAppointment {
             statement.setString(2, appointment.getDescription());
             statement.setString(3, appointment.getLocation());
             statement.setString(4, appointment.getType());
-            statement.setTimestamp(5, Timestamp.valueOf(LocalDateTime.parse(appointment.getStart(), dtf)));
-            statement.setTimestamp(5, Timestamp.valueOf(LocalDateTime.parse(appointment.getEnd(), dtf)));
+            statement.setTimestamp(5, Timestamp.valueOf(LocalDateTime.parse(appointment.getStart(), dtf).atZone(ZoneId.systemDefault()).withZoneSameInstant(ZoneId.of("UTC")).format(dtf)));
+            statement.setTimestamp(6, Timestamp.valueOf(LocalDateTime.parse(appointment.getEnd(), dtf).atZone(ZoneId.systemDefault()).withZoneSameInstant(ZoneId.of("UTC")).format(dtf)));
             statement.setString(7, currentUser.getUsername());
             statement.setInt(8, appointment.getApptCustomerID());
-            statement.setInt(9, appointment.getContactID());
-            statement.setInt(10, appointment.getUserID());
+            statement.setInt(9, appointment.getUserID());
+            statement.setInt(10, appointment.getContactID());
             statement.setInt(11, appointment.getAppointmentID());
             statement.executeUpdate();
             System.out.println("Appointment udpdated in database.");
@@ -91,7 +92,7 @@ public class DBAppointment {
             PreparedStatement statement = DBConnection.getConnection().prepareStatement("DELETE FROM appointments WHERE Appointment_ID=?");
             statement.setInt(1, appointment.getAppointmentID());
             statement.executeUpdate();
-            System.out.println("Customer deleted from database.");
+            System.out.println("Appointment deleted from database.");
         }
         catch (SQLException e) {
             e.printStackTrace();
@@ -115,6 +116,30 @@ public class DBAppointment {
                 statement.close();
                 System.out.println("Appointment found.");
                 return appointment;
+            }
+        } catch (SQLException e) {
+            System.out.println("SQLException: " + e.getMessage());
+        }
+        
+        return null;
+    }
+    
+     // Get appointment from system
+    public static Customer getCustomer(int id) {
+        try {
+            // Pulling appointment info from database
+            DBQuery.setStatement(conn);
+            Statement statement = DBQuery.getStatement();
+            String query = "SELECT * FROM appointments "
+                    + "INNER JOIN customers "
+                    + "on appointments.Customer_ID = customers.Customer_ID WHERE appointments.Customer_ID='" + id + "'";
+            ResultSet rs = statement.executeQuery(query);
+            if(rs.next()) {
+                Customer customer = new Customer();
+                customer.setCustomerName(rs.getString("Customer_Name"));
+                statement.close();
+                System.out.println("Customer found.");
+                return customer;
             }
         } catch (SQLException e) {
             System.out.println("SQLException: " + e.getMessage());
@@ -230,7 +255,28 @@ public class DBAppointment {
         }
     }
     
-    // Get all contact names from database    
+    // Get contact ID from system
+    private static Integer contactID;
+    public static Integer getContactID(String contactName) {
+        try {
+            // Pulling appointment info from database
+            DBQuery.setStatement(conn);
+            Statement statement = DBQuery.getStatement();
+            String query = "SELECT Contact_ID FROM contacts WHERE Contact_Name='" + contactName + "'";
+            ResultSet rs = statement.executeQuery(query);
+            if(rs.next()) {
+                contactID = rs.getInt("Contact_ID");
+                statement.close();
+                System.out.println("Contact found.");
+                return contactID;
+            }
+        } catch (SQLException e) {
+            System.out.println("SQLException: " + e.getMessage());
+        }
+        return null;
+    }
+    
+    // Get all user names from database    
     private static ObservableList<String> allUserNames = FXCollections.observableArrayList();
     public static ObservableList<String> getAllUserNames() {
         try {
@@ -252,4 +298,99 @@ public class DBAppointment {
         }
     }
     
+    // Get user ID from system
+    private static int userID;
+    public static Integer getUserID(String userName) {
+        try {
+            // Pulling appointment info from database
+            DBQuery.setStatement(conn);
+            Statement statement = DBQuery.getStatement();
+            String query = "SELECT User_ID FROM users "
+                    + "WHERE users.User_Name='" + userName + "'";
+            ResultSet rs = statement.executeQuery(query);
+            if(rs.next()) {
+                userID = rs.getInt("User_ID");
+                statement.close();
+                System.out.println("User found.");
+                return userID;
+            }
+        } catch (SQLException e) {
+            System.out.println("SQLException: " + e.getMessage());
+        }
+        return null;
+    }
+    
+    // Code below is for interacting with the database and for displaying, adding, modifying, and deleting appointments
+    private static ObservableList<Appointment> allAppointmentsForCustomer = FXCollections.observableArrayList();
+    
+    // Get appointment from system
+    public static ObservableList<Appointment> getAppointmentsForCustomer(String name) {
+        try {
+            // Pulling all appointment info from database
+            DBQuery.setStatement(conn);
+            Statement statement = DBQuery.getStatement();
+            String query = "SELECT appointments.Appointment_ID, appointments.Title, appointments.Description, appointments.Location, appointments.Type, "
+                    + "appointments.Start, appointments.End, appointments.Contact_ID, contacts.Contact_Name, appointments.Customer_ID, customers.Phone, customers.Customer_Name, "
+                    + "customers.Postal_Code, appointments.User_ID, users.User_Name "
+                    + "FROM appointments INNER JOIN contacts ON appointments.Contact_ID = contacts.Contact_ID "
+                    + "INNER JOIN customers on appointments.Customer_ID = customers.Customer_ID "
+                    + "INNER JOIN users on appointments.User_ID = users.User_ID "
+                    + "WHERE customers.Customer_Name ='" + name + "'";
+            ResultSet rs = statement.executeQuery(query);
+            while(rs.next()) {
+                
+                Appointment appointment = new Appointment(
+                        rs.getInt("Appointment_ID"),
+                        rs.getString("Title"),
+                        rs.getString("Description"),
+                        rs.getString("Location"),
+                        rs.getInt("Contact_ID"),
+                        rs.getString("Contact_Name"),
+                        rs.getString("Type"),
+                        rs.getTimestamp("Start").toLocalDateTime().atZone(ZoneId.of("UTC")).withZoneSameInstant(ZoneId.systemDefault()).format(dtf),
+                        rs.getTimestamp("End").toLocalDateTime().atZone(ZoneId.of("UTC")).withZoneSameInstant(ZoneId.systemDefault()).format(dtf),
+                        rs.getInt("Customer_ID"),
+                        rs.getString("Customer_Name"),
+                        rs.getString("Postal_Code"),
+                        rs.getString("Phone"),
+                        rs.getInt("User_ID"),
+                        rs.getString("User_Name"));
+                        allAppointmentsForCustomer.add(appointment);
+            }
+            statement.close();
+            return allAppointmentsForCustomer;
+        } catch (SQLException e) {
+            System.out.println("SQLException: " + e.getMessage());
+            return null;
+        }
+    }
+    
+    // Code below is for interacting with the database and for displaying, adding, modifying, and deleting appointments
+    private static ObservableList<Report> allAppointmentsReport = FXCollections.observableArrayList();
+    
+    // Get appointment from system
+    public static ObservableList<Report> getallAppointmentsReport() {
+        try {
+            // Pulling all appointment info from database
+            DBQuery.setStatement(conn);
+            Statement statement = DBQuery.getStatement();
+            String query = "SELECT MONTH(Start), Type, COUNT(Type) "
+                    + "FROM appointments GROUP BY MONTH(Start), Appointment_ID;";
+            ResultSet rs = statement.executeQuery(query);
+            while(rs.next()) {
+                int monthNum = rs.getInt("MONTH(Start)");
+                String month = Report.getMonth(monthNum);
+                Report report = new Report(
+                month,
+                rs.getString("Type"),
+                rs.getInt("COUNT(Type)"));
+                allAppointmentsReport.add(report);
+            }
+            statement.close();
+            return allAppointmentsReport;
+        } catch (SQLException e) {
+            System.out.println("SQLException: " + e.getMessage());
+            return null;
+        }
+    }
 }

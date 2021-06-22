@@ -8,6 +8,7 @@ package controller;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
@@ -29,6 +30,11 @@ import javafx.stage.Stage;
 import model.Appointment;
 import utilities.DBAppointment;
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.DatePicker;
 
 /**
@@ -65,6 +71,9 @@ public class AppointmentsMainController implements Initializable {
 
     @FXML
     private RadioButton monthRBtn;
+    
+    @FXML
+    private RadioButton allRBtn;
 
     @FXML
     private Label appointmentSearchLabel;
@@ -106,22 +115,55 @@ public class AppointmentsMainController implements Initializable {
     private TableColumn<Appointment, String> nameCol;
 
     @FXML
-    void onActionDeleteAppointment(ActionEvent event) {
+    void onActionDeleteAppointment(ActionEvent event)  {
+        Appointment appointmentDelete = appointmentsTableView.getSelectionModel().getSelectedItem();
+        if (appointmentDelete == null) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Delete Appointment");
+            alert.setContentText("Appointment not selected.");
+            Optional<ButtonType> result = alert.showAndWait();
+        } else {
+            //Delete appointment confirmation
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Delete Appointment");
+            alert.setContentText("Delete the selected appointment?");
+            Optional<ButtonType> result = alert.showAndWait();
 
+            if (result.isPresent() && result.get() == ButtonType.OK) {
+                try {
+                    DBAppointment.deleteAppointment(appointmentDelete);
+                    Alert deleted = new Alert(Alert.AlertType.INFORMATION);
+                    deleted.setTitle("Appointment Deleted");
+                    alert.setContentText("Appointment has been deleted.");
+                    tableSetupAll();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
     @FXML
     void onActionUpdateAppointment(ActionEvent event) throws IOException {
         updatedAppointment = appointmentsTableView.getSelectionModel().getSelectedItem();
-        setUpdatedAppointment(updatedAppointment);
-        stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
-        scene = FXMLLoader.load(getClass().getResource("/view/AppointmentsAddUpdate.fxml"));
-        stage.setScene(new Scene(scene));
-        stage.show();
+        if (updatedAppointment == null) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Update Appointment");
+            alert.setContentText("Appointment not selected.");
+            Optional<ButtonType> result = alert.showAndWait();
+        } else {
+            {setUpdatedAppointment(updatedAppointment);
+            stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
+            scene = FXMLLoader.load(getClass().getResource("/view/AppointmentsAddUpdate.fxml"));
+            stage.setScene(new Scene(scene));
+            stage.show();
+            }
+        }
     }
 
     @FXML
     void onActionNewAppointment(ActionEvent event) throws IOException {
+        updatedAppointment = null;
         stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
         scene = FXMLLoader.load(getClass().getResource("/view/AppointmentsAddUpdate.fxml"));
         stage.setScene(new Scene(scene));
@@ -165,11 +207,11 @@ public class AppointmentsMainController implements Initializable {
         System.exit(0);
     }
     
-    public void tableSetup() {
+    public void tableSetupAll() {
         appointmentsTableView.getSelectionModel().clearSelection();
+        DBAppointment.getAllAppointments().clear();
 
        //Wrapping observable list (allAppointments) in a filtered list
-        appointmentsTableView.getItems().clear();
         FilteredList<Appointment> filteredAppointments = new FilteredList<>(DBAppointment.getAllAppointments(), p -> true);
         
         // Setting the filter predicate whenever the filter changes
@@ -208,14 +250,129 @@ public class AppointmentsMainController implements Initializable {
         // Adding sorted (and filtered) parts to table.
         appointmentsTableView.setItems(sortedAppointments);
     }
+    
+    public void tableSetupByMonth() {
+        appointmentsTableView.getSelectionModel().clearSelection();
+        LocalDate selectedDate = datePicker.getValue();
+        LocalDate monthOut = selectedDate.plusMonths(1);
+        DBAppointment.getAllAppointments().clear();
+        FilteredList<Appointment> filteredAppointments = new FilteredList<>(DBAppointment.getAllAppointments());
+        filteredAppointments.setPredicate(appointment -> {
+
+            LocalDateTime appointmentDateTime = LocalDateTime.parse(appointment.getStart(), DBAppointment.dtf);
+            LocalDate appointmentDate = appointmentDateTime.toLocalDate();
+            return (appointmentDate.isEqual(selectedDate) || appointmentDate.isAfter(selectedDate)) && appointmentDate.isBefore(monthOut);
+        });
+
+       //Wrapping observable list (allAppointments) in a filtered list
+        FilteredList<Appointment> filteredMonthAppointments = new FilteredList<>(filteredAppointments, p -> true);
+        
+        // Setting the filter predicate whenever the filter changes
+        appointmentSearchBox.textProperty().addListener((observable, oldValue, newValue) -> {
+            filteredMonthAppointments.setPredicate(appointment -> {
+                // If filter text is empty, display all parts
+                if (newValue == null || newValue.isEmpty()) {
+                    appointmentSearchLabel.setVisible(false);
+                    return true;
+                }
+                
+                //Compare all appointment titles
+                String search = newValue.toLowerCase();
+                
+                if (appointment.getTitle().toLowerCase().contains(search) || Integer.valueOf(appointment.getAppointmentID()).toString().equals(search)) {
+                    appointmentSearchLabel.setText("Appointments found!");
+                    appointmentSearchLabel.setVisible(true);
+                    return true; // Filter matches appointment title or id.
+                } else {
+                    return false; // Does not match.
+                }
+            });
+            // Displays "not found" message    
+            if(filteredMonthAppointments.isEmpty()){
+                appointmentSearchLabel.setText("Appointment not found!");
+                appointmentSearchLabel.setVisible(true);
+            }
+        });
+        
+        // Wrapping filtered list in a sorted list.
+        SortedList<Appointment> sortedAppointments = new SortedList<>(filteredMonthAppointments);
+        
+        // Binding the sorted list comparator to the TableView comparator.
+        sortedAppointments.comparatorProperty().bind(appointmentsTableView.comparatorProperty());
+        
+        // Adding sorted (and filtered) parts to table.
+        appointmentsTableView.setItems(sortedAppointments);
+
+    }
+    
+    public void tableSetupByWeek() {
+        appointmentsTableView.getSelectionModel().clearSelection();
+        
+        LocalDate selectedDate = datePicker.getValue();
+        LocalDate weekOut = selectedDate.plusDays(7);
+        DBAppointment.getAllAppointments().clear();
+        FilteredList<Appointment> filteredAppointments = new FilteredList<>(DBAppointment.getAllAppointments());
+        filteredAppointments.setPredicate(appointment -> {
+
+            LocalDateTime appointmentDateTime = LocalDateTime.parse(appointment.getStart(), DBAppointment.dtf);
+            LocalDate appointmentDate = appointmentDateTime.toLocalDate();
+
+            return appointmentDate.isAfter(selectedDate.minusDays(1)) && appointmentDate.isBefore(weekOut);
+        });
+        appointmentsTableView.setItems(filteredAppointments);
+        
+        //Wrapping observable list (allAppointments) in a filtered list
+        FilteredList<Appointment> filteredWeekAppointments = new FilteredList<>(filteredAppointments, p -> true);
+        
+        // Setting the filter predicate whenever the filter changes
+        appointmentSearchBox.textProperty().addListener((observable, oldValue, newValue) -> {
+            filteredWeekAppointments.setPredicate(appointment -> {
+                // If filter text is empty, display all parts
+                if (newValue == null || newValue.isEmpty()) {
+                    appointmentSearchLabel.setVisible(false);
+                    return true;
+                }
+                
+                //Compare all appointment titles
+                String search = newValue.toLowerCase();
+                
+                if (appointment.getTitle().toLowerCase().contains(search) || Integer.valueOf(appointment.getAppointmentID()).toString().equals(search)) {
+                    appointmentSearchLabel.setText("Appointments found!");
+                    appointmentSearchLabel.setVisible(true);
+                    return true; // Filter matches appointment title or id.
+                } else {
+                    return false; // Does not match.
+                }
+            });
+            // Displays "not found" message    
+            if(filteredWeekAppointments.isEmpty()){
+                appointmentSearchLabel.setText("Appointment not found!");
+                appointmentSearchLabel.setVisible(true);
+            }
+        });
+        
+        // Wrapping filtered list in a sorted list.
+        SortedList<Appointment> sortedAppointments = new SortedList<>(filteredWeekAppointments);
+        
+        // Binding the sorted list comparator to the TableView comparator.
+        sortedAppointments.comparatorProperty().bind(appointmentsTableView.comparatorProperty());
+        
+        // Adding sorted (and filtered) parts to table.
+        appointmentsTableView.setItems(sortedAppointments);
+
+    }
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        appointmentsTableView.setItems(DBAppointment.getAllAppointments());
-        tableSetup();
+        DBAppointment.getAllAppointments().clear();
+        if (!MainMenuController.getUpcomingAppointments().isEmpty()) {
+            appointmentsTableView.setItems(MainMenuController.getUpcomingAppointments());
+        } else {
+            appointmentsTableView.setItems(DBAppointment.getAllAppointments());
+        }
         appointmentsTableView.getSortOrder().add(IDCol);        
         IDCol.setCellValueFactory(new PropertyValueFactory<>("appointmentID"));
         titleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
@@ -227,7 +384,44 @@ public class AppointmentsMainController implements Initializable {
         endCol.setCellValueFactory(new PropertyValueFactory<>("end"));
         customerIDCol.setCellValueFactory(new PropertyValueFactory<>("apptCustomerID"));
         nameCol.setCellValueFactory(new PropertyValueFactory<>("apptCustomerName"));
-        datePicker.setPromptText(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        datePicker.setValue(LocalDate.parse(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))));
+        allRBtn.isSelected();
+        allRBtn.selectedProperty().addListener(new ChangeListener<Boolean>() {
+        @Override
+        public void changed(ObservableValue<? extends Boolean> obs, Boolean wasPreviouslySelected, Boolean isNowSelected) {
+            if (isNowSelected) { 
+                tableSetupAll();
+            }
+        }
+    });
+        
+        monthRBtn.selectedProperty().addListener(new ChangeListener<Boolean>() {
+        @Override
+        public void changed(ObservableValue<? extends Boolean> obs, Boolean wasPreviouslySelected, Boolean isNowSelected) {
+            if (isNowSelected) { 
+                tableSetupByMonth();
+            }
+        }
+    });
+        
+        weekRBtn.selectedProperty().addListener(new ChangeListener<Boolean>() {
+        @Override
+        public void changed(ObservableValue<? extends Boolean> obs, Boolean wasPreviouslySelected, Boolean isNowSelected) {
+            if (isNowSelected) { 
+                tableSetupByWeek();
+            }
+        }
+    });
+        
+        
+        allRBtn.selectedProperty().addListener(new ChangeListener<Boolean>() {
+        @Override
+        public void changed(ObservableValue<? extends Boolean> obs, Boolean wasPreviouslySelected, Boolean isNowSelected) {
+            if (isNowSelected) { 
+                tableSetupAll();
+            }
+        }
+    });
     }
     
 }
