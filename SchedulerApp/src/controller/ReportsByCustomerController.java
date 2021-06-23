@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package controller;
 
 import java.net.URL;
@@ -25,36 +20,70 @@ import utilities.DBCustomer;
  */
 public class ReportsByCustomerController implements Initializable {
 
+    /**
+     * Combobox for selecting customer 
+     */
     @FXML
     private ComboBox<String> customerNameComboBox;
 
+    /**
+     * Table of appointments for selected customer
+     */
     @FXML
     private TableView<Appointment> customerTableView;
 
+    /**
+     * Column of appointment IDs for selected customer
+     */
     @FXML
     private TableColumn<Appointment, Integer> customerApptIDCol;
 
+    /**
+     * Column of appointment titles for selected customer
+     */
     @FXML
     private TableColumn<Appointment, String> customerTitleCol;
 
+    /**
+     * Column of appointment descriptions for selected customer
+     */
     @FXML
     private TableColumn<Appointment, String> customerDescriptionCol;
 
+    /**
+     * Column of appointment locations for selected customer
+     */
     @FXML
     private TableColumn<Appointment, String> customerLocationCol;
 
+    /**
+     * Column of appointment start times for selected customer
+     */
     @FXML
     private TableColumn<Appointment, String> customerStartCol;
 
+    /**
+     * Column of appointment end times for selected customer
+     */
     @FXML
     private TableColumn<Appointment, String> customerEndCol;
 
+    /**
+     * Column of appointment contact IDs for selected customer
+     */
     @FXML
     private TableColumn<Appointment, Integer> customerContactIDCol;
 
+    /**
+     * Column of appointment contact names for selected customer
+     */
     @FXML
     private TableColumn<Appointment, String> customerContactNameCol;
 
+    /**
+     * Changes table based on selected customer
+     * @param event
+     */
     @FXML
     void onActionChangeTableView(ActionEvent event) {
         customerTableView.getItems().clear();
@@ -67,6 +96,8 @@ public class ReportsByCustomerController implements Initializable {
 
     /**
      * Initializes the controller class.
+     * @param url
+     * @param rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {

@@ -7,7 +7,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.Appointment;
 import model.Customer;
-import model.Region;
 import static utilities.DBAppointment.dtf;
 import static utilities.DBConnection.conn;
 
@@ -18,6 +17,12 @@ import static utilities.DBConnection.conn;
 public class DBCustomer {
 
     //Adding customer, note customer ID auto increments
+
+    /**
+     *
+     * @param customer
+     * @return
+     */
     public static Customer addCustomer(Customer customer) {
         try {
             PreparedStatement statement = DBConnection.getConnection().prepareStatement("INSERT INTO customers "
@@ -29,7 +34,7 @@ public class DBCustomer {
             statement.setString(4, customer.getPhone());
             statement.setString(5, currentUser.getUsername());
             statement.setString(6, currentUser.getUsername());
-            statement.setInt(7, DBRegion.getRegion(customer.getRegionName()).getRegionID());
+            statement.setInt(7, customer.getRegionID());
             statement.executeUpdate();
             System.out.println("Customer added to database.");
         } catch (SQLException e) {
@@ -39,6 +44,11 @@ public class DBCustomer {
     }
 
     //Updating customer
+
+    /**
+     * Updates customer in database
+     * @param customer
+     */
     public static void updateCustomer(Customer customer) {
         try {
             PreparedStatement statement = DBConnection.getConnection().prepareStatement("UPDATE customers "
@@ -49,7 +59,7 @@ public class DBCustomer {
             statement.setString(3, customer.getPostalCode());
             statement.setString(4, customer.getPhone());
             statement.setString(5, currentUser.getUsername());
-            statement.setInt(6, DBRegion.getRegion(customer.getRegionName()).getRegionID());
+            statement.setInt(6, customer.getRegionID());
             statement.setInt(7, customer.getCustomerID());
             statement.executeUpdate();
             System.out.println("Customer udpdated in database.");
@@ -59,6 +69,11 @@ public class DBCustomer {
     }
 
     //Deleting customer
+
+    /**
+     * Deletes customer from database
+     * @param customer
+     */
     public static void deleteCustomer(Customer customer) {
         try {
             PreparedStatement statement = DBConnection.getConnection().prepareStatement("DELETE FROM customers WHERE Customer_ID=?");
@@ -71,9 +86,19 @@ public class DBCustomer {
     }
 
     // Code below is for interacting with the database and for displaying, adding, modifying, and deleting customers
+
+    /**
+     * Stores list of all customers in database
+     */
     private static ObservableList<Customer> allCustomers = FXCollections.observableArrayList();
 
     // Get specific customer info from database
+
+    /**
+     * Gets customer name for specific customer ID in database
+     * @param id
+     * @return
+     */
     public static String getCustomerName(int id) {
         try {
             // Pulling customer info from database
@@ -95,6 +120,12 @@ public class DBCustomer {
     }
 
     // Get specific customer info from database
+
+    /**
+     * Gets customer ID from database based on specific customer name
+     * @param name
+     * @return
+     */
     public static Integer getCustomerID(String name) {
         try {
             // Pulling customer info from database
@@ -116,6 +147,12 @@ public class DBCustomer {
     }
 
     // Get customer phone from database
+
+    /**
+     * Gets customer phone from database based on specific customer name
+     * @param name
+     * @return
+     */
     public static String getCustomerPhone(String name) {
         try {
             // Pulling customer info from database
@@ -137,6 +174,12 @@ public class DBCustomer {
     }
 
     // Get customer postal code from database
+
+    /**
+     * Gets customer postal code from database based on specific customer name
+     * @param name
+     * @return
+     */
     public static String getCustomerPostalCode(String name) {
         try {
             // Pulling customer info from database
@@ -158,6 +201,11 @@ public class DBCustomer {
     }
 
     // Get all customers from database    
+
+    /**
+     * Gets all customers from database
+     * @return
+     */
     public static ObservableList<Customer> getAllCustomers() {
         try {
             // Pulling all customer info from database
@@ -168,11 +216,13 @@ public class DBCustomer {
                     + "INNER JOIN countries ON first_level_divisions.Country_ID = countries.Country_ID";
             ResultSet rs = statement.executeQuery(query);
             while (rs.next()) {
+                int regionID = DBRegion.getRegionID(rs.getString("Division"));
                 Customer customer = new Customer(
                         rs.getInt("Customer_ID"),
                         rs.getString("Customer_Name"),
                         rs.getString("Address"),
                         rs.getString("Division"),
+                        regionID,
                         rs.getString("Country"),
                         rs.getString("Postal_Code"),
                         rs.getString("Phone"));
@@ -186,7 +236,13 @@ public class DBCustomer {
         }
     }
 
-    // Getting customer for appointments from database
+    // Checks if customer has appointments in database
+
+    /**
+     * Checks if customer has appointments in database
+     * @param id
+     * @return
+     */
     public static Customer getCustomer(int id) {
         try {
             // Pulling appointment info from database
@@ -209,9 +265,17 @@ public class DBCustomer {
         return null;
     }
 
+    /**
+     * Stores list of all customer names
+     */
     private static ObservableList<String> allCustomerNames = FXCollections.observableArrayList();
 
     // Get all customer names from database    
+
+    /**
+     * Gets list of all customer names
+     * @return
+     */
     public static ObservableList<String> getAllCustomerNames() {
         try {
             // Pulling all customer info from database
@@ -232,9 +296,17 @@ public class DBCustomer {
         }
     }
 
+    /**
+     * Stores list of all customer IDs
+     */
     private static ObservableList<Integer> allCustomerIDs = FXCollections.observableArrayList();
 
     // Get all customer IDs from database    
+
+    /**
+     * Gets all customer IDs from database
+     * @return
+     */
     public static ObservableList<Integer> getAllCustomerIDs() {
         try {
             // Pulling all customer info from database
@@ -256,9 +328,19 @@ public class DBCustomer {
     }
 
     // Code below is for interacting with the database and for displaying, adding, modifying, and deleting appointments
+
+    /**
+     * Stores list of all appointments for specific customer from database
+     */
     private static ObservableList<Appointment> allAppointmentsForCustomer = FXCollections.observableArrayList();
 
     // Get appointment from system
+
+    /**
+     * Gets all appointments for specific customer from database
+     * @param id
+     * @return
+     */
     public static ObservableList<Appointment> getAppointmentsForCustomer(int id) {
         try {
             // Pulling all appointment info from database

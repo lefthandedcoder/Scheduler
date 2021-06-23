@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package controller;
 
 import java.net.URL;
@@ -22,20 +17,34 @@ import utilities.DBReport;
  */
 public class ReportsAllController implements Initializable {
 
+    /**
+     * Table of appointments by month, type, and the number of each type
+     */
     @FXML
     private TableView<Report> summaryTableView;
 
+    /**
+     * Column of months with appointments
+     */
     @FXML
     private TableColumn<Report, String> monthCol;
 
+    /**
+     * Column of appointment types
+     */
     @FXML
     private TableColumn<Report, String> typeCol;
 
+    /**
+     * Column of total types per month
+     */
     @FXML
     private TableColumn<Report, Integer> countCol;
 
     /**
      * Initializes the controller class.
+     * @param url
+     * @param rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {

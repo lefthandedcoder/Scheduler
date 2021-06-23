@@ -11,8 +11,15 @@ import static utilities.DBConnection.conn;
  */
 public class DBCountry {
 
+    /**
+     * Stores list of all country names
+     */
     private static ObservableList<String> comboStrings = FXCollections.observableArrayList();
 
+    /**
+     * Gets all country names for Customer add/update combobox
+     * @return
+     */
     public static ObservableList<String> getAllComboStrings() {
         try {
             // Pulling all country info from database

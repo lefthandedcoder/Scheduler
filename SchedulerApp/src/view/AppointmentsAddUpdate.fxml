@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="650.0" prefWidth="500.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="controller.AppointmentsAddUpdateController">
+<AnchorPane id="AnchorPane" prefHeight="650.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AppointmentsAddUpdateController">
     <children>
         <VBox layoutX="-50.0" prefHeight="650.0" prefWidth="600.0" style="-fx-background-color: #F9AD84;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
             <children>
@@ -187,12 +187,12 @@
                             </font>
                         </Label>
                         <ComboBox fx:id="userComboBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="15" />
-                        <Label fx:id="startEST" text="startEST" textFill="WHITE" visible="false" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="9">
+                        <Label fx:id="startLbl" text="startEST" textFill="WHITE" visible="false" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="9">
                             <font>
                                 <Font size="10.0" />
                             </font>
                         </Label>
-                        <Label fx:id="endEST" text="endEST" textFill="WHITE" visible="false" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="11">
+                        <Label fx:id="endLbl" text="endEST" textFill="WHITE" visible="false" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="11">
                             <font>
                                 <Font size="10.0" />
                             </font>

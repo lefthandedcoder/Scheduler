@@ -13,12 +13,27 @@ import static utilities.DBConnection.conn;
  */
 public class DBReport {
 
+    /**
+     * Sets format for visible dates and times
+     */
     public static DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+    /**
+     * Sets format for visible times
+     */
     public static DateTimeFormatter timeDTF = DateTimeFormatter.ofPattern("HH:mm:ss");
 
+    /**
+     * Stores list of all appointments with specific format
+     */
     private static ObservableList<Report> allAppointmentsReport = FXCollections.observableArrayList();
 
     //Get specific appointment info from system
+
+    /**
+     * Gets all appointments in a specific format of month, type, and the count of each type per month
+     * @return
+     */
     public static ObservableList<Report> getallAppointmentsReport() {
         try {
             // Pulling all appointment info from database

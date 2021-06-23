@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package controller;
 
 import java.io.IOException;
@@ -33,15 +28,31 @@ import utilities.DBUser;
  */
 public class MainMenuController implements Initializable {
 
+    /**
+     * Sets stage for displaying scene
+     */
     Stage stage;
 
+    /**
+     * Sets scene for displaying FXML
+     */
     Parent scene;
 
+    /**
+     * Button for switching window and showing upcoming appointments
+     */
     @FXML
     private Button upcomingBtn;
 
+    /**
+     * Filtered list of upcoming appointments
+     */
     private static FilteredList<Appointment> upcomingAppointments;
 
+    /**
+     * Grabs upcoming appointments with a lambda that filters based on time between current time and next 15 minutes
+     * @return
+     */
     public static FilteredList<Appointment> getUpcomingAppointments() {
         DBUser.getAllAppointments().clear();
         LocalTime now = LocalDateTime.now().toLocalTime();
@@ -60,6 +71,11 @@ public class MainMenuController implements Initializable {
         return upcomingAppointments;
     }
 
+    /**
+     * Refreshes the main menu window (checks for upcoming appointments)
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void onActionMainMenu(ActionEvent event) throws IOException {
         stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
@@ -68,6 +84,11 @@ public class MainMenuController implements Initializable {
         stage.show();
     }
 
+    /**
+     * Switches window to appointment main menu
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void onActionAppointmentsMain(ActionEvent event) throws IOException {
         stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
@@ -76,6 +97,11 @@ public class MainMenuController implements Initializable {
         stage.show();
     }
 
+    /**
+     * Switches window to customer main menu
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void onActionCustomersMain(ActionEvent event) throws IOException {
         stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
@@ -84,6 +110,10 @@ public class MainMenuController implements Initializable {
         stage.show();
     }
 
+    /**
+     * Closes the program
+     * @param event
+     */
     @FXML
     void onActionExit(ActionEvent event) {
         // Exit confirmation
@@ -97,6 +127,11 @@ public class MainMenuController implements Initializable {
         }
     }
 
+    /**
+     * Switches window to reports main menu
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void onActionReportsAll(ActionEvent event) throws IOException {
         stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
@@ -105,6 +140,11 @@ public class MainMenuController implements Initializable {
         stage.show();
     }
 
+    /**
+     * Switches window to appointment main menu to display upcoming appointments, disabled if no upcoming appointments
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void onActionUpcomingAppointments(ActionEvent event) throws IOException {
         stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
@@ -113,6 +153,9 @@ public class MainMenuController implements Initializable {
         stage.show();
     }
 
+    /**
+     * Pop-up to display if upcoming appointments for current user. Uses a lambda to filter for list of appointments for current user between current time and next 15 minutes
+     */
     public void upcomingAppointmentAlert() {
         DBUser.getAllAppointments().clear();
         LocalDateTime now = LocalDateTime.now();
@@ -145,6 +188,8 @@ public class MainMenuController implements Initializable {
 
     /**
      * Initializes the controller class.
+     * @param url
+     * @param rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {

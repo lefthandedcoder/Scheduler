@@ -12,8 +12,15 @@ import static utilities.DBConnection.conn;
  */
 public class DBRegion {
 
+    /**
+     * Stores a list of all regions
+     */
     private static ObservableList<String> comboStrings = FXCollections.observableArrayList();
 
+    /**
+     * Gets all regions
+     * @return
+     */
     public static ObservableList<String> getAllComboStrings() {
         try {
             // Pulling all region info from database
@@ -33,8 +40,16 @@ public class DBRegion {
     }
 
     //Bulky code to ensure that region combo box filters by regions by selection in country combo box
+
+    /**
+     * Stores list of all regions in USA
+     */
     private static ObservableList<String> comboStringsUSA = FXCollections.observableArrayList();
 
+    /**
+     * Gets all regions in USA
+     * @return
+     */
     public static ObservableList<String> getAllComboStringsUSA() {
         try {
             // Pulling all region info from database for USA
@@ -55,8 +70,15 @@ public class DBRegion {
         }
     }
 
+    /**
+     * Stores list of all regions in Canada
+     */
     private static ObservableList<String> comboStringsCanada = FXCollections.observableArrayList();
 
+    /**
+     * Gets all regions in Canada
+     * @return
+     */
     public static ObservableList<String> getAllComboStringsCanada() {
         try {
             // Pulling all region info from database for Canada
@@ -77,8 +99,15 @@ public class DBRegion {
         }
     }
 
+    /**
+     * Stores list of all regions in UK
+     */
     private static ObservableList<String> comboStringsUK = FXCollections.observableArrayList();
 
+    /**
+     * Gets all regions in UK
+     * @return
+     */
     public static ObservableList<String> getAllComboStringsUK() {
         try {
             // Pulling all region info from database from UK
@@ -100,25 +129,32 @@ public class DBRegion {
     }
 
     // Get specific region from database
-    public static Region getRegion(String regionName) {
+   
+    /**
+     * Stores region ID
+     */
+    private static int regionID;
+    
+    /**
+     * Gets region ID from database based on specific region name
+     * @return
+     */
+    public static Integer getRegionID(String regionName) {
         try {
-            // Pulling region info from database
+            // Pulling specific user info from database
             DBQuery.setStatement(conn);
             Statement statement = DBQuery.getStatement();
-            String query = "SELECT * FROM first_level_divisions WHERE DIVISION='" + regionName + "'";
-            statement.executeQuery(query);
+            String query = "SELECT Division_ID FROM first_level_divisions "
+                    + "WHERE Division='" + regionName + "'";
             ResultSet rs = statement.executeQuery(query);
             if (rs.next()) {
-                Region region = new Region();
-                region.setRegionID(rs.getInt("DIVISION_ID"));
+                regionID = rs.getInt("Division_ID");
                 statement.close();
-                System.out.println("Region found.");
-                return region;
+                return regionID;
             }
         } catch (SQLException e) {
             System.out.println("SQLException: " + e.getMessage());
         }
-
         return null;
     }
 

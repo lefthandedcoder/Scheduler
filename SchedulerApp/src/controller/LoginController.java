@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package controller;
 
 import java.io.FileNotFoundException;
@@ -25,12 +20,12 @@ import java.sql.*;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Locale;
-import java.util.TimeZone;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import utilities.DBAppointment;
-import utilities.DBConnection;
 import static utilities.DBConnection.conn;
 import utilities.DBQuery;
 
@@ -41,13 +36,30 @@ import utilities.DBQuery;
  */
 public class LoginController implements Initializable {
 
+    /**
+     * File name of login activity text document
+     */
     public static String fileName = "login_activity.txt";
+
+    /**
+     * Stores current user
+     */
     public static User currentUser = new User();
 
+    /**
+     * Grabs current user
+     * @return
+     */
     public static User getCurrentUser() {
         return currentUser;
     }
 
+    /**
+     * Checks to see if username and password exist in the database
+     * @param username
+     * @param password
+     * @return Boolean
+     */
     public static Boolean login(String username, String password) {
         try {
             // Pulling user info from database
@@ -71,52 +83,125 @@ public class LoginController implements Initializable {
         }
     }
 
+    /**
+     * Sets stage for displaying scene
+     */
     Stage stage;
 
+    /**
+     * Sets scene for displaying FXML
+     */
     Parent scene;
 
+    /**
+     * String for error alert with language functionality
+     */
     private String errorHeader;
+
+    /**
+     * String for error alert with language functionality
+     */
     private String errorTitle;
+
+    /**
+     * String for error alert with language functionality
+     */
     private String errorText;
+
+    /**
+     * String for successful pop-up with language functionality
+     */
     private String successHeader;
+
+    /**
+     * String for successful pop-up with language functionality
+     */
     private String successTitle;
+
+    /**
+     * String for successful pop-up with language functionality
+     */
     private String successText;
 
+    /**
+     * Label for scheduler title with language functionality
+     */
     @FXML
     private Label titleLbl;
 
+    /**
+     * Password label with language functionality
+     */
     @FXML
     private Label passwordLbl;
 
+    /**
+     * Username label with language functionality
+     */
     @FXML
     private Label usernameLbl;
 
+    /**
+     * Time label with language functionality
+     */
     @FXML
     private Label timeLbl;
 
+    /**
+     * Label for current time based on LocalDateTime and system ZoneID
+     */
     @FXML
     private Label currentTimeLbl;
 
+    /**
+     * Text field for username input
+     */
     @FXML
     private TextField usernameTxtFld;
 
+    /**
+     * Text field for password input
+     */
     @FXML
     private TextField passwordTxtFld;
 
+    /**
+     * Button for login
+     */
     @FXML
     private Button loginBtn;
 
+    /**
+     * Button to close program
+     */
     @FXML
     private Button exitBtn;
 
+    /**
+     * Closes the program
+     * @param event
+     */
     @FXML
     void onActionExit(ActionEvent event) {
-        System.exit(0);
+        // Exit confirmation
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Exit Program");
+        alert.setContentText("Exit program?");
+        Optional<ButtonType> result = alert.showAndWait();
+
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            System.exit(0);
+        }
     }
 
+    /**
+     * Attempts to log into the scheduler, logs login attempt in text document
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void onActionMainMenu(ActionEvent event) throws IOException {
-        // Checking username & password authentication against database
+        // Checking username and password against database
         String username = usernameTxtFld.getText();
         String password = passwordTxtFld.getText();
         boolean validUser = login(username, password);
@@ -159,6 +244,8 @@ public class LoginController implements Initializable {
 
     /**
      * Initializes the controller class.
+     * @param url
+     * @param rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {

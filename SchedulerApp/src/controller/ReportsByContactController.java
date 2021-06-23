@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package controller;
 
 import java.net.URL;
@@ -17,7 +12,6 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import model.Appointment;
 import utilities.DBAppointment;
-import utilities.DBCustomer;
 
 /**
  * FXML Controller class
@@ -26,53 +20,89 @@ import utilities.DBCustomer;
  */
 public class ReportsByContactController implements Initializable {
 
+    /**
+     * Combobox of contact names
+     */
     @FXML
     private ComboBox<String> contactNameComboBox;
 
+    /**
+     * Table of appointments for selected contact
+     */
     @FXML
     private TableView<Appointment> contactTableView;
 
+    /**
+     * Column of appointment IDs for selected contact
+     */
     @FXML
     private TableColumn<Appointment, Integer> contactAppointmentIDCol;
 
+    /**
+     * Column of appointment titles for selected contact
+     */
     @FXML
     private TableColumn<Appointment, String> contactTitleCol;
 
+    /**
+     * Column of appointment descriptions for selected contact
+     */
     @FXML
     private TableColumn<Appointment, String> contactDescriptionCol;
 
+    /**
+     * Column of appointment locations for selected contact
+     */
     @FXML
     private TableColumn<Appointment, String> contactLocationCol;
 
+    /**
+     * Column of appointment start dates and times for selected contact
+     */
     @FXML
     private TableColumn<Appointment, String> contactStartCol;
 
+    /**
+     * Column of appointment end dates and times for selected contact
+     */
     @FXML
     private TableColumn<Appointment, String> contactEndCol;
 
+    /**
+     * Column of appointment customer IDs for selected contact
+     */
     @FXML
     private TableColumn<Appointment, String> contactCustomerIDCol;
 
+    /**
+     * Column of appointment customer names for selected contact
+     */
     @FXML
     private TableColumn<Appointment, String> contactCustomerNameCol;
 
+    /**
+     * Changes table based on selected contact
+     * @param event
+     */
     @FXML
     void onActionChangeTableView(ActionEvent event) {
         contactTableView.getItems().clear();
-        String selectedCustomer = contactNameComboBox.getSelectionModel().getSelectedItem();
-        int customerID = DBCustomer.getCustomerID(selectedCustomer);
-        DBCustomer.getAppointmentsForCustomer(customerID).clear();
-        ObservableList<Appointment> customerAppointments = DBCustomer.getAppointmentsForCustomer(customerID);
-        contactTableView.setItems(customerAppointments);
+        String selectedContact = contactNameComboBox.getSelectionModel().getSelectedItem();
+        int contactID = DBAppointment.getContactID(selectedContact);
+        DBAppointment.getAppointmentsForContact(contactID).clear();
+        ObservableList<Appointment> contactAppointments = DBAppointment.getAppointmentsForContact(contactID);
+        contactTableView.setItems(contactAppointments);
     }
 
     /**
      * Initializes the controller class.
+     * @param url
+     * @param rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
-        DBCustomer.getAllCustomerNames().clear();
+        DBAppointment.getAllContactNames().clear();
         contactNameComboBox.setItems(DBAppointment.getAllContactNames());
 
         contactAppointmentIDCol.setCellValueFactory(new PropertyValueFactory<>("appointmentID"));
@@ -83,8 +113,8 @@ public class ReportsByContactController implements Initializable {
         contactEndCol.setCellValueFactory(new PropertyValueFactory<>("end"));
         contactCustomerIDCol.setCellValueFactory(new PropertyValueFactory<>("contactID"));
         contactCustomerNameCol.setCellValueFactory(new PropertyValueFactory<>("contactName"));
-        contactNameComboBox.setValue(DBCustomer.getCustomerName(1));
-        contactTableView.setItems(DBCustomer.getAppointmentsForCustomer(1));
+        contactNameComboBox.setValue(DBAppointment.getContactName(1));
+        contactTableView.setItems(DBAppointment.getAppointmentsForContact(1));
 
     }
 

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package controller;
 
 import java.io.IOException;
@@ -27,10 +22,21 @@ import javafx.stage.Stage;
  */
 public class ReportsMainController implements Initializable {
 
+    /**
+     * Sets stage for displaying scene
+     */
     Stage stage;
 
+    /**
+     * Sets scene for displaying FXML
+     */
     Parent scene;
 
+    /**
+     * Switches to appointment main menu
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void onActionAppointmentsMain(ActionEvent event) throws IOException {
         stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
@@ -39,6 +45,11 @@ public class ReportsMainController implements Initializable {
         stage.show();
     }
 
+    /**
+     * Switches to customer main menu
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void onActionCustomersMain(ActionEvent event) throws IOException {
         stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
@@ -47,6 +58,11 @@ public class ReportsMainController implements Initializable {
         stage.show();
     }
 
+    /**
+     * Switches to main menu
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void onActionMainMenu(ActionEvent event) throws IOException {
         stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
@@ -55,6 +71,11 @@ public class ReportsMainController implements Initializable {
         stage.show();
     }
 
+    /**
+     * Switches to reports main menu
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void onActionAllReports(ActionEvent event) throws IOException {
         stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
@@ -63,6 +84,10 @@ public class ReportsMainController implements Initializable {
         stage.show();
     }
 
+    /**
+     * Closes the program
+     * @param event
+     */
     @FXML
     void onActionExit(ActionEvent event) {
         // Exit confirmation
@@ -77,11 +102,12 @@ public class ReportsMainController implements Initializable {
     }
 
     /**
-     * Initializes the controller class.
+     * Initializes the controller class. This mainly is a scene for the tabs.
+     * @param url
+     * @param rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
     }
 
 }

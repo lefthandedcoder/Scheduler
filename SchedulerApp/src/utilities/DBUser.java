@@ -16,8 +16,16 @@ import static utilities.DBConnection.conn;
 public class DBUser {
 
     // Get all user names from database    
+
+    /**
+     * Stores list of all usernames in database
+     */
     private static ObservableList<String> allUserNames = FXCollections.observableArrayList();
 
+    /**
+     * Gets all usernames from database
+     * @return
+     */
     public static ObservableList<String> getAllUserNames() {
         try {
             // Pulling all user info from database
@@ -40,8 +48,17 @@ public class DBUser {
     }
 
     // Get user ID from database
+
+    /**
+     * Stores user ID
+     */
     private static int userID;
 
+    /**
+     *  Gets user ID from database for specific username
+     * @param userName
+     * @return
+     */
     public static Integer getUserID(String userName) {
         try {
             // Pulling specific user info from database
@@ -62,9 +79,17 @@ public class DBUser {
         return null;
     }
 
+    /**
+     * Stores list of all appointments for current user
+     */
     private static ObservableList<Appointment> allAppointments = FXCollections.observableArrayList();
 
     // Get all user appointments from database for current user
+
+    /**
+     * Gets all appointments from database for current user
+     * @return
+     */
     public static ObservableList<Appointment> getAllAppointments() {
         try {
             // Pulling all appointment info from database

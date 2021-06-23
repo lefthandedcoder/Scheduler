@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package controller;
 
 import java.io.IOException;
@@ -44,76 +39,154 @@ import utilities.DBUser;
  */
 public class AppointmentsMainController implements Initializable {
 
+    /**
+     * Sets the stage for showing the scene
+     */
     Stage stage;
 
+    /**
+     * Sets up the scene for displaying the FXML
+     */
     Parent scene;
 
+    /**
+     * Sets format for all visible dates and times
+     */
     DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
+    /**
+     * Stores appointment to be updated
+     */
     private static Appointment updatedAppointment;
 
+    /**
+     * Grabs appointment to be updated
+     * @return appointment to be updated
+     */
     public static Appointment getUpdatedAppointment() {
         return updatedAppointment;
     }
 
+    /**
+     * Sets appointment to be updated
+     * @param updatedAppointment
+     */
     public void setUpdatedAppointment(Appointment updatedAppointment) {
         AppointmentsMainController.updatedAppointment = updatedAppointment;
     }
 
+    /**
+     * Radio button for appointments by week
+     */
     @FXML
     private RadioButton weekRBtn;
 
+    /**
+     * Date picker for filtering and displaying appointments
+     */
     @FXML
     private DatePicker datePicker;
 
+    /**
+     * Radio button for appointments by month
+     */
     @FXML
     private RadioButton monthRBtn;
 
+    /**
+      Radio button for all appointments
+     */
     @FXML
     private RadioButton allRBtn;
 
+    /**
+     * Radio button for upcoming appointments for current user
+     */
     @FXML
     private RadioButton upcomingRBtn;
 
+    /**
+     * Label for appointment search
+     */
     @FXML
     private Label appointmentSearchLabel;
 
+    /**
+     * Search box for searching appointments by ID or title
+     */
     @FXML
     private TextField appointmentSearchBox;
 
+    /**
+     * Table of appointments
+     */
     @FXML
     private TableView<Appointment> appointmentsTableView;
 
+    /**
+     * Column for appointment ID
+     */
     @FXML
     private TableColumn<Appointment, Integer> IDCol;
 
+    /**
+     * Column for appointment title
+     */
     @FXML
     private TableColumn<Appointment, String> titleCol;
 
+    /**
+     * Column for appointment description
+     */
     @FXML
     private TableColumn<Appointment, String> descriptionCol;
 
+    /**
+     * Column for appointment type
+     */
     @FXML
     private TableColumn<Appointment, String> typeCol;
 
+    /**
+     * Column for appointment location
+     */
     @FXML
     private TableColumn<Appointment, String> locationCol;
 
+    /**
+     * Column for appointment contact name
+     */
     @FXML
     private TableColumn<Appointment, String> contact;
 
+    /**
+     * Column for appointment start date and time
+     */
     @FXML
     private TableColumn<Appointment, String> startCol;
 
+    /**
+     * Column for appointment end date and time
+     */
     @FXML
     private TableColumn<Appointment, String> endCol;
 
+    /**
+     * Column for appointment customer ID
+     */
     @FXML
     private TableColumn<Appointment, Integer> customerIDCol;
 
+    /**
+     * Column for appointment customer name
+     */
     @FXML
     private TableColumn<Appointment, String> nameCol;
 
+    /**
+     * Deletes selected appointment
+     * @param event
+     */
     @FXML
     void onActionDeleteAppointment(ActionEvent event) {
         Appointment appointmentDelete = appointmentsTableView.getSelectionModel().getSelectedItem();
@@ -143,6 +216,11 @@ public class AppointmentsMainController implements Initializable {
         }
     }
 
+    /**
+     * Grabs selected appointment and switches scene to allow user to update with text fields and comboboxes
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void onActionUpdateAppointment(ActionEvent event) throws IOException {
         updatedAppointment = appointmentsTableView.getSelectionModel().getSelectedItem();
@@ -162,6 +240,11 @@ public class AppointmentsMainController implements Initializable {
         }
     }
 
+    /**
+     * Switches scenes to allow user to add a new appointment with text fields and comboboxes
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void onActionNewAppointment(ActionEvent event) throws IOException {
         updatedAppointment = null;
@@ -171,6 +254,11 @@ public class AppointmentsMainController implements Initializable {
         stage.show();
     }
 
+    /**
+     * Switches scenes to show reports
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void onActionAllReports(ActionEvent event) throws IOException {
         stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
@@ -179,6 +267,11 @@ public class AppointmentsMainController implements Initializable {
         stage.show();
     }
 
+    /**
+     * Switches scenes to show customer main menu
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void onActionCustomersMain(ActionEvent event) throws IOException {
         stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
@@ -187,6 +280,11 @@ public class AppointmentsMainController implements Initializable {
         stage.show();
     }
 
+    /**
+     * Refreshes appointment main menu
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void onActionAppointmentsMain(ActionEvent event) throws IOException {
         stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
@@ -195,6 +293,11 @@ public class AppointmentsMainController implements Initializable {
         stage.show();
     }
 
+    /**
+     * Switches scenes to show scheduler main menu
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void onActionMainMenu(ActionEvent event) throws IOException {
         stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
@@ -203,6 +306,10 @@ public class AppointmentsMainController implements Initializable {
         stage.show();
     }
 
+    /**
+     * Closes program if user clicks OK
+     * @param event
+     */
     @FXML
     void onActionExit(ActionEvent event) {
         // Exit confirmation
@@ -216,6 +323,9 @@ public class AppointmentsMainController implements Initializable {
         }
     }
 
+    /**
+     * Sets up table with all appointments, uses a lambda to filter list of appointments based on search
+     */
     public void tableSetupAll() {
         appointmentsTableView.getSelectionModel().clearSelection();
         DBAppointment.getAllAppointments().clear();
@@ -260,6 +370,9 @@ public class AppointmentsMainController implements Initializable {
         appointmentsTableView.setItems(sortedAppointments);
     }
 
+    /**
+     * Sets up table of appointments for month based on datepicker selection. Uses two lambdas, one to filter for appointments for month and one to filter based on search box
+     */
     public void tableSetupByMonth() {
         appointmentsTableView.getSelectionModel().clearSelection();
         LocalDate selectedDate = datePicker.getValue();
@@ -314,6 +427,9 @@ public class AppointmentsMainController implements Initializable {
 
     }
 
+    /**
+     * Sets up table of appointments for week based on datepicker selection. Uses two lambdas, one to filter for appointments for week and one to filter based on search box
+     */
     public void tableSetupByWeek() {
         appointmentsTableView.getSelectionModel().clearSelection();
 
@@ -371,6 +487,9 @@ public class AppointmentsMainController implements Initializable {
 
     }
 
+    /**
+     * Sets up table of upcoming appointments for current user based on current time. Uses two lambdas, one to filter for appointments for period of time between now and 15 minutes from now and one to filter based on search box
+     */
     public void tableSetupUpcoming() {
         appointmentsTableView.getSelectionModel().clearSelection();
         DBUser.getAllAppointments().clear();
@@ -432,7 +551,9 @@ public class AppointmentsMainController implements Initializable {
     }
 
     /**
-     * Initializes the controller class.
+     * Initializes the controller class. Uses change listeners for radio buttons.
+     * @param url
+     * @param rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {

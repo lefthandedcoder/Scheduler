@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package controller;
 
 import static controller.CustomersMainController.getUpdatedCustomer;
@@ -42,62 +37,123 @@ import utilities.DBRegion;
  */
 public class CustomersAddUpdateController implements Initializable {
 
+    /**
+     * Stores selected country
+     */
     private static Country selectedCountry;
+
+    /**
+     * Stores selected region
+     */
     private static Region selectedRegion;
 
+    /**
+     * Grabs selected country and stores it
+     * @return
+     */
     public static Country getselectedCountry() {
         return selectedCountry;
     }
 
+    /**
+     * Grabs selected region and stores it
+     * @return
+     */
     public static Region getselectedRegion() {
         return selectedRegion;
     }
 
     // Customer being modified if this is a modification, else null 
+
+    /**
+     * Stores customer being modified
+     */
     private final Customer updatingCustomer;
 
+    /**
+     * Grabs customer being modified
+     * @return
+     */
     public Customer getUpdatingCustomer() {
         return updatingCustomer;
     }
 
     /**
-     * Constructor
+     * Constructor for selected customer from main menu
      */
     public CustomersAddUpdateController() {
         this.updatingCustomer = getUpdatedCustomer();
     }
 
+    /**
+     * Sets stage for displaying scene
+     */
     Stage stage;
 
+    /**
+     * Scene for displaying FXML
+     */
     Parent scene;
 
+    /**
+     * Label for customer window (add or update)
+     */
     @FXML
     private Label customerLbl;
 
+    /**
+     * Text field for auto-incremented customer ID
+     */
     @FXML
     private TextField autoIDTxt;
 
+    /**
+     * Text field for customer name
+     */
     @FXML
     private TextField nameTxt;
 
+    /**
+     * Text field for customer address
+     */
     @FXML
     private TextField addressTxt;
 
+    /**
+     * Text field for customer postal code
+     */
     @FXML
     private TextField postalCodeTxt;
 
+    /**
+     * Text field for customer phone
+     */
     @FXML
     private TextField phoneTxt;
 
+    /**
+     * Combobox for customer region
+     */
     @FXML
     private ComboBox<String> regionComboBox;
 
+    /**
+     * Combobox for customer country
+     */
     @FXML
     private ComboBox<String> countryComboBox;
 
+    /**
+     * Text area for displaying errors
+     */
     @FXML
     private TextArea errorDisplay;
 
+    /**
+     * Cancels changes and returns to customer main menu
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void onActionCustomersMain(ActionEvent event) throws IOException {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -113,6 +169,11 @@ public class CustomersAddUpdateController implements Initializable {
         }
     }
 
+    /**
+     * Saves or updates customer information if information is valid, otherwise displays errors in text area
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void onActionSaveCustomer(ActionEvent event) throws IOException {
         if ((nameValid() && addressValid() && regionValid() && countryValid() && postalCodeValid() && phoneValid())) {
@@ -129,10 +190,11 @@ public class CustomersAddUpdateController implements Initializable {
                     String customerName = nameTxt.getText();
                     String address = addressTxt.getText();
                     String regionName = regionComboBox.getSelectionModel().getSelectedItem();
+                    int regionID = DBRegion.getRegionID(regionName);
                     String countryName = countryComboBox.getSelectionModel().getSelectedItem();
                     String postalCode = postalCodeTxt.getText();
                     String phone = phoneTxt.getText();
-                    Customer savingCustomer = new Customer(id, customerName, address, regionName, countryName, postalCode, phone);
+                    Customer savingCustomer = new Customer(id, customerName, address, regionName, regionID, countryName, postalCode, phone);
                     DBCustomer.addCustomer(savingCustomer);
                 } else {
                     String customerName = nameTxt.getText();
@@ -145,6 +207,7 @@ public class CustomersAddUpdateController implements Initializable {
                     if (countryComboBox.getSelectionModel().getSelectedItem() != null) {
                         regionName = countryComboBox.getSelectionModel().getSelectedItem();
                     }
+                    int regionID = DBRegion.getRegionID(regionName);
                     String postalCode = postalCodeTxt.getText();
                     String phone = phoneTxt.getText();
                     updatingCustomer.setCustomerName(customerName);
@@ -169,12 +232,21 @@ public class CustomersAddUpdateController implements Initializable {
         }
     }
 
+    /**
+     * Stores list of validation errors
+     */
     ObservableList<String> validationErrors = FXCollections.observableArrayList();
 
+    /**
+     * Prepares display of errors with an initial string
+     */
     public void setupErrorDisplay() {
         validationErrors.add("Customer information is missing!\n");
     }
 
+    /**
+     * Collects validation errors
+     */
     public void errorCollector() {
         nameValid();
         addressValid();
@@ -185,6 +257,10 @@ public class CustomersAddUpdateController implements Initializable {
         phoneValid();
     }
 
+    /**
+     * Verifies if name is present
+     * @return Boolean
+     */
     public Boolean nameValid() {
         if (nameTxt.getText().isEmpty()) {
             validationErrors.add("Customer name required!\n");
@@ -193,6 +269,10 @@ public class CustomersAddUpdateController implements Initializable {
         return true;
     }
 
+    /**
+     * Verifies if address is present
+     * @return Boolean
+     */
     public Boolean addressValid() {
         if (addressTxt.getText().isEmpty()) {
             validationErrors.add("Address required!\n");
@@ -201,6 +281,10 @@ public class CustomersAddUpdateController implements Initializable {
         return true;
     }
 
+    /**
+     * Verifies if region selected
+     * @return Boolean
+     */
     public Boolean regionValid() {
         if (regionComboBox.getSelectionModel().isEmpty()) {
             validationErrors.add("Region must be selected!\n");
@@ -209,6 +293,10 @@ public class CustomersAddUpdateController implements Initializable {
         return true;
     }
 
+    /**
+     * Verifies if country selected
+     * @return Boolean
+     */
     public Boolean countryValid() {
         if (countryComboBox.getSelectionModel().isEmpty()) {
             validationErrors.add("Country must be selected!\n");
@@ -217,6 +305,10 @@ public class CustomersAddUpdateController implements Initializable {
         return true;
     }
 
+    /**
+     * Verifies if postal code is present
+     * @return Boolean
+     */
     public Boolean postalCodeValid() {
         if (postalCodeTxt.getText().isEmpty()) {
             validationErrors.add("Postal code required!\n");
@@ -225,6 +317,10 @@ public class CustomersAddUpdateController implements Initializable {
         return true;
     }
 
+    /**
+     * Verifies if phone is present
+     * @return Boolean
+     */
     public Boolean phoneValid() {
         if (phoneTxt.getText().isEmpty()) {
             validationErrors.add("Phone required!\n");
@@ -233,6 +329,9 @@ public class CustomersAddUpdateController implements Initializable {
         return true;
     }
 
+    /**
+     * Shows list of errors
+     */
     public void showErrors() {
         String allErrors = "";
         for (String error : validationErrors) {
@@ -244,6 +343,8 @@ public class CustomersAddUpdateController implements Initializable {
 
     /**
      * Initializes the controller class.
+     * @param url
+     * @param rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -256,8 +357,8 @@ public class CustomersAddUpdateController implements Initializable {
             autoIDTxt.setText(Integer.toString(updatingCustomer.getCustomerID()));
             nameTxt.setText(updatingCustomer.getCustomerName());
             addressTxt.setText(updatingCustomer.getAddress());
-            regionComboBox.setPromptText((updatingCustomer.getRegionName()));
-            countryComboBox.setPromptText((updatingCustomer.getCountryName()));
+            regionComboBox.setValue((updatingCustomer.getRegionName()));
+            countryComboBox.setValue((updatingCustomer.getCountryName()));
             postalCodeTxt.setText(updatingCustomer.getPostalCode());
             phoneTxt.setText(updatingCustomer.getPhone());
         }

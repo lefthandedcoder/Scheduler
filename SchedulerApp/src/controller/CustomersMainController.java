@@ -36,50 +36,102 @@ import utilities.DBCustomer;
  */
 public class CustomersMainController implements Initializable {
 
+    /**
+     * Sets stage for displaying scene
+     */
     Stage stage;
 
+    /**
+     * Sets scene for displaying FXML
+     */
     Parent scene;
 
+    /**
+     * Stores customer being modified
+     */
     private static Customer updatedCustomer;
 
+    /**
+     * Grabs customer being modified
+     * @return
+     */
     public static Customer getUpdatedCustomer() {
         return updatedCustomer;
     }
 
+    /**
+     * Sets customer being updated
+     * @param updatedCustomer
+     */
     public void setUpdatedCustomer(Customer updatedCustomer) {
         CustomersMainController.updatedCustomer = updatedCustomer;
     }
 
+    /**
+     * Label for customer search
+     */
     @FXML
     private Label customerSearchLabel;
 
+    /**
+     * Search box for searching for customers based on ID or name
+     */
     @FXML
     private TextField customerSearchBox;
 
+    /**
+     * Table of customers
+     */
     @FXML
     private TableView<Customer> customersTableView;
 
+    /**
+     * Column for customer ID
+     */
     @FXML
     private TableColumn<Customer, Integer> IDCol;
 
+    /**
+     * Column for customer name
+     */
     @FXML
     private TableColumn<Customer, String> nameCol;
 
+    /**
+     * Column for customer phone
+     */
     @FXML
     private TableColumn<Customer, String> phoneCol;
 
+    /**
+     * Column for customer address
+     */
     @FXML
     private TableColumn<Customer, String> addressCol;
 
+    /**
+     * Column for customer region
+     */
     @FXML
     private TableColumn<Customer, String> regionCol;
 
+    /**
+     * Column for customer country
+     */
     @FXML
     private TableColumn<Customer, String> countryCol;
 
+    /**
+     * Column for customer postal code
+     */
     @FXML
     private TableColumn<Customer, String> postalCodeCol;
 
+    /**
+     * Switches to appointment main menu
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void onActionAppointmentsMain(ActionEvent event) throws IOException {
         stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
@@ -88,6 +140,10 @@ public class CustomersMainController implements Initializable {
         stage.show();
     }
 
+    /**
+     * Deletes selected customer if customer selected and customer has no appointments
+     * @param event
+     */
     @FXML
     void onActionDeleteCustomer(ActionEvent event) {
         Customer customerDelete = customersTableView.getSelectionModel().getSelectedItem();
@@ -124,6 +180,11 @@ public class CustomersMainController implements Initializable {
         tableSetup();
     }
 
+    /**
+     * Switches to main menu
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void onActionMainMenu(ActionEvent event) throws IOException {
         stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
@@ -132,6 +193,11 @@ public class CustomersMainController implements Initializable {
         stage.show();
     }
 
+    /**
+     * Refreshes customer main menu
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void onActionCustomersMain(ActionEvent event) throws IOException {
         stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
@@ -140,6 +206,11 @@ public class CustomersMainController implements Initializable {
         stage.show();
     }
 
+    /**
+     * Grabs selected customer if selected and switches window to allow user to update info with text fields and combo boxes
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void onActionUpdateCustomer(ActionEvent event) throws IOException {
         updatedCustomer = customersTableView.getSelectionModel().getSelectedItem();
@@ -157,6 +228,11 @@ public class CustomersMainController implements Initializable {
         }
     }
 
+    /**
+     * Switches window to allow user to add customer info using text fields and combo boxes
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void onActionNewCustomer(ActionEvent event) throws IOException {
         updatedCustomer = null;
@@ -167,6 +243,11 @@ public class CustomersMainController implements Initializable {
 
     }
 
+    /**
+     * Switches window to reports main menu
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void onActionReportsAll(ActionEvent event) throws IOException {
         stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
@@ -175,6 +256,10 @@ public class CustomersMainController implements Initializable {
         stage.show();
     }
 
+    /**
+     * Closes the program
+     * @param event
+     */
     @FXML
     void onActionExit(ActionEvent event) {
         // Exit confirmation
@@ -188,6 +273,9 @@ public class CustomersMainController implements Initializable {
         }
     }
 
+    /**
+     * Sets up customer table with database info. Uses a lambda to filter based on search box string
+     */
     public void tableSetup() {
         customersTableView.getSelectionModel().clearSelection();
         customersTableView.setItems(DBCustomer.getAllCustomers());
@@ -243,6 +331,8 @@ public class CustomersMainController implements Initializable {
 
     /**
      * Initializes the controller class.
+     * @param url
+     * @param rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
