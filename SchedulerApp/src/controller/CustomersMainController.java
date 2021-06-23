@@ -27,31 +27,29 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import model.Customer;
-import utilities.DBAppointment;
 import utilities.DBCustomer;
 
 /**
  * FXML Controller class
  *
- * @author chris
+ * @author Christian Dye
  */
 public class CustomersMainController implements Initializable {
-    
+
     Stage stage;
-    
+
     Parent scene;
-    
+
     private static Customer updatedCustomer;
-    
+
     public static Customer getUpdatedCustomer() {
         return updatedCustomer;
     }
-    
+
     public void setUpdatedCustomer(Customer updatedCustomer) {
         CustomersMainController.updatedCustomer = updatedCustomer;
     }
-    
-    
+
     @FXML
     private Label customerSearchLabel;
 
@@ -84,7 +82,7 @@ public class CustomersMainController implements Initializable {
 
     @FXML
     void onActionAppointmentsMain(ActionEvent event) throws IOException {
-        stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
+        stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
         scene = FXMLLoader.load(getClass().getResource("/view/AppointmentsMain.fxml"));
         stage.setScene(new Scene(scene));
         stage.show();
@@ -99,28 +97,28 @@ public class CustomersMainController implements Initializable {
             alert.setContentText("Customer not selected.");
             Optional<ButtonType> result = alert.showAndWait();
         } else {
-            if (DBAppointment.getCustomer(customerDelete.getCustomerID()) != null) {
+            if (DBCustomer.getCustomer(customerDelete.getCustomerID()) != null) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Delete Customer");
                 alert.setContentText("Delete customer's appointments before deleting customer.");
                 Optional<ButtonType> result = alert.showAndWait();
             } else {
-             //Delete customer confirmation
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("Delete Customer");
-            alert.setContentText("Delete the selected customer?");
-            Optional<ButtonType> result = alert.showAndWait();
+                //Delete customer confirmation
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Delete Customer");
+                alert.setContentText("Delete the selected customer?");
+                Optional<ButtonType> result = alert.showAndWait();
 
-            if (result.isPresent() && result.get() == ButtonType.OK) {
-                try {
-                    DBCustomer.deleteCustomer(customerDelete);
-                    Alert deleted = new Alert(Alert.AlertType.INFORMATION);
-                    deleted.setTitle("Customer Deleted");
-                    alert.setContentText("Customer has been deleted.");
-                } catch (Exception e) {
-                    e.printStackTrace();
+                if (result.isPresent() && result.get() == ButtonType.OK) {
+                    try {
+                        DBCustomer.deleteCustomer(customerDelete);
+                        Alert deleted = new Alert(Alert.AlertType.INFORMATION);
+                        deleted.setTitle("Customer Deleted");
+                        alert.setContentText("Customer has been deleted.");
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
-            }   
             }
         }
         tableSetup();
@@ -128,15 +126,15 @@ public class CustomersMainController implements Initializable {
 
     @FXML
     void onActionMainMenu(ActionEvent event) throws IOException {
-        stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
+        stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
         scene = FXMLLoader.load(getClass().getResource("/view/MainMenu.fxml"));
         stage.setScene(new Scene(scene));
         stage.show();
     }
-    
+
     @FXML
     void onActionCustomersMain(ActionEvent event) throws IOException {
-        stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
+        stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
         scene = FXMLLoader.load(getClass().getResource("/view/CustomersMain.fxml"));
         stage.setScene(new Scene(scene));
         stage.show();
@@ -152,7 +150,7 @@ public class CustomersMainController implements Initializable {
             Optional<ButtonType> result = alert.showAndWait();
         } else {
             setUpdatedCustomer(updatedCustomer);
-            stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
+            stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
             scene = FXMLLoader.load(getClass().getResource("/view/CustomersAddUpdate.fxml"));
             stage.setScene(new Scene(scene));
             stage.show();
@@ -162,26 +160,34 @@ public class CustomersMainController implements Initializable {
     @FXML
     void onActionNewCustomer(ActionEvent event) throws IOException {
         updatedCustomer = null;
-        stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
+        stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
         scene = FXMLLoader.load(getClass().getResource("/view/CustomersAddUpdate.fxml"));
         stage.setScene(new Scene(scene));
         stage.show();
-        
+
     }
 
     @FXML
-    void onActionReportsAll(ActionEvent event)  throws IOException {
-        stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
+    void onActionReportsAll(ActionEvent event) throws IOException {
+        stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
         scene = FXMLLoader.load(getClass().getResource("/view/ReportsMain.fxml"));
         stage.setScene(new Scene(scene));
         stage.show();
     }
-    
+
     @FXML
     void onActionExit(ActionEvent event) {
-        System.exit(0);
+        // Exit confirmation
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Exit Program");
+        alert.setContentText("Exit program?");
+        Optional<ButtonType> result = alert.showAndWait();
+
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            System.exit(0);
+        }
     }
-    
+
     public void tableSetup() {
         customersTableView.getSelectionModel().clearSelection();
         customersTableView.setItems(DBCustomer.getAllCustomers());
@@ -194,22 +200,22 @@ public class CustomersMainController implements Initializable {
         countryCol.setCellValueFactory(new PropertyValueFactory<>("countryName"));
         postalCodeCol.setCellValueFactory(new PropertyValueFactory<>("postalCode"));
 
-        // Wrapping observable lists (allParts and allProducts) in a filtered list
+        // Wrapping observable list in a filtered list
         customersTableView.getItems().clear();
         FilteredList<Customer> filteredCustomers = new FilteredList<>(DBCustomer.getAllCustomers(), p -> true);
-        
+
         // Setting the filter predicate whenever the filter changes
         customerSearchBox.textProperty().addListener((observable, oldValue, newValue) -> {
             filteredCustomers.setPredicate(customer -> {
-                // If filter text is empty, display all parts
+                // If filter text is empty, display all customers
                 if (newValue == null || newValue.isEmpty()) {
                     customerSearchLabel.setVisible(false);
                     return true;
                 }
-                
+
                 //Compare all customer names
                 String search = newValue.toLowerCase();
-                
+
                 if (customer.getCustomerName().toLowerCase().contains(search) || Integer.valueOf(customer.getCustomerID()).toString().equals(search)) {
                     customerSearchLabel.setText("Customers found!");
                     customerSearchLabel.setVisible(true);
@@ -219,26 +225,27 @@ public class CustomersMainController implements Initializable {
                 }
             });
             // Displays "not found" message    
-            if(filteredCustomers.isEmpty()){
+            if (filteredCustomers.isEmpty()) {
                 customerSearchLabel.setText("Customer not found!");
                 customerSearchLabel.setVisible(true);
             }
         });
-        
+
         // Wrapping filtered list in a sorted list.
         SortedList<Customer> sortedCustomers = new SortedList<>(filteredCustomers);
-        
+
         // Binding the sorted list comparator to the TableView comparator.
         sortedCustomers.comparatorProperty().bind(customersTableView.comparatorProperty());
-        
-        // Adding sorted (and filtered) parts to table.
+
+        // Adding sorted (and filtered) customers to table.
         customersTableView.setItems(sortedCustomers);
-    } 
+    }
+
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         tableSetup();
-    }   
+    }
 }

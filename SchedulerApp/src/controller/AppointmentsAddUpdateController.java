@@ -36,18 +36,19 @@ import javafx.stage.Stage;
 import model.Appointment;
 import utilities.DBAppointment;
 import utilities.DBCustomer;
+import utilities.DBUser;
 
 /**
  * FXML Controller class
  *
- * @author chris
+ * @author Christian Dye
  */
 public class AppointmentsAddUpdateController implements Initializable {
-    
+
     Stage stage;
-    
+
     Parent scene;
-    
+
     private final Appointment updatingAppointment;
     private final ObservableList<String> startOptions = FXCollections.observableArrayList();
     private final ObservableList<String> endOptions = FXCollections.observableArrayList();
@@ -61,7 +62,6 @@ public class AppointmentsAddUpdateController implements Initializable {
     LocalDateTime localEndTime;
     LocalDateTime systemDateTime = LocalDateTime.now().atZone(currentZone).toLocalDateTime();
     LocalDateTime officeDateTime = LocalDateTime.now().atZone(currentZone).toLocalDateTime();
-    
 
     public Appointment getUpdatingAppointment() {
         return updatingAppointment;
@@ -112,19 +112,19 @@ public class AppointmentsAddUpdateController implements Initializable {
 
     @FXML
     private ComboBox<String> customerNameComboBox;
-    
+
     @FXML
     private ComboBox<Integer> customerIDComboBox;
-    
+
     @FXML
     private Label startEST;
-    
+
     @FXML
     private Label endEST;
-    
+
     @FXML
     private TextArea errorDisplay;
-    
+
     @FXML
     void onActionshowEnd(ActionEvent event) {
         selectedEndDate = endDatePicker.getValue();
@@ -143,14 +143,14 @@ public class AppointmentsAddUpdateController implements Initializable {
                         endEST.setText(localEndTime.format(DBAppointment.dtf) + " " + currentZone.toString());
                         endEST.setTextFill(Color.WHITE);
                         endEST.setVisible(true);
-                        } else {
-                            startEST.setText("Appointment hours must be between 8:00 and 22:00 EST.");
-                            startEST.setTextFill(Color.RED);
-                            startEST.setVisible(true);
-                            endEST.setText("Appointment hours must be between 8:00 and 22:00 EST.");
-                            endEST.setTextFill(Color.RED);
-                            endEST.setVisible(true);
-                        }
+                    } else {
+                        startEST.setText("Appointment hours must be between 8:00 and 22:00 EST.");
+                        startEST.setTextFill(Color.RED);
+                        startEST.setVisible(true);
+                        endEST.setText("Appointment hours must be between 8:00 and 22:00 EST.");
+                        endEST.setTextFill(Color.RED);
+                        endEST.setVisible(true);
+                    }
                 } else {
                     endEST.setText("Appointment end time must be after start time.");
                     endEST.setTextFill(Color.RED);
@@ -178,14 +178,14 @@ public class AppointmentsAddUpdateController implements Initializable {
                         endEST.setText(localEndTime.format(DBAppointment.dtf) + " " + currentZone.toString());
                         endEST.setTextFill(Color.WHITE);
                         endEST.setVisible(true);
-                        } else {
-                            startEST.setText("Appointment hours must be between 8:00 and 22:00 EST.");
-                            startEST.setTextFill(Color.RED);
-                            startEST.setVisible(true);
-                            endEST.setText("Appointment hours must be between 8:00 and 22:00 EST.");
-                            endEST.setTextFill(Color.RED);
-                            endEST.setVisible(true);
-                        }
+                    } else {
+                        startEST.setText("Appointment hours must be between 8:00 and 22:00 EST.");
+                        startEST.setTextFill(Color.RED);
+                        startEST.setVisible(true);
+                        endEST.setText("Appointment hours must be between 8:00 and 22:00 EST.");
+                        endEST.setTextFill(Color.RED);
+                        endEST.setVisible(true);
+                    }
                 } else {
                     startEST.setText("Appointment start time must be before end time.");
                     startEST.setTextFill(Color.RED);
@@ -194,7 +194,7 @@ public class AppointmentsAddUpdateController implements Initializable {
             }
         }
     }
-    
+
     @FXML
     void onActionSetID(ActionEvent event) {
         String name = customerNameComboBox.getSelectionModel().getSelectedItem();
@@ -215,7 +215,7 @@ public class AppointmentsAddUpdateController implements Initializable {
         Optional<ButtonType> result = alert.showAndWait();
 
         if (result.isPresent() && result.get() == ButtonType.OK) {
-            stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
+            stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
             scene = FXMLLoader.load(getClass().getResource("/view/AppointmentsMain.fxml"));
             stage.setScene(new Scene(scene));
             stage.show();
@@ -224,9 +224,9 @@ public class AppointmentsAddUpdateController implements Initializable {
 
     @FXML
     void onActionSaveAppointment(ActionEvent event) throws IOException {
-        if (typeValid() && titleValid() && descriptionValid() 
-                && locationValid() && contactValid() && startDateTimeValid() 
-                && endDateTimeValid() && customerNameValid() && customerIDValid() 
+        if (typeValid() && titleValid() && descriptionValid()
+                && locationValid() && contactValid() && startDateTimeValid()
+                && endDateTimeValid() && customerNameValid() && customerIDValid()
                 && userValid() && customerTimeValid()) {
             errorDisplay.setVisible(false);
             System.out.println("Appointment info is valid.");
@@ -254,16 +254,16 @@ public class AppointmentsAddUpdateController implements Initializable {
                     String phone = DBCustomer.getCustomerPhone(customerName);
                     String postalCode = DBCustomer.getCustomerPostalCode(customerName);
                     String userName = userComboBox.getSelectionModel().getSelectedItem();
-                    int userID = DBAppointment.getUserID(userName);
+                    int userID = DBUser.getUserID(userName);
                     Appointment savingAppointment = new Appointment(
-                            id, 
-                            title, 
-                            description, 
+                            id,
+                            title,
+                            description,
                             location,
                             contactID,
-                            contactName, 
-                            type, 
-                            thisStartTime, 
+                            contactName,
+                            type,
+                            thisStartTime,
                             thisEndTime,
                             customerID,
                             customerName,
@@ -291,7 +291,7 @@ public class AppointmentsAddUpdateController implements Initializable {
                     String phone = DBCustomer.getCustomerPhone(customerName);
                     String postalCode = DBCustomer.getCustomerPostalCode(customerName);
                     String userName = userComboBox.getSelectionModel().getSelectedItem();
-                    int userID = DBAppointment.getUserID(userName);
+                    int userID = DBUser.getUserID(userName);
                     updatingAppointment.setTitle(title);
                     updatingAppointment.setDescription(description);
                     updatingAppointment.setLocation(location);
@@ -308,7 +308,7 @@ public class AppointmentsAddUpdateController implements Initializable {
                     updatingAppointment.setUserID(userID);
                     DBAppointment.updateAppointment(updatingAppointment);
                 }
-                stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
+                stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
                 scene = FXMLLoader.load(getClass().getResource("/view/AppointmentsMain.fxml"));
                 stage.setScene(new Scene(scene));
                 stage.show();
@@ -321,11 +321,13 @@ public class AppointmentsAddUpdateController implements Initializable {
             validationErrors.clear();
         }
     }
-    
+
     ObservableList<String> validationErrors = FXCollections.observableArrayList();
+
     public void setupErrorDisplay() {
         validationErrors.add("Appointment information is missing!\n");
     }
+
     public void errorCollector() {
         typeValid();
         titleValid();
@@ -339,7 +341,7 @@ public class AppointmentsAddUpdateController implements Initializable {
         userValid();
         customerTimeValid();
     }
-    
+
     public Boolean typeValid() {
         if (typeComboBox.getSelectionModel().isEmpty()) {
             validationErrors.add("Appointment type required!\n");
@@ -347,7 +349,7 @@ public class AppointmentsAddUpdateController implements Initializable {
         }
         return true;
     }
-    
+
     public Boolean titleValid() {
         if (titleTxt.getText().isEmpty()) {
             validationErrors.add("Appointment title required!\n");
@@ -355,7 +357,7 @@ public class AppointmentsAddUpdateController implements Initializable {
         }
         return true;
     }
-    
+
     public Boolean descriptionValid() {
         if (descriptionTxt.getText().isEmpty()) {
             validationErrors.add("Appointment description required!\n");
@@ -363,7 +365,7 @@ public class AppointmentsAddUpdateController implements Initializable {
         }
         return true;
     }
-    
+
     public Boolean locationValid() {
         if (locationTxt.getText().isEmpty()) {
             validationErrors.add("Appointment location required!\n");
@@ -371,31 +373,31 @@ public class AppointmentsAddUpdateController implements Initializable {
         }
         return true;
     }
-    
+
     public Boolean contactValid() {
         if (contactComboBox.getSelectionModel().isEmpty()) {
             validationErrors.add("Contact required!\n");
             return false;
-        } 
+        }
         return true;
     }
-    
+
     public Boolean startDateTimeValid() {
         if (!hoursStartCheck()) {
             validationErrors.add("Appointment hours must be between 8:00 and 22:00 EST.\n");
             return false;
-        } 
+        }
         return true;
     }
-    
+
     public Boolean endDateTimeValid() {
         if (!hoursEndCheck()) {
             validationErrors.add("Appointment hours must be between 8:00 and 22:00 EST.\n");
             return false;
-        } 
+        }
         return true;
     }
-    
+
     public Boolean customerNameValid() {
         if (customerNameComboBox.getSelectionModel().isEmpty()) {
             validationErrors.add("Customer name must be selected!\n");
@@ -403,7 +405,7 @@ public class AppointmentsAddUpdateController implements Initializable {
         }
         return true;
     }
-    
+
     public Boolean customerIDValid() {
         if (customerIDComboBox.getSelectionModel().isEmpty()) {
             validationErrors.add("Customer ID must be selected!\n");
@@ -411,7 +413,7 @@ public class AppointmentsAddUpdateController implements Initializable {
         }
         return true;
     }
-    
+
     public Boolean userValid() {
         if (userComboBox.getValue().isEmpty()) {
             validationErrors.add("User required!\n");
@@ -419,9 +421,9 @@ public class AppointmentsAddUpdateController implements Initializable {
         }
         return true;
     }
-    
+
     public Boolean customerTimeValid() {
-        FilteredList<Appointment> filteredAppointments = new FilteredList<>(DBAppointment.getAppointmentsForCustomer(customerNameComboBox.getSelectionModel().getSelectedItem()));
+        FilteredList<Appointment> filteredAppointments = new FilteredList<>(DBCustomer.getAppointmentsForCustomer(customerIDComboBox.getSelectionModel().getSelectedItem()));
         filteredAppointments.setPredicate(appointment -> {
             selectedStartDate = startDatePicker.getValue();
             selectedStartTime = LocalTime.parse(startTimeComboBox.getSelectionModel().getSelectedItem());
@@ -433,23 +435,23 @@ public class AppointmentsAddUpdateController implements Initializable {
             LocalDate appointmentStartDate = LocalDate.parse(appointment.getStart(), DBAppointment.dtf);
             LocalDateTime appointmentEndDateTime = LocalDateTime.parse(appointment.getEnd(), DBAppointment.dtf);
             LocalDate appointmentEndDate = LocalDate.parse(appointment.getEnd(), DBAppointment.dtf);
-            return (appointmentStartDate.equals(selectedStartDate) 
-                    && (appointmentStartDateTime.isAfter(thisStartTime) 
-                    && appointmentEndDateTime.isBefore(thisEndTime) 
-                    || (appointmentStartDateTime.isBefore(thisStartTime) 
-                    && appointmentEndDateTime.isAfter(thisEndTime)) 
+            return (appointmentStartDate.equals(selectedStartDate)
+                    && (appointmentStartDateTime.isAfter(thisStartTime)
+                    && appointmentEndDateTime.isBefore(thisEndTime)
+                    || (appointmentStartDateTime.isBefore(thisStartTime)
+                    && appointmentEndDateTime.isAfter(thisEndTime))
                     || (appointmentStartDateTime.equals(thisStartTime)
                     || appointmentEndDateTime.equals(thisEndTime))));
         });
-        
+
         if (!filteredAppointments.isEmpty()) {
             validationErrors.add("Customer has overlapping appointments!\n");
             return false;
         }
         return true;
     }
-    
-    public void showErrors(){
+
+    public void showErrors() {
         String allErrors = "";
         for (String error : validationErrors) {
             allErrors = allErrors.concat(error);
@@ -457,7 +459,7 @@ public class AppointmentsAddUpdateController implements Initializable {
         errorDisplay.setVisible(true);
         errorDisplay.setText(allErrors);
     }
-    
+
     public Boolean hoursStartCheck() {
         LocalDate selectedStartDate = startDatePicker.getValue();
         LocalTime selectedStartTime = LocalTime.parse(startTimeComboBox.getValue());
@@ -471,7 +473,7 @@ public class AppointmentsAddUpdateController implements Initializable {
         }
         return check;
     }
-    
+
     public Boolean hoursEndCheck() {
         LocalDate selectedEndDate = endDatePicker.getValue();
         LocalTime selectedEndTime = LocalTime.parse(endTimeComboBox.getValue());
@@ -485,7 +487,7 @@ public class AppointmentsAddUpdateController implements Initializable {
         }
         return check;
     }
-    
+
     /**
      * Initializes the controller class.
      */
@@ -500,28 +502,27 @@ public class AppointmentsAddUpdateController implements Initializable {
         endEST.setTextFill(Color.WHITE);
         endEST.setVisible(false);
         startEST.setVisible(false);
-        
+
         LocalTime time = systemDateTime.toLocalTime().of(0, 0, 0);
         startOptions.add(time.format(DBAppointment.timeDTF));
-        endOptions.add(time.format(DBAppointment.timeDTF));        
+        endOptions.add(time.format(DBAppointment.timeDTF));
         time = systemDateTime.toLocalTime().of(0, 30, 0);
         do {
-		startOptions.add(time.format(DBAppointment.timeDTF));
-		endOptions.add(time.format(DBAppointment.timeDTF));
-		time = time.plusMinutes(30);
-	} while(!time.equals(LocalTime.of(0, 0, 0)));
-		startOptions.remove(startOptions.size() - 1);
-		endOptions.remove(0);
-                startTimeComboBox.getItems().setAll(startOptions);
-                endTimeComboBox.getItems().setAll(endOptions);
+            startOptions.add(time.format(DBAppointment.timeDTF));
+            endOptions.add(time.format(DBAppointment.timeDTF));
+            time = time.plusMinutes(30);
+        } while (!time.equals(LocalTime.of(0, 0, 0)));
+        startOptions.remove(startOptions.size() - 1);
+        endOptions.remove(0);
+        startTimeComboBox.getItems().setAll(startOptions);
+        endTimeComboBox.getItems().setAll(endOptions);
         if (updatingAppointment == null) {
             appointmentLbl.setText("Add Appointment");
             startDatePicker.setValue(LocalDate.now());
             endDatePicker.setValue(LocalDate.now());
             startTimeComboBox.setValue(LocalTime.now().format(DBAppointment.timeDTF));
-            endTimeComboBox.setValue(LocalTime.now().format(DBAppointment.timeDTF));
-        }
-        else{
+            endTimeComboBox.setValue(LocalTime.now().plusMinutes(30).format(DBAppointment.timeDTF));
+        } else {
             appointmentLbl.setText("Update Appointment");
             autoIDTxt.setText(Integer.toString(updatingAppointment.getAppointmentID()));
             typeComboBox.setValue(updatingAppointment.getType());
@@ -549,12 +550,12 @@ public class AppointmentsAddUpdateController implements Initializable {
                 "Project Kickoff");
         DBAppointment.getAllContactNames().clear();
         contactComboBox.setItems(DBAppointment.getAllContactNames());
-        DBAppointment.getAllCustomerNames().clear();
-        customerNameComboBox.setItems(DBAppointment.getAllCustomerNames());
-        DBAppointment.getAllUserNames().clear();
-        userComboBox.setItems(DBAppointment.getAllUserNames());
-        DBAppointment.getAllCustomerIDs().clear();
-        customerIDComboBox.setItems(DBAppointment.getAllCustomerIDs());
-    }    
-    
+        DBCustomer.getAllCustomerNames().clear();
+        customerNameComboBox.setItems(DBCustomer.getAllCustomerNames());
+        DBUser.getAllUserNames().clear();
+        userComboBox.setItems(DBUser.getAllUserNames());
+        DBCustomer.getAllCustomerIDs().clear();
+        customerIDComboBox.setItems(DBCustomer.getAllCustomerIDs());
+    }
+
 }

@@ -1,15 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package model;
 
 /**
  *
- * @author chris
+ * @author Christian Dye
  */
 public class Contact {
+
     private int contactId;
     private String contactName;
     private String contactEmail;
@@ -43,7 +39,5 @@ public class Contact {
     public void setContactEmail(String contactEmail) {
         this.contactEmail = contactEmail;
     }
-    
-    
-    
+
 }

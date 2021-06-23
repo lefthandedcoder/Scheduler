@@ -1,15 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package model;
 
 /**
  *
- * @author chris
+ * @author Christian Dye
  */
 public class Report {
+
     String month;
     String type;
     int count;
@@ -19,46 +15,47 @@ public class Report {
         this.type = type;
         this.count = count;
     }
-    
+
     private static String monthName;
+
     public static String getMonth(int monthNum) {
         switch (monthNum) {
-        case 1:
-            monthName = "January";
-            break;
-        case 2:
-            monthName = "February";
-            break;
-        case 3:
-            monthName = "March";
-            break;
-        case 4:
-            monthName = "April";
-            break;
-        case 5:
-            monthName = "May";
-            break;
-        case 6:
-            monthName = "June";
-            break;
-        case 7:
-            monthName = "July";
-            break;
-        case 8:
-            monthName = "August";
-            break;
-        case 9:
-            monthName = "September";
-            break;
-        case 10:
-            monthName = "October";
-            break;
-        case 11:
-            monthName = "November";
-            break;
-        case 12:
-            monthName = "December";
-            break;
+            case 1:
+                monthName = "January";
+                break;
+            case 2:
+                monthName = "February";
+                break;
+            case 3:
+                monthName = "March";
+                break;
+            case 4:
+                monthName = "April";
+                break;
+            case 5:
+                monthName = "May";
+                break;
+            case 6:
+                monthName = "June";
+                break;
+            case 7:
+                monthName = "July";
+                break;
+            case 8:
+                monthName = "August";
+                break;
+            case 9:
+                monthName = "September";
+                break;
+            case 10:
+                monthName = "October";
+                break;
+            case 11:
+                monthName = "November";
+                break;
+            case 12:
+                monthName = "December";
+                break;
         }
         return monthName;
     }
@@ -94,8 +91,5 @@ public class Report {
     public static void setMonthName(String monthName) {
         Report.monthName = monthName;
     }
-    
-    
+
 }
-
-

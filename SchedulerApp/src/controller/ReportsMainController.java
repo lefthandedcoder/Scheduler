@@ -7,6 +7,7 @@ package controller;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -14,39 +15,25 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
 
 /**
  * FXML Controller class
  *
- * @author chris
+ * @author Christian Dye
  */
 public class ReportsMainController implements Initializable {
-    
+
     Stage stage;
-    
+
     Parent scene;
-    
-    @FXML
-    private TableView<?> summaryTableView;
-
-    @FXML
-    private TableColumn<?, ?> monthCol;
-
-    @FXML
-    private TableColumn<?, ?> typeCol;
-
-    @FXML
-    private TableColumn<?, ?> countCol;
 
     @FXML
     void onActionAppointmentsMain(ActionEvent event) throws IOException {
-        stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
+        stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
         scene = FXMLLoader.load(getClass().getResource("/view/AppointmentsMain.fxml"));
         stage.setScene(new Scene(scene));
         stage.show();
@@ -54,7 +41,7 @@ public class ReportsMainController implements Initializable {
 
     @FXML
     void onActionCustomersMain(ActionEvent event) throws IOException {
-        stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
+        stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
         scene = FXMLLoader.load(getClass().getResource("/view/CustomersMain.fxml"));
         stage.setScene(new Scene(scene));
         stage.show();
@@ -62,23 +49,31 @@ public class ReportsMainController implements Initializable {
 
     @FXML
     void onActionMainMenu(ActionEvent event) throws IOException {
-        stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
+        stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
         scene = FXMLLoader.load(getClass().getResource("/view/MainMenu.fxml"));
         stage.setScene(new Scene(scene));
         stage.show();
     }
-    
+
     @FXML
     void onActionAllReports(ActionEvent event) throws IOException {
-        stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
+        stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
         scene = FXMLLoader.load(getClass().getResource("/view/ReportsMain.fxml"));
         stage.setScene(new Scene(scene));
         stage.show();
     }
-    
+
     @FXML
     void onActionExit(ActionEvent event) {
-        System.exit(0);
+        // Exit confirmation
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Exit Program");
+        alert.setContentText("Exit program?");
+        Optional<ButtonType> result = alert.showAndWait();
+
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            System.exit(0);
+        }
     }
 
     /**
@@ -87,6 +82,6 @@ public class ReportsMainController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-    }    
-    
+    }
+
 }

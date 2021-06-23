@@ -1,17 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package model;
-
-import java.time.LocalDateTime;
 
 /**
  *
- * @author chris
+ * @author Christian Dye
  */
 public class Appointment {
+
     private int appointmentID;
     private String title;
     private String description;
@@ -27,12 +21,11 @@ public class Appointment {
     private String phone;
     private int userID;
     private String userName;
-    
 
-    public Appointment(int appointmentID, String title, 
-            String description, String location, int contactID, 
-            String contactName, String type, String start, 
-            String end, int apptCustomerID, String apptCustomerName, 
+    public Appointment(int appointmentID, String title,
+            String description, String location, int contactID,
+            String contactName, String type, String start,
+            String end, int apptCustomerID, String apptCustomerName,
             String postalCode, String phone, int userID, String userName) {
         this.appointmentID = appointmentID;
         this.title = title;
@@ -50,8 +43,9 @@ public class Appointment {
         this.userID = userID;
         this.userName = userName;
     }
-    
-    public Appointment(){}
+
+    public Appointment() {
+    }
 
     public int getAppointmentID() {
         return appointmentID;
@@ -164,7 +158,7 @@ public class Appointment {
     public void setUserID(int userID) {
         this.userID = userID;
     }
-    
+
     public String getUserName() {
         return userName;
     }
@@ -172,7 +166,5 @@ public class Appointment {
     public void setUserName(String userName) {
         this.userName = userName;
     }
-    
-    
-    
+
 }

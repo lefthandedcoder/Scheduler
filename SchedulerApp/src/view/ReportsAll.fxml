@@ -7,18 +7,18 @@
 <?import javafx.scene.text.Font?>
 
 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="370.0" prefWidth="650.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="controller.ReportsAllController">
-   <children>
-      <TableView fx:id="summaryTableView" layoutX="209.0" layoutY="65.0" prefHeight="239.0" prefWidth="270.0">
-         <columns>
-            <TableColumn fx:id="monthCol" prefWidth="90.0" text="Month" />
-            <TableColumn fx:id="typeCol" prefWidth="90.0" text="Type" />
-            <TableColumn fx:id="countCol" prefWidth="90.0" text="Count" />
-         </columns>
-      </TableView>
-      <Label layoutX="237.0" layoutY="24.0" text="Summary of Appointments">
-         <font>
-            <Font size="18.0" />
-         </font>
-      </Label>
-   </children>
+    <children>
+        <TableView fx:id="summaryTableView" layoutX="209.0" layoutY="65.0" prefHeight="239.0" prefWidth="270.0">
+            <columns>
+                <TableColumn fx:id="monthCol" prefWidth="90.0" text="Month" />
+                <TableColumn fx:id="typeCol" prefWidth="90.0" text="Type" />
+                <TableColumn fx:id="countCol" prefWidth="90.0" text="Count" />
+            </columns>
+        </TableView>
+        <Label layoutX="237.0" layoutY="24.0" text="Summary of Appointments">
+            <font>
+                <Font size="18.0" />
+            </font>
+        </Label>
+    </children>
 </AnchorPane>

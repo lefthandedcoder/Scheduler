@@ -38,22 +38,21 @@ import utilities.DBRegion;
 /**
  * FXML Controller class
  *
- * @author chris
+ * @author Christian Dye
  */
 public class CustomersAddUpdateController implements Initializable {
-    
+
     private static Country selectedCountry;
     private static Region selectedRegion;
-    
+
     public static Country getselectedCountry() {
         return selectedCountry;
     }
-    
+
     public static Region getselectedRegion() {
         return selectedRegion;
     }
-    
-    
+
     // Customer being modified if this is a modification, else null 
     private final Customer updatingCustomer;
 
@@ -67,11 +66,11 @@ public class CustomersAddUpdateController implements Initializable {
     public CustomersAddUpdateController() {
         this.updatingCustomer = getUpdatedCustomer();
     }
-    
+
     Stage stage;
-    
+
     Parent scene;
-    
+
     @FXML
     private Label customerLbl;
 
@@ -95,7 +94,7 @@ public class CustomersAddUpdateController implements Initializable {
 
     @FXML
     private ComboBox<String> countryComboBox;
-    
+
     @FXML
     private TextArea errorDisplay;
 
@@ -107,7 +106,7 @@ public class CustomersAddUpdateController implements Initializable {
         Optional<ButtonType> result = alert.showAndWait();
 
         if (result.isPresent() && result.get() == ButtonType.OK) {
-            stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
+            stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
             scene = FXMLLoader.load(getClass().getResource("/view/CustomersMain.fxml"));
             stage.setScene(new Scene(scene));
             stage.show();
@@ -123,7 +122,8 @@ public class CustomersAddUpdateController implements Initializable {
             alert.setTitle("Add/Update Customer");
             alert.setContentText("Save changes and return to Customers menu?");
             Optional<ButtonType> result = alert.showAndWait();
-            if (alert.getResult() == ButtonType.OK) {
+
+            if (result.isPresent() && alert.getResult() == ButtonType.OK) {
                 if (updatingCustomer == null) {
                     int id = 0;
                     String customerName = nameTxt.getText();
@@ -155,7 +155,7 @@ public class CustomersAddUpdateController implements Initializable {
                     updatingCustomer.setPhone(phone);
                     DBCustomer.updateCustomer(updatingCustomer);
                 }
-                stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
+                stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
                 scene = FXMLLoader.load(getClass().getResource("/view/CustomersMain.fxml"));
                 stage.setScene(new Scene(scene));
                 stage.show();
@@ -168,11 +168,13 @@ public class CustomersAddUpdateController implements Initializable {
             validationErrors.clear();
         }
     }
-    
+
     ObservableList<String> validationErrors = FXCollections.observableArrayList();
+
     public void setupErrorDisplay() {
         validationErrors.add("Customer information is missing!\n");
     }
+
     public void errorCollector() {
         nameValid();
         addressValid();
@@ -182,6 +184,7 @@ public class CustomersAddUpdateController implements Initializable {
         countryValid();
         phoneValid();
     }
+
     public Boolean nameValid() {
         if (nameTxt.getText().isEmpty()) {
             validationErrors.add("Customer name required!\n");
@@ -189,13 +192,15 @@ public class CustomersAddUpdateController implements Initializable {
         }
         return true;
     }
+
     public Boolean addressValid() {
         if (addressTxt.getText().isEmpty()) {
             validationErrors.add("Address required!\n");
             return false;
-        } 
+        }
         return true;
     }
+
     public Boolean regionValid() {
         if (regionComboBox.getSelectionModel().isEmpty()) {
             validationErrors.add("Region must be selected!\n");
@@ -203,7 +208,7 @@ public class CustomersAddUpdateController implements Initializable {
         }
         return true;
     }
-    
+
     public Boolean countryValid() {
         if (countryComboBox.getSelectionModel().isEmpty()) {
             validationErrors.add("Country must be selected!\n");
@@ -211,6 +216,7 @@ public class CustomersAddUpdateController implements Initializable {
         }
         return true;
     }
+
     public Boolean postalCodeValid() {
         if (postalCodeTxt.getText().isEmpty()) {
             validationErrors.add("Postal code required!\n");
@@ -218,6 +224,7 @@ public class CustomersAddUpdateController implements Initializable {
         }
         return true;
     }
+
     public Boolean phoneValid() {
         if (phoneTxt.getText().isEmpty()) {
             validationErrors.add("Phone required!\n");
@@ -225,8 +232,8 @@ public class CustomersAddUpdateController implements Initializable {
         }
         return true;
     }
-    
-    public void showErrors(){
+
+    public void showErrors() {
         String allErrors = "";
         for (String error : validationErrors) {
             allErrors = allErrors.concat(error);
@@ -244,8 +251,7 @@ public class CustomersAddUpdateController implements Initializable {
         //Clear updating customer data when adding new customer
         if (updatingCustomer == null) {
             customerLbl.setText("Add Customer");
-        }
-        else{
+        } else {
             customerLbl.setText("Update Customer");
             autoIDTxt.setText(Integer.toString(updatingCustomer.getCustomerID()));
             nameTxt.setText(updatingCustomer.getCustomerName());
@@ -255,11 +261,10 @@ public class CustomersAddUpdateController implements Initializable {
             postalCodeTxt.setText(updatingCustomer.getPostalCode());
             phoneTxt.setText(updatingCustomer.getPhone());
         }
-        
+
         // Populating combo box with country choices
         countryComboBox.setItems(DBCountry.getAllComboStrings());
-        
-        
+
         // Populating combo box with region choices        
         regionComboBox.setItems(DBRegion.getAllComboStrings());
         countryComboBox.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
@@ -271,12 +276,12 @@ public class CustomersAddUpdateController implements Initializable {
                     case "U.S":
                         regionComboBox.setItems(DBRegion.getAllComboStringsUSA());
                         break;
-                   case "Canada":
+                    case "Canada":
                         regionComboBox.setItems(DBRegion.getAllComboStringsCanada());
                         break;
-                   case "UK":
+                    case "UK":
                         regionComboBox.setItems(DBRegion.getAllComboStringsUK());
-                       break;
+                        break;
 
                 }
             }

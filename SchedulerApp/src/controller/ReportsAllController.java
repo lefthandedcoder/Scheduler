@@ -13,15 +13,15 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import model.Report;
-import utilities.DBAppointment;
+import utilities.DBReport;
 
 /**
  * FXML Controller class
  *
- * @author chris
+ * @author Christian Dye
  */
 public class ReportsAllController implements Initializable {
-    
+
     @FXML
     private TableView<Report> summaryTableView;
 
@@ -33,6 +33,7 @@ public class ReportsAllController implements Initializable {
 
     @FXML
     private TableColumn<Report, Integer> countCol;
+
     /**
      * Initializes the controller class.
      */
@@ -41,8 +42,8 @@ public class ReportsAllController implements Initializable {
         monthCol.setCellValueFactory(new PropertyValueFactory<>("month"));
         typeCol.setCellValueFactory(new PropertyValueFactory<>("type"));
         countCol.setCellValueFactory(new PropertyValueFactory<>("count"));
-        summaryTableView.setItems(DBAppointment.getallAppointmentsReport());
-        
-    }    
-    
+        summaryTableView.setItems(DBReport.getallAppointmentsReport());
+
+    }
+
 }

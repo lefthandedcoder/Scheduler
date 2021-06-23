@@ -1,17 +1,13 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package utilities;
+
 import java.sql.*;
-import java.text.SimpleDateFormat;
 
 /**
  *
- * @author chris
+ * @author Christian Dye
  */
 public class DBConnection {
+
     private static final String protocol = "jdbc:";
     private static final String vendorName = "mysql:";
     private static final String ipAddress = "//wgudb.ucertify.com:3306/WJ08Qnw";
@@ -24,37 +20,29 @@ public class DBConnection {
     private static final String password = "53689362807";
     // Driver connection reference
     public static Connection conn;
-    
-    // Connect to database if located and auth is successful
+
+    //Connecting to database
     public static void connect() {
         try {
             // Connect to database
             Class.forName(Driver);
-            conn = (Connection)DriverManager.getConnection(jdbcURL, username, password);
+            conn = (Connection) DriverManager.getConnection(jdbcURL, username, password);
             System.out.println("Connected to MySQL Database");
         } catch (ClassNotFoundException e) {
             System.out.println("Class Not Found " + e.getMessage());
-            
+
         } catch (SQLException e) {
-            System.out.println("SQL Exception: " + e.getMessage()); 
+            System.out.println("SQL Exception: " + e.getMessage());
             System.out.println("SQL State: " + e.getSQLState());
             System.out.println("Error: " + e.getErrorCode());
         }
     }
-    
-    // Date formatting
-    private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    
-    public static String timestamp() {
-        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-        return sdf.format(timestamp);
-    }
-    
+
     // Return Database Connection
     public static Connection getConnection() {
         return conn;
     }
-    
+
     // Close Database Connection
     public static void disconnect() {
         try {
