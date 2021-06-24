@@ -1,4 +1,4 @@
-Title: Scheduler Application 1.0
+Title: Scheduler Application 1.1
 Purpose: 
 This application allows users to create, update, and delete appointments and customers with data stored and retrieved from a MySQL database.
 The application converts database UTC times to system default times and checks new appointment start and end times against EST business hours.
@@ -7,7 +7,7 @@ The application also displays reports based on appointment type per month, appoi
 Author:
 Christian Dye
 cdye33@wgu.edu
-Version: 1.0
+Version: 1.1
 
 IDE:
 Netbeans 11.1
@@ -21,6 +21,7 @@ A. Login:
 	Enter correct username and password in the login window and click login.
 	Note that language functionality for the login window is available for English, French, or Chinese.
 	Login attempts will be saved to login_activity.txt.
+	An alert will appear upon successful login to notify the user if there are any upcoming appointments. The user can then choose to view these appointments or to go to the main menu.
 B. Customers:
 	1. To view a list of customers, click on the Customers button in the navigation bar on the left.
 	2. To add a new customer, click on the Add button on the bottom right.
@@ -32,8 +33,8 @@ B. Customers:
 	To do this, delete associated appointments in the Appointment main menu. Then return to the Customers main menu, select the customer, and click Delete.
 
 C. Appointments:
-	*** If the current user has appointments within the next 15 minutes, a pop-up alert will display after the login. 
-	To view these appointments, click on the Upcoming Appointments button on the Scheduler main menu or go to the Appointments main menu and select the Upcoming Appointments radio button. ***
+	*** If the current user has appointments within the next 15 minutes, a pop-up alert will display after successful login. 
+	To view these appointments, click OK after the alert or go to the Appointments main menu and select the Upcoming Appointments radio button. ***
 	
 	1. To view a list of appointments, click on the Appointments button in the navigation bar on the left.
 	2. To add a new appointment, click on the Add button on the bottom right.

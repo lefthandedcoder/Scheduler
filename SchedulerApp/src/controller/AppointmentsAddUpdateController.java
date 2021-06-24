@@ -326,8 +326,10 @@ public class AppointmentsAddUpdateController implements Initializable {
      */
     @FXML
     void onActionSetName(ActionEvent event) {
-        int id = customerIDComboBox.getSelectionModel().getSelectedItem();
-        customerNameComboBox.setValue(DBCustomer.getCustomerName(id));
+        if (customerIDComboBox.getSelectionModel().getSelectedItem() != null) {
+            int id = customerIDComboBox.getSelectionModel().getSelectedItem();
+            customerNameComboBox.setValue(DBCustomer.getCustomerName(id));
+        }
     }
 
     /**
@@ -629,10 +631,14 @@ public class AppointmentsAddUpdateController implements Initializable {
                     || (appointmentStartDateTime.equals(thisStartTime)
                     || appointmentEndDateTime.equals(thisEndTime))));
         });
-
-        if (!filteredAppointments.isEmpty()) {
-            validationErrors.add("Customer has overlapping appointments!\n");
-            return false;
+        
+        if (updatingAppointment == null)
+        {
+            if (!filteredAppointments.isEmpty()) {
+                validationErrors.add("Customer has overlapping appointments!\n");
+                return false;
+            }
+            return true;    
         }
         return true;
     }

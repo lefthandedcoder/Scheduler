@@ -25,7 +25,7 @@
                 </VBox>
                 <VBox minWidth="-Infinity" prefHeight="460.0" prefWidth="673.3">
                     <children>
-                        <Label alignment="TOP_LEFT" prefHeight="72.0" prefWidth="451.0" text="Welcome to Appointment Scheduler 1.0!">
+                        <Label alignment="TOP_LEFT" prefHeight="72.0" prefWidth="451.0" text="Welcome to Appointment Scheduler 1.1!">
                             <font>
                                 <Font size="24.0" />
                             </font>
@@ -33,18 +33,16 @@
                                 <Insets left="20.0" top="20.0" />
                             </padding>
                         </Label>
-                        <Button fx:id="upcomingBtn" disable="true" mnemonicParsing="false" onAction="#onActionUpcomingAppointments" text="Upcoming Appointments">
-                            <VBox.margin>
-                                <Insets bottom="10.0" top="10.0" />
-                            </VBox.margin>
-                        </Button>
-                        <Label alignment="TOP_LEFT" prefHeight="60.0" prefWidth="478.0" text="To view, add, modify, or delete customer data, click on the Customers button on the right or the Customers tab at the top. Customer data can only be deleted after corresponding appointments have been removed." textAlignment="JUSTIFY" wrapText="true" />
-                        <Label alignment="TOP_LEFT" layoutX="10.0" layoutY="45.0" prefHeight="42.0" prefWidth="488.0" text="To view, add, modify, or delete appointments, click on the Appointments button on the right or the Appointments tab at the top." textAlignment="JUSTIFY" wrapText="true" />
-                        <Label alignment="TOP_LEFT" layoutX="10.0" layoutY="87.0" prefHeight="105.0" prefWidth="478.0" text="To view reports, click on the Reports button on the right or the Reports tab at the top." textAlignment="JUSTIFY" wrapText="true" />
-                        <Label alignment="TOP_LEFT" layoutX="20.0" layoutY="129.0" prefHeight="42.0" prefWidth="488.0" text="Office hours are 8:00 AM to 10:00 PM EST. Appointments can only be scheduled during office hours." textAlignment="JUSTIFY" wrapText="true" />
+                        <Label alignment="TOP_LEFT" prefHeight="60.0" prefWidth="478.0" text="To view, add, update, or delete customer data, click on the Customers button on the left. Customer data can only be deleted after corresponding appointments have been removed." textAlignment="JUSTIFY" wrapText="true" />
+                        <Label alignment="TOP_LEFT" layoutX="10.0" layoutY="45.0" prefHeight="42.0" prefWidth="488.0" text="To view, add, modify, or delete appointments, click on the Appointments button on the left." textAlignment="JUSTIFY" wrapText="true" />
+                        <Label alignment="TOP_LEFT" layoutX="10.0" layoutY="87.0" prefHeight="105.0" prefWidth="478.0" text="To view reports, click on the Reports button on the left." textAlignment="JUSTIFY" wrapText="true" />
+                        <Label alignment="TOP_LEFT" layoutX="20.0" layoutY="129.0" prefHeight="42.0" prefWidth="488.0" text="Office hours are 8:00 to 10:00 PM EST. Appointments can only be scheduled during office hours." textAlignment="JUSTIFY" wrapText="true" />
                         <HBox alignment="BOTTOM_RIGHT" prefHeight="147.0" prefWidth="633.0">
                             <children>
-                                <Button alignment="BOTTOM_RIGHT" mnemonicParsing="false" onAction="#onActionExit" text="Exit" />
+                                <Button alignment="BOTTOM_RIGHT" mnemonicParsing="false" onAction="#onActionExit" text="Exit">
+                           <HBox.margin>
+                              <Insets bottom="20.0" />
+                           </HBox.margin></Button>
                             </children>
                         </HBox>
                     </children>

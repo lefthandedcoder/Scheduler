@@ -1,6 +1,8 @@
 package controller;
 
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URL;
@@ -23,11 +25,14 @@ import java.util.Locale;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.collections.transformation.FilteredList;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import model.Appointment;
 import utilities.DBAppointment;
 import static utilities.DBConnection.conn;
 import utilities.DBQuery;
+import utilities.DBUser;
 
 /**
  * FXML Controller class
@@ -140,6 +145,30 @@ public class LoginController implements Initializable {
      */
     @FXML
     private Label usernameLbl;
+    
+    /**
+     * Language label with language functionality
+     */
+    @FXML
+    private Label languageLbl;
+
+    /**
+     * Language string for current system default locale
+     */
+    @FXML
+    private Label currentLanguageLbl;
+    
+    /**
+     * Location label with language functionality
+     */
+    @FXML
+    private Label locationLbl;
+
+    /**
+     * Location for current location based on system
+     */
+    @FXML
+    private Label currentLocationLbl;
 
     /**
      * Time label with language functionality
@@ -193,9 +222,29 @@ public class LoginController implements Initializable {
             System.exit(0);
         }
     }
+    
+    /**
+     * Grabs a filtered list of upcoming appointments for the current user with a lambda that filters for the user's appointments within now and the next 15 minutes and from all appointments
+     * @return filteredAppointments
+     */
+    public FilteredList<Appointment> getUpcomingAppointments() {
+        DBUser.getAllAppointments().clear();
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime minutes15 = now.plusMinutes(15);
+        DBAppointment.getAllAppointments().clear();
+        FilteredList<Appointment> filteredAppointments = new FilteredList<>(DBUser.getAllAppointments());
+        filteredAppointments.setPredicate(appointment -> {
+            LocalDateTime appointmentStartDateTime = LocalDateTime.parse(appointment.getStart(), DBAppointment.dtf);
+            return ((appointmentStartDateTime.isAfter(now)
+                    || appointmentStartDateTime.equals(now))
+                    && (appointmentStartDateTime.equals(minutes15)
+                    || appointmentStartDateTime.isBefore(minutes15)));
+        });
+        return filteredAppointments;
+    }
 
     /**
-     * Attempts to log into the scheduler, logs login attempt in text document
+     * Attempts to log into the scheduler and checks for upcoming appointments with lambda, logs login attempt in text document
      * @param event
      * @throws IOException
      */
@@ -207,9 +256,9 @@ public class LoginController implements Initializable {
         boolean validUser = login(username, password);
         if (validUser) {
             try {
-                PrintWriter outputStream = new PrintWriter(fileName);
-                outputStream.println("User " + username + " successfully logged in at " + LocalDateTime.now().format(DBAppointment.dtf) + " " + ZoneId.systemDefault());
-                System.out.println("User " + username + " successfully logged in at " + LocalDateTime.now().format(DBAppointment.dtf) + " " + ZoneId.systemDefault());
+                PrintWriter outputStream = new PrintWriter(new FileOutputStream(new File(fileName), true));
+                outputStream.append("User '" + username + "' successfully logged in at " + LocalDateTime.now().format(DBAppointment.dtf) + " " + ZoneId.systemDefault() + "\n");
+                System.out.println("User '" + username + "' successfully logged in at " + LocalDateTime.now().format(DBAppointment.dtf) + " " + ZoneId.systemDefault());
                 outputStream.flush();
                 outputStream.close();
             } catch (FileNotFoundException ex) {
@@ -220,15 +269,38 @@ public class LoginController implements Initializable {
             alert.setHeaderText(successHeader);
             alert.setContentText(successText);
             alert.showAndWait();
-            stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-            scene = FXMLLoader.load(getClass().getResource("/view/MainMenu.fxml"));
-            stage.setScene(new Scene(scene));
-            stage.show();
+            if (getUpcomingAppointments().isEmpty()) {
+                Alert information = new Alert(Alert.AlertType.INFORMATION);
+                information.setTitle("Upcoming Appointments");
+                information.setContentText("There are no upcoming appointments.");
+                Optional<ButtonType> result = alert.showAndWait();
+                stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+                scene = FXMLLoader.load(getClass().getResource("/view/MainMenu.fxml"));
+                stage.setScene(new Scene(scene));
+                stage.show();
+            } else {
+                Alert appointmentAlert = new Alert(Alert.AlertType.WARNING);
+                appointmentAlert.setTitle("Upcoming Appointments");
+                appointmentAlert.setContentText("You have appointments in the next 15 minutes.\nView upcoming appointments now?");
+                Optional<ButtonType> result = alert.showAndWait();
+
+                if (result.isPresent() && result.get() == ButtonType.OK) {
+                    stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+                    scene = FXMLLoader.load(getClass().getResource("/view/MainMenu.fxml"));
+                    stage.setScene(new Scene(scene));
+                    stage.show();
+                } else {
+                    stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+                    scene = FXMLLoader.load(getClass().getResource("/view/MainMenu.fxml"));
+                    stage.setScene(new Scene(scene));
+                    stage.show();
+                }
+            }
         } else {
             try {
-                PrintWriter outputStream = new PrintWriter(fileName);
-                outputStream.println("User " + username + " failed to log in  " + password + " at " + LocalDateTime.now().format(DBAppointment.dtf) + " " + ZoneId.systemDefault());
-                System.out.println("User " + username + " failed to log in with " + password + " at " + LocalDateTime.now().format(DBAppointment.dtf) + " " + ZoneId.systemDefault());
+                PrintWriter outputStream = new PrintWriter(new FileOutputStream(new File(fileName), true));
+                outputStream.append("User '" + username + "' failed to log in with password '" + password + "' at " + LocalDateTime.now().format(DBAppointment.dtf) + " " + ZoneId.systemDefault() + "\n");
+                System.out.println("User '" + username + "' failed to log in with password '" + password + "' at " + LocalDateTime.now().format(DBAppointment.dtf) + " " + ZoneId.systemDefault());
                 outputStream.flush();
                 outputStream.close();
             } catch (FileNotFoundException ex) {
@@ -250,11 +322,16 @@ public class LoginController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         //Current time:
+        String language = Locale.getDefault().getDisplayLanguage();
         String now = LocalDateTime.now().format(DBAppointment.dtf);
         ZoneId currentZone = ZoneId.systemDefault();
-        currentTimeLbl.setText(now + " " + currentZone);
+        currentTimeLbl.setText(now);
         //Adding language features for login screen
         rb = ResourceBundle.getBundle("login/lang", Locale.getDefault());
+        languageLbl.setText(rb.getString("language"));
+        currentLanguageLbl.setText(language);
+        locationLbl.setText(rb.getString("location"));
+        currentLocationLbl.setText(currentZone.toString());
         timeLbl.setText(rb.getString("time"));
         titleLbl.setText(rb.getString("title"));
         usernameLbl.setText(rb.getString("username"));

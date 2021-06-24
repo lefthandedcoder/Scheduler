@@ -190,6 +190,11 @@ public class AppointmentsMainController implements Initializable {
     @FXML
     void onActionDeleteAppointment(ActionEvent event) {
         Appointment appointmentDelete = appointmentsTableView.getSelectionModel().getSelectedItem();
+        String type = appointmentDelete.getType();
+        int id = appointmentDelete.getAppointmentID();
+        String contentText = "Appointment (ID: " + id + ", Type: " + type + ") has been deleted.";
+        String sureContentText = "Delete the selected appointment (ID: " + id + ", Type: " + type + ")?";
+        Boolean deleteCheck = false;
         if (appointmentDelete == null) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Delete Appointment");
@@ -199,21 +204,25 @@ public class AppointmentsMainController implements Initializable {
             //Delete appointment confirmation
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Delete Appointment");
-            alert.setContentText("Delete the selected appointment?");
+            alert.setContentText(sureContentText);
             Optional<ButtonType> result = alert.showAndWait();
 
             if (result.isPresent() && result.get() == ButtonType.OK) {
                 try {
                     DBAppointment.deleteAppointment(appointmentDelete);
-                    Alert deleted = new Alert(Alert.AlertType.INFORMATION);
-                    deleted.setTitle("Appointment Deleted");
-                    alert.setContentText("Appointment has been deleted.");
-                    tableSetupAll();
+                    deleteCheck = true;
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         }
+        if (deleteCheck = true) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Appointment Deleted");
+            alert.setContentText(contentText);
+            Optional<ButtonType> result = alert.showAndWait();
+        }
+        tableSetupAll();
     }
 
     /**

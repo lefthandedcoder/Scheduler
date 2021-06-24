@@ -19,7 +19,7 @@ public class SchedulerApp extends Application {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        Locale.setDefault(new Locale("fr"));
+        //Locale.setDefault(new Locale("fr"));
         //TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
         DBConnection.connect();
         System.out.println("Launching...");

@@ -147,6 +147,11 @@ public class CustomersMainController implements Initializable {
     @FXML
     void onActionDeleteCustomer(ActionEvent event) {
         Customer customerDelete = customersTableView.getSelectionModel().getSelectedItem();
+        String customerName = customerDelete.getCustomerName();
+        int customerID = customerDelete.getCustomerID();
+        String contentText = "Customer " + customerName + " has been deleted.";
+        String sureContentText = "Delete the selected customer (Customer: " + customerName + ")?";
+        Boolean deleteCheck = false;
         if (customerDelete == null) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Delete Customer");
@@ -157,25 +162,29 @@ public class CustomersMainController implements Initializable {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Delete Customer");
                 alert.setContentText("Delete customer's appointments before deleting customer.");
-                Optional<ButtonType> result = alert.showAndWait();
+                Optional<ButtonType> optional = alert.showAndWait();
             } else {
                 //Delete customer confirmation
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                 alert.setTitle("Delete Customer");
-                alert.setContentText("Delete the selected customer?");
+                alert.setContentText(sureContentText);
                 Optional<ButtonType> result = alert.showAndWait();
 
                 if (result.isPresent() && result.get() == ButtonType.OK) {
                     try {
                         DBCustomer.deleteCustomer(customerDelete);
-                        Alert deleted = new Alert(Alert.AlertType.INFORMATION);
-                        deleted.setTitle("Customer Deleted");
-                        alert.setContentText("Customer has been deleted.");
+                        deleteCheck = true;
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
             }
+        }
+        if (deleteCheck = true) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Customer Deleted");
+            alert.setContentText(contentText);
+            Optional<ButtonType> result = alert.showAndWait();
         }
         tableSetup();
     }
