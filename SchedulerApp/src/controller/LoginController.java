@@ -273,20 +273,20 @@ public class LoginController implements Initializable {
                 Alert information = new Alert(Alert.AlertType.INFORMATION);
                 information.setTitle("Upcoming Appointments");
                 information.setContentText("There are no upcoming appointments.");
-                Optional<ButtonType> result = alert.showAndWait();
+                Optional<ButtonType> result = information.showAndWait();
                 stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
                 scene = FXMLLoader.load(getClass().getResource("/view/MainMenu.fxml"));
                 stage.setScene(new Scene(scene));
                 stage.show();
             } else {
-                Alert appointmentAlert = new Alert(Alert.AlertType.WARNING);
+                Alert appointmentAlert = new Alert(Alert.AlertType.CONFIRMATION);
                 appointmentAlert.setTitle("Upcoming Appointments");
                 appointmentAlert.setContentText("You have appointments in the next 15 minutes.\nView upcoming appointments now?");
-                Optional<ButtonType> result = alert.showAndWait();
+                Optional<ButtonType> result = appointmentAlert.showAndWait();
 
                 if (result.isPresent() && result.get() == ButtonType.OK) {
                     stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-                    scene = FXMLLoader.load(getClass().getResource("/view/MainMenu.fxml"));
+                    scene = FXMLLoader.load(getClass().getResource("/view/AppointmentsMain.fxml"));
                     stage.setScene(new Scene(scene));
                     stage.show();
                 } else {
