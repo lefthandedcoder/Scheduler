@@ -200,19 +200,21 @@ public class CustomersAddUpdateController implements Initializable {
                     String customerName = nameTxt.getText();
                     String address = addressTxt.getText();
                     String regionName = updatingCustomer.getRegionName();
+                    int regionID = updatingCustomer.getRegionID();
                     if (regionComboBox.getSelectionModel().getSelectedItem() != null) {
                         regionName = regionComboBox.getSelectionModel().getSelectedItem();
+                        regionID = DBRegion.getRegionID(regionName);
                     }
-                    String countryName = updatingCustomer.getRegionName();
+                    String countryName = updatingCustomer.getCountryName();
                     if (countryComboBox.getSelectionModel().getSelectedItem() != null) {
-                        regionName = countryComboBox.getSelectionModel().getSelectedItem();
+                        countryName = countryComboBox.getSelectionModel().getSelectedItem();
                     }
-                    int regionID = DBRegion.getRegionID(regionName);
                     String postalCode = postalCodeTxt.getText();
                     String phone = phoneTxt.getText();
                     updatingCustomer.setCustomerName(customerName);
                     updatingCustomer.setAddress(address);
                     updatingCustomer.setRegionName(regionName);
+                    updatingCustomer.setRegionID(regionID);
                     updatingCustomer.setCountryName(countryName);
                     updatingCustomer.setPostalCode(postalCode);
                     updatingCustomer.setPhone(phone);

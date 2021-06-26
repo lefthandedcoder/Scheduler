@@ -145,6 +145,14 @@ public class Customer {
     public int getRegionID() {
         return regionID;
     }
+    
+    /**
+     * Sets the region ID
+     * @param regionID
+     */
+    public void setRegionID(int regionID) {
+        this.regionID = regionID;
+    }
 
     /**
      * Gets the country name
