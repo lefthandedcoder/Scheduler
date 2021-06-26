@@ -279,10 +279,9 @@ public class LoginController implements Initializable {
                 stage.setScene(new Scene(scene));
                 stage.show();
             } else {
-                int id = getUpcomingAppointments().get(0).getAppointmentID();
-                String start = getUpcomingAppointments().get(0).getStart();
                 Alert appointmentAlert = new Alert(Alert.AlertType.CONFIRMATION);
                 appointmentAlert.setTitle("Upcoming Appointments");
+                appointmentAlert.setContentText("You have appointments in the next 15 minutes.\nView upcoming appointments now?");
                 appointmentAlert.setContentText("You have an appointment (ID: " + id + ", Start Date/Time: " + start + ") in the next 15 minutes.\nView upcoming appointments now?");
                 Optional<ButtonType> result = appointmentAlert.showAndWait();
 
