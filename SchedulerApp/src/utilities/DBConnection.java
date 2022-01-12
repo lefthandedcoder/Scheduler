@@ -8,55 +8,15 @@ import java.sql.*;
  */
 public class DBConnection {
 
-    /**
-     * The protocol
-     */
     private static final String protocol = "jdbc:";
-
-    /**
-     * The vendor name
-     */
     private static final String vendorName = "mysql:";
-
-    /**
-     * The IP address
-     */
-    private static final String ipAddress = "//wgudb.ucertify.com:3306/WJ08Qnw";
-    //JDBC URL
-
-    /**
-     * The JDBC URL
-     */
+    private static final String ipAddress = "//database-2.ckhgwtpupbdb.us-east-1.rds.amazonaws.com:3306/scheduler";
     private static final String jdbcURL = protocol + vendorName + ipAddress;
-    // Driver interface reference
-
-    /**
-     * The driver
-     */
     private static final String Driver = "com.mysql.cj.jdbc.Driver";
-    // Database user credentials
-
-    /**
-     * The database username
-     */
-    private static final String username = "U08Qnw";
-
-    /**
-     * The database password
-     */
+    private static final String username = "admin";
     private static final String password = "53689362807";
-    // Driver connection reference
-
-    /**
-     * The connection
-     */
     public static Connection conn;
 
-    //Connecting to database
-
-    /**
-     * Connects to database
-     */
     public static void connect() {
         try {
             // Connect to database

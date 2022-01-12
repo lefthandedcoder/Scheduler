@@ -2,11 +2,8 @@ package controller;
 
 import java.io.IOException;
 import java.net.URL;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.Optional;
 import java.util.ResourceBundle;
-import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,9 +14,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
-import model.Appointment;
-import utilities.DBAppointment;
-import utilities.DBUser;
 
 /**
  * FXML Controller class

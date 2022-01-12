@@ -57,7 +57,7 @@ public class DBRegion {
             Statement statement = DBQuery.getStatement();
             String query = "SELECT first_level_divisions.Division FROM first_level_divisions "
                     + "INNER JOIN countries ON first_level_divisions.Country_ID = countries.Country_ID "
-                    + "WHERE countries.Country = 'U.S'";
+                    + "WHERE countries.Country = 'USA'";
             ResultSet rs = statement.executeQuery(query);
             while (rs.next()) {
                 comboStringsUSA.add(rs.getString("Division"));

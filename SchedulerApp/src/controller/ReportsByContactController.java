@@ -101,7 +101,6 @@ public class ReportsByContactController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
         DBAppointment.getAllContactNames().clear();
         contactNameComboBox.setItems(DBAppointment.getAllContactNames());
 

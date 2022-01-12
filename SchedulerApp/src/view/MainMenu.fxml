@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="controller.MainMenuController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainMenuController">
     <children>
         <HBox layoutX="10.0" layoutY="24.0" prefHeight="476.0" prefWidth="765.0">
             <children>
@@ -36,7 +36,7 @@
                         <Label alignment="TOP_LEFT" prefHeight="60.0" prefWidth="478.0" text="To view, add, update, or delete customer data, click on the Customers button on the left. Customer data can only be deleted after corresponding appointments have been removed." textAlignment="JUSTIFY" wrapText="true" />
                         <Label alignment="TOP_LEFT" layoutX="10.0" layoutY="45.0" prefHeight="42.0" prefWidth="488.0" text="To view, add, modify, or delete appointments, click on the Appointments button on the left." textAlignment="JUSTIFY" wrapText="true" />
                         <Label alignment="TOP_LEFT" layoutX="10.0" layoutY="87.0" prefHeight="105.0" prefWidth="478.0" text="To view reports, click on the Reports button on the left." textAlignment="JUSTIFY" wrapText="true" />
-                        <Label alignment="TOP_LEFT" layoutX="20.0" layoutY="129.0" prefHeight="42.0" prefWidth="488.0" text="Office hours are 8:00 to 10:00 PM EST. Appointments can only be scheduled during office hours." textAlignment="JUSTIFY" wrapText="true" />
+                        <Label alignment="TOP_LEFT" layoutX="20.0" layoutY="129.0" prefHeight="42.0" prefWidth="488.0" text="Office hours are 08:00 to 22:00 EST. Appointments can only be scheduled during office hours." textAlignment="JUSTIFY" wrapText="true" />
                         <HBox alignment="BOTTOM_RIGHT" prefHeight="147.0" prefWidth="633.0">
                             <children>
                                 <Button alignment="BOTTOM_RIGHT" mnemonicParsing="false" onAction="#onActionExit" text="Exit">

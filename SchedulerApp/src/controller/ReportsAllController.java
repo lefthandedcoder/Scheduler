@@ -21,7 +21,7 @@ public class ReportsAllController implements Initializable {
      * Table of appointments by month, type, and the number of each type
      */
     @FXML
-    private TableView<Report> summaryTableView;
+     TableView<Report> summaryTableView;
 
     /**
      * Column of months with appointments

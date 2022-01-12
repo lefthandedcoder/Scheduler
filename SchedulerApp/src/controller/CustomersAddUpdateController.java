@@ -162,6 +162,8 @@ public class CustomersAddUpdateController implements Initializable {
         Optional<ButtonType> result = alert.showAndWait();
 
         if (result.isPresent() && result.get() == ButtonType.OK) {
+            regionComboBox.getItems().clear();
+            countryComboBox.getItems().clear();
             stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
             scene = FXMLLoader.load(getClass().getResource("/view/CustomersMain.fxml"));
             stage.setScene(new Scene(scene));
@@ -196,6 +198,8 @@ public class CustomersAddUpdateController implements Initializable {
                     String phone = phoneTxt.getText();
                     Customer savingCustomer = new Customer(id, customerName, address, regionName, regionID, countryName, postalCode, phone);
                     DBCustomer.addCustomer(savingCustomer);
+                    regionComboBox.getItems().clear();
+                    countryComboBox.getItems().clear();
                 } else {
                     String customerName = nameTxt.getText();
                     String address = addressTxt.getText();
@@ -219,6 +223,8 @@ public class CustomersAddUpdateController implements Initializable {
                     updatingCustomer.setPostalCode(postalCode);
                     updatingCustomer.setPhone(phone);
                     DBCustomer.updateCustomer(updatingCustomer);
+                    regionComboBox.getItems().clear();
+                    countryComboBox.getItems().clear();
                 }
                 stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
                 scene = FXMLLoader.load(getClass().getResource("/view/CustomersMain.fxml"));
@@ -364,7 +370,7 @@ public class CustomersAddUpdateController implements Initializable {
             postalCodeTxt.setText(updatingCustomer.getPostalCode());
             phoneTxt.setText(updatingCustomer.getPhone());
         }
-
+        
         // Populating combo box with country choices
         countryComboBox.setItems(DBCountry.getAllComboStrings());
 
@@ -373,10 +379,9 @@ public class CustomersAddUpdateController implements Initializable {
         countryComboBox.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
             @Override
             public void changed(ObservableValue ov, Object t, Object t1) {
-
                 regionComboBox.getItems().clear();
                 switch (t1.toString()) {
-                    case "U.S":
+                    case "USA":
                         regionComboBox.setItems(DBRegion.getAllComboStringsUSA());
                         break;
                     case "Canada":

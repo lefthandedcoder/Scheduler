@@ -104,7 +104,6 @@ public class ReportsByCustomerController implements Initializable {
 
         DBCustomer.getAllCustomerNames().clear();
         customerNameComboBox.setItems(DBCustomer.getAllCustomerNames());
-
         customerApptIDCol.setCellValueFactory(new PropertyValueFactory<>("appointmentID"));
         customerTitleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
         customerDescriptionCol.setCellValueFactory(new PropertyValueFactory<>("description"));
