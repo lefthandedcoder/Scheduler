@@ -1,12 +1,10 @@
 # Scheduler
 JavaFX Scheduling App
 
-<p display="flex">
-  <img src="https://github.com/lefthandedcoder/Scheduler/blob/master/login_screen.png?raw=true" width="200" />
-  <img src="https://github.com/lefthandedcoder/Scheduler/blob/master/appointment_add_update.png?raw=true" width="200" /> 
-  <img src="https://github.com/lefthandedcoder/Scheduler/blob/master/appointment_dashboard.png?raw=true" width="200" /> 
-  <img src="https://github.com/lefthandedcoder/Scheduler/blob/master/customer_dashboard.png?raw=true" width="200" /> 
-</p>
+<img src="https://github.com/lefthandedcoder/Scheduler/blob/master/login_screen.png?raw=true" width="200" />
+<img src="https://github.com/lefthandedcoder/Scheduler/blob/master/appointment_add_update.png?raw=true" width="200" /> 
+<img src="https://github.com/lefthandedcoder/Scheduler/blob/master/appointment_dashboard.png?raw=true" width="200" /> 
+<img src="https://github.com/lefthandedcoder/Scheduler/blob/master/customer_dashboard.png?raw=true" width="200" /> 
 
 
 This application allows users to create, update, and delete appointments and customers with data stored and retrieved from a MySQL database.
