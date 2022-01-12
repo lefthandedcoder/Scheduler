@@ -12,11 +12,11 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="307.0" prefWidth="395.0" style="-fx-background-color: #F9AD84;" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="controller.LoginController">
+<AnchorPane id="AnchorPane" prefHeight="307.0" prefWidth="395.0" style="-fx-background-color: #F9AD84;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LoginController">
     <children>
-        <VBox layoutX="14.0" layoutY="7.0" prefHeight="311.0" prefWidth="381.0" spacing="10.0" style="-fx-background-color: #F9AD84;">
+        <VBox layoutX="14.0" layoutY="7.0" prefHeight="311.0" prefWidth="395.0" spacing="10.0" style="-fx-background-color: #F9AD84;">
             <children>
-                <Label fx:id="titleLbl" alignment="CENTER" prefHeight="66.0" prefWidth="309.0" text="Appointment Scheduler 1.0" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+                <Label fx:id="titleLbl" alignment="CENTER" prefHeight="60.0" prefWidth="320.0" text="Appointment Scheduler 1.1" textAlignment="CENTER" textFill="WHITE" wrapText="true">
                     <font>
                         <Font name="System Bold" size="24.0" />
                     </font>
