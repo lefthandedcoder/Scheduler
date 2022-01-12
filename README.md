@@ -3,11 +3,11 @@ JavaFX Scheduling App
 
 <p float="left">
   <p>
-    <img src="https://github.com/lefthandedcoder/Scheduler/blob/master/login_screen.png?raw=true" width="200" />
-    <img src="https://github.com/lefthandedcoder/Scheduler/blob/master/appointment_add_update.png?raw=true" width="200" /> 
+    <img src="https://github.com/lefthandedcoder/Scheduler/blob/master/login_screen.png?raw=true" width="300" />
+    <img src="https://github.com/lefthandedcoder/Scheduler/blob/master/appointment_add_update.png?raw=true" width="300" /> 
   </p>
   <p>
-    <img src="https://github.com/lefthandedcoder/Scheduler/blob/master/appointment_dashboard.png?raw=true" width="400" /> 
+    <img src="https://github.com/lefthandedcoder/Scheduler/blob/master/appointment_dashboard.png?raw=true" width="600" /> 
     <img src="https://github.com/lefthandedcoder/Scheduler/blob/master/customer_dashboard.png?raw=true" width="400" /> 
   </p>
 </p>
